@@ -9,7 +9,13 @@
         <li class="text"><a href="/test">Запись</a></li>
         <li class="text"><a href="/test">Задачи</a></li>
         <li class="text"><a href="/main">Другое</a></li>
-        <li class="text"><a href="/signup">Регистрация</a></li>
+        {% if request.user.is_authenticated %}
+          <li class="text"><a>{{request.user.first_name}} {{request.user.last_name}} {{request.user.is_authenticate}}</a></li>
+          <li class="text"><a href="/logout">Выход</a></li>
+        {% else %}
+          <li class="text"><a href="/signup">Регистрация</a></li>
+          <li class="text"><a href="/login">Вход</a></li>
+        {% endif %}
       </ul>
     </div>
   </div>

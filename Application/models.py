@@ -12,8 +12,8 @@ class UserManager(BaseUserManager):
             raise ValueError("Users must have an first name")
         if not last_name:
             raise ValueError("Users must have an last name")
-
-        user = BaseUserManager.create_user(
+        print(self)
+        user = self.model(
             email=self.normalize_email(email),
             username=username,
             first_name=first_name,
@@ -35,10 +35,11 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    email = models.EmailField(verbose_name='email', max_length=60 ,unique=True)
+    email = models.EmailField(verbose_name='email', max_length=60, unique=True)
     username = models.CharField(max_length=30, unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
+    telegram_id = models.IntegerField(max_length=30, default=0)
     date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
     last_login = models.DateTimeField(verbose_name='last login', auto_now=True)
     is_admin = models.BooleanField(default=False)

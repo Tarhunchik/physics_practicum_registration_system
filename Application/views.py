@@ -1,7 +1,8 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from .forms import RegisterForm
-from .models import UserManager
+from django.contrib.auth import login, logout, authenticate
+from .forms import RegisterForm, LoginForm
+from .models import UserManager, User
 
 
 def get_context_base():
@@ -20,20 +21,55 @@ def index_page(request):
 def signup_page(request):
     context = get_context_base()
     context['title'] = 'Sign up page'
-    context['form'] = RegisterForm()
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            UserManager.create_user(
-                form.cleaned_data['email'],
-                form.cleaned_data['username'],
-                form.cleaned_data['first_name'],
-                form.cleaned_data['last_name'],
-                form.cleaned_data['password']
+            username = request.POST['username']
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            email = request.POST['email']
+            raw_password = request.POST['password1']
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                first_name=first_name,
+                last_name=last_name,
+                password=raw_password
             )
-        return HttpResponseRedirect('/main/')
+            user.save()
+            login(request, user)
+            return HttpResponseRedirect('/main')
+        else:
+            context['registration_form'] = form
     else:
-        return render(request, 'signup.html', context)
+        form = RegisterForm()
+        context['form'] = form
+    return render(request, 'signup.html', context)
+
+
+def login_page(request):
+    context = get_context_base()
+    user = request.user
+    if user.is_authenticated:
+        return HttpResponseRedirect('/main')
+    if request.POST:
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user:
+                login(request, user)
+                return HttpResponseRedirect('/main')
+    else:
+        form = LoginForm()
+    context['login_form'] = form
+    return render(request, 'login.html', context)
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('/main')
 
 
 def test_page(request):
