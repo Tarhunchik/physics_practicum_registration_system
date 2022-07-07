@@ -18,7 +18,7 @@ def index_page(request):
     return render(request, 'index.html', context)
 
 
-def signup_page(request):
+def register_page(request):
     context = get_context_base()
     context['title'] = 'Sign up page'
     if request.method == 'POST':
@@ -76,3 +76,23 @@ def test_page(request):
     context = get_context_base()
     context['title'] = 'Test page'
     return render(request, 'test.html', context)
+
+
+def non_authorised_user_page(request):
+    context = get_context_base()
+    context['title'] = 'Authorise now!'
+    return render(request, 'non_authorised_user_page.html', context)
+
+
+def schedule_page(request):
+    context = get_context_base()
+    context['title'] = 'Schedule page'
+    if request.user.is_authenticated:
+        if request.POST.get('role'):
+            # teacher field
+            context['content'] = 'Hello there, teacher!'
+        else:
+            # student field
+            content['content'] = 'Hi, student!'
+    else:
+        return HttpResponseRedirect('/non_auth_user')
