@@ -88,11 +88,12 @@ def schedule_page(request):
     context = get_context_base()
     context['title'] = 'Schedule page'
     if request.user.is_authenticated:
-        if request.POST.get('role'):
+        if request.user.is_role_teacher():
             # teacher field
             context['content'] = 'Hello there, teacher!'
         else:
             # student field
-            content['content'] = 'Hi, student!'
+            context['content'] = 'Hi, student!'
+        return render(request, 'schedule.html', context)
     else:
         return HttpResponseRedirect('/non_auth_user')

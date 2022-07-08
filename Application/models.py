@@ -56,6 +56,9 @@ class User(AbstractBaseUser):
     def __str__(self):
         return self.username
 
+    def is_role_teacher(self):
+        return self.is_teacher
+
     def has_perm(self, perm, obj=None):
         return self.is_admin
 
