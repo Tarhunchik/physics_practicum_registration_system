@@ -1,5 +1,6 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
+from .fields import TaskField, DayField, TimeField
 
 
 class UserManager(BaseUserManager):
@@ -64,3 +65,10 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+
+class SchedulingSystem(models.Model):
+    task = TaskField(max_length=10)
+    day = DayField(max_length=10)
+    time = TimeField(max_length=10)
+    additional_info = models.TextField()

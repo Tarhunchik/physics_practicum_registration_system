@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm, LoginForm, SchedulingSystemForm
 from .models import UserManager, User
 
 
@@ -92,8 +92,14 @@ def schedule_page(request):
             # teacher field
             context['content'] = 'Hello there, teacher!'
         else:
-            # student field
-            context['content'] = 'Hi, student!'
+            if request.POST:
+                form = SchedulingSystemForm(request.POST)
+                if form.is_valid():
+                    form.save()
+                    return HttpResponseRedirect('/main')
+            else:
+                form = SchedulingSystemForm()
+                context['form'] = form
         return render(request, 'schedule.html', context)
     else:
         return HttpResponseRedirect('/non_auth_user')

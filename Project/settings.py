@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-39&65*-*9z*h9nior+=ir+@ukq$($*z)y2u+x5c2iq#c_*y*f5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['aelaevyt.beget.tech']
+ALLOWED_HOSTS = ['aelaevyt.beget.tech', '127.0.0.1']
 
 # Application definition
 
@@ -81,7 +81,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'aelaevyt_django',
-        'USER': 'aelaevyt_django',
+        'USER': 'Tarhunchik',
         'PASSWORD': 'Elaev241206',
         'HOST': 'localhost',
     }

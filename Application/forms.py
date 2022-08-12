@@ -1,6 +1,7 @@
 from django import forms
-from .models import User
+from .models import User, SchedulingSystem
 from django.contrib.auth import authenticate
+from django.forms import ModelForm, DateInput
 
 
 class RegisterForm(forms.Form):
@@ -89,3 +90,9 @@ class LoginForm(forms.ModelForm):
         password = self.cleaned_data.get('password')
         if not authenticate(username=username, password=password):
             raise forms.ValidationError('Invalid login')
+
+
+class SchedulingSystemForm(forms.ModelForm):
+    class Meta:
+        model = SchedulingSystem
+        fields = ('task', 'day', 'time', 'additional_info')
