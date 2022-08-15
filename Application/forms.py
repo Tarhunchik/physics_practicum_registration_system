@@ -4,6 +4,10 @@ from django.contrib.auth import authenticate
 from django.forms import ModelForm, DateInput
 
 
+class DayInput(forms.DateInput):
+    input_type = 'date'
+
+
 class RegisterForm(forms.Form):
     username = forms.CharField(
         max_length=20,
@@ -96,3 +100,4 @@ class SchedulingSystemForm(forms.ModelForm):
     class Meta:
         model = SchedulingSystem
         fields = ('task', 'day', 'time', 'additional_info')
+        widgets = {'day': DayInput()}

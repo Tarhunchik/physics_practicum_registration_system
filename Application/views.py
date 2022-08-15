@@ -1,8 +1,9 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate
 from .forms import RegisterForm, LoginForm, SchedulingSystemForm
-from .models import UserManager, User
+from .models import UserManager, User, SchedulingSystem
+from django.contrib import messages
 
 
 def get_context_base():
@@ -28,22 +29,27 @@ def register_page(request):
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
             email = request.POST['email']
-            raw_password = request.POST['password1']
-            user = User.objects.create_user(
-                username=username,
-                email=email,
-                first_name=first_name,
-                last_name=last_name,
-                password=raw_password
-            )
-            user.save()
-            login(request, user)
-            return HttpResponseRedirect('/main')
+            password1 = request.POST['password1']
+            password2 = request.POST['password2']
+            if password1 == password2:
+                user = User.objects.create_user(
+                    username=username,
+                    email=email,
+                    first_name=first_name,
+                    last_name=last_name,
+                    password=raw_password
+                )
+                user.save()
+                messages.success(request, 'User created successfully')
+                login(request, user)
+                return HttpResponseRedirect('/main')
+            messages.error(request, 'Passwords are not same')
         else:
+            messages.error(request, 'Input data is not valid')
             context['registration_form'] = form
     else:
         form = RegisterForm()
-        context['form'] = form
+        context['registration_form'] = form
     return render(request, 'signup.html', context)
 
 
@@ -87,19 +93,28 @@ def non_authorised_user_page(request):
 def schedule_page(request):
     context = get_context_base()
     context['title'] = 'Schedule page'
-    if request.user.is_authenticated:
-        if request.user.is_role_teacher():
-            # teacher field
-            context['content'] = 'Hello there, teacher!'
-        else:
-            if request.POST:
-                form = SchedulingSystemForm(request.POST)
-                if form.is_valid():
-                    form.save()
-                    return HttpResponseRedirect('/main')
-            else:
-                form = SchedulingSystemForm()
-                context['form'] = form
-        return render(request, 'schedule.html', context)
-    else:
+    if not request.user.is_authenticated:
         return HttpResponseRedirect('/non_auth_user')
+    if request.user.is_role_teacher():
+        # teacher field
+        context['content'] = 'Hello there, teacher!'
+    else:
+        if request.POST:
+            form = SchedulingSystemForm(request.POST)
+            if form.is_valid():
+                object_instance = form.save(commit=False)
+                for obj in SchedulingSystem.objects.all():
+                    inst_task = getattr(object_instance, 'task')
+                    inst_day = getattr(object_instance, 'day')
+                    inst_time = getattr(object_instance, 'time')
+                    obj_task = getattr(obj, 'task')
+                    obj_day = getattr(obj, 'day')
+                    obj_time = getattr(obj, 'time')
+                    if inst_task == obj_task and inst_day == obj_day and inst_time == obj_time:
+                        return HttpResponse('<h1>Запись уже занята</h1>')
+                form.save()
+                return HttpResponseRedirect('/main')
+        else:
+            form = SchedulingSystemForm()
+        context['scheduling_form'] = form
+    return render(request, 'schedule.html', context)

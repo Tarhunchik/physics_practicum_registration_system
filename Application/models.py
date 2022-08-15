@@ -69,6 +69,6 @@ class User(AbstractBaseUser):
 
 class SchedulingSystem(models.Model):
     task = TaskField(max_length=10)
-    day = DayField(max_length=10)
+    day = models.DateField()
     time = TimeField(max_length=10)
     additional_info = models.TextField()

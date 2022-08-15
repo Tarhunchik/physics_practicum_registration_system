@@ -2,20 +2,23 @@
 {% block title %} {{title}} {% endblock title %}
 {% block content %}
 <h2>Register</h2>
+{% include 'icons.html' %}
 <form method="post">{% csrf_token %}
     {% for field in registration_form %}
-        <p>
-            {{ field.label_tag }}
-            {{ field }}
-
-            {% if field.help_text %}
-                <small style="color: grey;">{{field.help_text}}</small>
-            {% endif %}
-
+        <div>
+            <p>
+                {{ field.label_tag }}
+                {{ field }}
+            </p>
+            <p>
+                {% if field.help_text %}
+                    <small style="color: grey;">{{field.help_text}}</small>
+                {% endif %}
+            </p>
             {% for error in field.errors %}
-                <p style="color: red;">{{error}}</p>
+                    <small style="color: red;">{{error}}</small>
             {% endfor %}
-        </p>
+        </div>
     {% endfor %}
     <button type="submit">Register</button>
 </form>
