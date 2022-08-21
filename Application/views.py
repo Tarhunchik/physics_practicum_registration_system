@@ -55,6 +55,7 @@ def register_page(request):
 
 def login_page(request):
     context = get_context_base()
+    context['title'] = 'Login page'
     user = request.user
     if user.is_authenticated:
         return HttpResponseRedirect('/main')
@@ -118,3 +119,9 @@ def schedule_page(request):
             form = SchedulingSystemForm()
         context['scheduling_form'] = form
     return render(request, 'schedule.html', context)
+
+
+def tg_bot_page(request):
+    context = get_context_base()
+    context['title'] = 'Telegram_bot_page'
+    return render(request, 'telegram_bot.html', context)

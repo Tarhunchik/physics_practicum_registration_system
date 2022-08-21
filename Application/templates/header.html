@@ -1,22 +1,49 @@
-<nav class="nav navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand">Физический практикум</a>
+{% load static %}
+<nav class="navbar navbar-expand-md navbar-dark" style="background-color: #456043;">
+  <div class="container">
+    <a class="navbar-brand" href="/main">
+      <img src="{% static 'images/atom.png' %}" width="35" height="30" class="d-inline-block align-text-top">
+      Практикум 1514
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+            aria-controls="navbarContent" aria-expanded="false">
+            <span class="navbar-toggler-icon"></span>
+    </button>
+
+  <div class="collapse navbar-collapse" id="navbarContent">
+    <ul class="navbar-nav me-auto mb-2">
+      <li class="nav-item">
+        <a href="/schedule" class="nav-link">Запись</a>
+      </li>
+      <li class="nav-item">
+        <a href="https://yandex.ru/news" class="nav-link">Новости</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a href="" class="nav-link dropdown-toggle" id="NavbarTasks" role="button" data-bs-toggle="dropdown" aria-expanded="false">Задачи</a>
+        <ul class="dropdown-menu" aria-labelledby="NavbarTasks">
+          <li><a class="dropdown-item" href="https://lisakov.com/pb_789.pdf">Задачи для 7-9 класса</a></li>
+          <li><a class="dropdown-item" href="https://lisakov.com/pb_1011.pdf">Задачи для 10-11 класса</a></li>
+          <li><a class="dropdown-item" href="/test">Задачи для практикумов</a></li>
+        </ul>
+      </li>
+      <li class="nav-item dropdown">
+        <a href="" class="nav-link dropdown-toggle" id="NavbarAnother" role="button" data-bs-toggle="dropdown" aria-expanded="false">Другое</a>
+        <ul class="dropdown-menu" aria-labelledby="NavbarAnother">
+          <li><a class="dropdown-item" href="/telegram_bot">Telegram bot</a></li>
+          <li><a class="dropdown-item" href="">Вопросы</a></li>
+          <li><a class="dropdown-item" href="">Ссылки на киви кошельки разрабов)))))</a></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="d-flex">
+      {% if request.user.is_authenticated %}
+            <p class="text-light my-auto fs-5">{{request.user.first_name}} {{request.user.last_name}} {{request.user.is_authenticate}}</p>
+            <a href="/logout" class="btn btn-outline-light ms-4" role="button">Выход</a>
+      {% else %}
+            <a href="/register" class="btn btn-outline-light" role="button">Регистрация</a>
+            <a href="/login" class="btn btn-outline-light ms-3" role="button">Войти</a>
+      {% endif %}
     </div>
-    <div id="navbar">
-      <ul class="nav navbar-nav">
-        <li class="text"><a href="/main">Главная</a></li>
-        <li class="text"><a href="/schedule">Запись</a></li>
-        <li class="text"><a href="/test">Задачи</a></li>
-        <li class="text"><a href="/main">Другое</a></li>
-        {% if request.user.is_authenticated %}
-          <li class="text"><a>{{request.user.first_name}} {{request.user.last_name}} {{request.user.is_authenticate}}</a></li>
-          <li class="text"><a href="/logout">Выход</a></li>
-        {% else %}
-          <li class="text"><a href="/register">Регистрация</a></li>
-          <li class="text"><a href="/login">Вход</a></li>
-        {% endif %}
-      </ul>
-    </div>
+  </div>
   </div>
 </nav>

@@ -27,4 +27,5 @@ urlpatterns = [
     path('login/', views.login_page),
     path('non_auth_user/', views.non_authorised_user_page),
     path('schedule/', views.schedule_page),
+    path('telegram_bot/', views.tg_bot_page),
 ]

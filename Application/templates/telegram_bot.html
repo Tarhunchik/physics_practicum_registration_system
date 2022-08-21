@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock title %}
+{% block css_style %} <link href="{% static 'telegram_bot.css' %}" rel="stylesheet"/> {% endblock css_style %}
+{% block content %}
+  {% include 'header.html' %}
+  <h1 class="my-5 text-center">Наш Телеграм Бот скоро здесь!</h1>
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-md-6">
+        <img src="{% static 'images/bot_picture_green.png' %}" alt="телеграм бот" class="w-100">
+      </div>
+      <div class="col-md-6 text-center my-auto">
+        <h2 class="mb-4"><b><a class="bot-link" href="">@practicum_1514_bot - </a></b></h2>
+        <p class="tel-sft">это телеграм бот, разработанный специально для Вашего удобства!</p>
+        <p class="tel-sft">С его помощью Вы также сможете записываться на практикумы, если Вам не понравится записываться с сайта</p>
+        <!--<p class="tel-sft">Нажмите <a class="bot-link" href="">здесь</a>, чтобы начать работу с ботом!</p>-->
+      </div>
+    </div>
+  </div>
+{% endblock content %}

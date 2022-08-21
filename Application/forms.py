@@ -10,68 +10,74 @@ class DayInput(forms.DateInput):
 
 class RegisterForm(forms.Form):
     username = forms.CharField(
+        label='Придумайте username',
         max_length=20,
-        help_text="Required. Type your username",
+        help_text="",
         required=True,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'username',
+                'placeholder': '',
             }
         )
     )
     first_name = forms.CharField(
+        label='Имя',
         max_length=20,
-        help_text="Required. Type your first name",
+        help_text="",
         required=True,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'first_name',
+                'placeholder': '',
             }
         )
     )
     last_name = forms.CharField(
+        label='Фамилия',
         max_length=20,
-        help_text="Required. Type your last name",
+        help_text="",
         required=True,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'last_name',
+                'placeholder': '',
             }
         )
     )
     email = forms.EmailField(
+        label='Email',
         max_length=60,
-        help_text="Required. Add a valid email address",
+        help_text="",
         required=True,
         widget=forms.EmailInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'email',
+                'placeholder': '',
             }
         )
     )
     password1 = forms.CharField(
+        label='Придумайте пароль',
         max_length=20,
-        help_text="Required. Type your password",
+        help_text="",
         required=True,
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'password',
+                'placeholder': '',
             }
         )
     )
     password2 = forms.CharField(
+        label='Введите пароль еще раз',
         max_length=20,
-        help_text="Required. Type your password again",
+        help_text="",
         required=True,
         widget=forms.PasswordInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'password',
+                'placeholder': '',
             }
         )
     )
@@ -82,8 +88,24 @@ class RegisterForm(forms.Form):
 
 
 class LoginForm(forms.ModelForm):
-    username = forms.CharField(label='Username')
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+    username = forms.CharField(
+        label='Введите свой username',
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': '',
+            }
+        )
+    )
+    password = forms.CharField(
+        label='Введите пароль',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': '',
+            }
+        )
+    )
 
     class Meta:
         model = User
