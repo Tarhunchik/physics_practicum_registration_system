@@ -3,7 +3,7 @@
 {% block content %}
     {% include 'header.html' %}
     <form method="post">{% csrf_token %}
-        {% for field in form %}
+        {% for field in scheduling_form %}
             <p>
                 {{ field.label_tag }}
                 {{ field }}
