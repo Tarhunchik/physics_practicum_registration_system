@@ -37,7 +37,7 @@ def register_page(request):
                     email=email,
                     first_name=first_name,
                     last_name=last_name,
-                    password=raw_password
+                    password=password1
                 )
                 user.save()
                 messages.success(request, 'User created successfully')
