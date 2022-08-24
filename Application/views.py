@@ -41,7 +41,7 @@ def register_page(request):
                     password=password1
                 )
                 user.save()
-                messages.success(request, 'User created successfully')
+                # messages.success(request, 'User created successfully')
                 login(request, user)
                 return HttpResponseRedirect('/main')
             messages.error(request, 'Passwords are not same')
