@@ -100,7 +100,7 @@ def schedule_page(request):
     if request.user.is_role_teacher():
         arr = []
         for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
-            obj_holder = getattr(obj, 'holder')
+            obj_holder = getattr(obj, 'holder_name')
             obj_task = getattr(obj, 'task')
             obj_day = getattr(obj, 'day')
             obj_time = getattr(obj, 'time')
@@ -120,10 +120,17 @@ def schedule_page(request):
                     obj_task = getattr(obj, 'task')
                     obj_day = getattr(obj, 'day')
                     obj_time = getattr(obj, 'time')
+                    obj_holder = getattr(obj, 'holder')
+                    print(request.user.get_username, obj_holder)
+                    print(inst_task, obj_task)
+                    if request.user.get_username() == obj_holder and inst_task == obj_task:
+                        messages.error(request, 'ВНИМАНИЕ! Нельзя записываться на одну и ту же задачу дважды')
+                        return HttpResponseRedirect('/schedule')
                     if inst_task == obj_task and inst_day == obj_day and inst_time == obj_time:
                         messages.error(request, 'ВНИМАНИЕ! Запись занята. Попробуйте еще раз')
                         return HttpResponseRedirect('/schedule')
-                object_instance.holder = request.user.get_bio()
+                object_instance.holder = request.user.get_username()
+                object_instance.holder_name = request.user.get_full_name()
                 form.save()
                 messages.success(request, 'Запись прошла успешно')
                 return HttpResponseRedirect('/schedule')

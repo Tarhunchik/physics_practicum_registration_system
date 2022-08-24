@@ -57,7 +57,10 @@ class User(AbstractBaseUser):
     def __str__(self):
         return self.username
 
-    def get_bio(self):
+    def get_username(self):
+        return self.username
+
+    def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
 
     def is_role_teacher(self):
@@ -71,6 +74,7 @@ class User(AbstractBaseUser):
 
 
 class SchedulingSystem(models.Model):
+    holder_name = models.CharField(max_length=100, default='')
     holder = models.CharField(max_length=100, default='')
     task = TaskField(max_length=10)
     day = models.DateField()
