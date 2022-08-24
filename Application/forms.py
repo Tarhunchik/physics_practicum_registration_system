@@ -2,7 +2,7 @@ from django import forms
 from .models import User, SchedulingSystem
 from django.contrib.auth import authenticate
 from django.forms import ModelForm, DateInput
-
+from datetime import date
 
 class DayInput(forms.DateInput):
     input_type = 'date'
@@ -122,4 +122,4 @@ class SchedulingSystemForm(forms.ModelForm):
     class Meta:
         model = SchedulingSystem
         fields = ('task', 'day', 'time', 'additional_info')
-        widgets = {'day': DayInput()}
+        widgets = {'day': DayInput(attrs={'min': date.today()})}

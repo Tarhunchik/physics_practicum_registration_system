@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout, authenticate
 from .forms import RegisterForm, LoginForm, SchedulingSystemForm
 from .models import UserManager, User, SchedulingSystem
 from django.contrib import messages
+from datetime import date
 
 
 def get_context_base():
@@ -97,8 +98,16 @@ def schedule_page(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/non_auth_user')
     if request.user.is_role_teacher():
-        # teacher field
-        context['content'] = 'Hello there, teacher!'
+        arr = []
+        for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
+            obj_holder = getattr(obj, 'holder')
+            obj_task = getattr(obj, 'task')
+            obj_day = getattr(obj, 'day')
+            obj_time = getattr(obj, 'time')
+            arr.append((obj_day, obj_time, obj_holder, obj_task))
+        arr = sorted(arr, key=lambda i: (i[0], i[1]))
+        context['content'] = [f'{i[2]}: {i[0]} {["12:00 - 14:00", "14:00 - 16:00", "16:00 - 18:00"][int(i[1]) - 1]}, {["task 1", "task 2", "task 3"][int(i[3]) - 1]}' for i in arr]
+        return render(request, 'showoff.html', context)
     else:
         if request.POST:
             form = SchedulingSystemForm(request.POST)
@@ -113,6 +122,7 @@ def schedule_page(request):
                     obj_time = getattr(obj, 'time')
                     if inst_task == obj_task and inst_day == obj_day and inst_time == obj_time:
                         return HttpResponse('<h1>Запись уже занята</h1>')
+                object_instance.holder = request.user.get_bio()
                 form.save()
                 return HttpResponseRedirect('/main')
         else:
