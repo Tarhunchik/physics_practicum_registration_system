@@ -60,7 +60,7 @@ def login_page(request):
     user = request.user
     if user.is_authenticated:
         return HttpResponseRedirect('/main')
-    if request.POST:
+    if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
             username = request.POST['username']
@@ -97,33 +97,23 @@ def schedule_page(request):
     context['title'] = 'Schedule page'
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/non_auth_user')
-    if request.user.is_role_teacher():
-        arr = []
+    if request.user.is_teacher:
+        recs = []
         for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
-            obj_holder = getattr(obj, 'holder')
-            obj_task = getattr(obj, 'task')
-            obj_day = getattr(obj, 'day')
-            obj_time = getattr(obj, 'time')
-            arr.append((obj_day, obj_time, obj_holder, obj_task))
-        arr = sorted(arr, key=lambda i: (i[0], i[1]))
-        context['content'] = [f'{i[2]}: {i[0]} {["12:00 - 14:00", "14:00 - 16:00", "16:00 - 18:00"][int(i[1]) - 1]}, {["task 1", "task 2", "task 3"][int(i[3]) - 1]}' for i in arr]
+            recs.append(obj.holder_name, obj.task, obj.day, obj.time)
+        context['recs'] = sorted(recs, key=lambda i: (i[0], i[1]))
         return render(request, 'showoff.html', context)
     else:
-        if request.POST:
+        if request.method == 'POST':
             form = SchedulingSystemForm(request.POST)
             if form.is_valid():
-                object_instance = form.save(commit=False)
+                inst = form.save(commit=False)
                 for obj in SchedulingSystem.objects.all():
-                    inst_task = getattr(object_instance, 'task')
-                    inst_day = getattr(object_instance, 'day')
-                    inst_time = getattr(object_instance, 'time')
-                    obj_task = getattr(obj, 'task')
-                    obj_day = getattr(obj, 'day')
-                    obj_time = getattr(obj, 'time')
-                    if inst_task == obj_task and inst_day == obj_day and inst_time == obj_time:
+                    if inst.task == obj.task and inst.day == obj.day and inst.time == obj.time:
                         messages.error(request, 'ВНИМАНИЕ! Запись занята. Попробуйте еще раз')
                         return HttpResponseRedirect('/schedule')
-                object_instance.holder = request.user.get_bio()
+                inst.holder = request.user.username
+                inst.holder_name = f'{request.user.first_name} {request.user.last_name}'
                 form.save()
                 messages.success(request, 'Запись прошла успешно')
                 return HttpResponseRedirect('/schedule')
@@ -162,3 +152,16 @@ def recording_error_page(request):
     context['title'] = 'Recoding error page'
     return render(request, 'recording_is_busy.html', context)
 
+
+def account_page(request):
+    context = get_context_base()
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/non_auth_user')
+    context['title'] = f'{request.user.username} account'
+    context['name'] = request.user.username
+    recs = []
+    for obj in SchedulingSystem.objects.all():
+        if obj.holder == context['name']:
+            recs.append(obj.task, obj.day, obj.time)
+    context['recs'] = recs
+    return render(request, 'account.html', context)

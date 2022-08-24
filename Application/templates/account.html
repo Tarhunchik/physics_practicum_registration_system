@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock title %}
+{% block content %}
+        {% include 'header.html' %}
+        <p>{{name}}</p>
+        {% for rec in recs %}
+                <p>{{rec.0}} {{rec.1}} {{rec.2}}</p>
+        {% endfor %}
+{% endblock content %}

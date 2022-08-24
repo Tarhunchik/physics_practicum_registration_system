@@ -6,8 +6,8 @@
         {% include 'header.html' %}
 <h2 class="mt-5 text-center"><ins>Ближайшие записи:</ins></h2>
         <ul class="ms-5 mt-4 fs-3">
-                {% for attr in content %}
-                        <li class="my-2">{{attr}}</li>
+                {% for rec in recs %}
+                        <li class="my-2">{{rec.0}} {{rec.1}} {{rec.2}} {{rec.3}}</li>
                 {% endfor %}
         </ul>
 {% endblock content %}
