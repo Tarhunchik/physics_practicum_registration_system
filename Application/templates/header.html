@@ -1,4 +1,5 @@
 {% load static %}
+{% block css_style %} <link href="{% static 'header.css' %}" rel="stylesheet"/> {% endblock css_style %}
 <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #456043;">
   <div class="container-fluid">
     <a class="navbar-brand" href="/main">
@@ -16,22 +17,13 @@
         <a href="/schedule" class="nav-link">Запись</a>
       </li>
       <li class="nav-item">
-        <a href="https://yandex.ru/news" class="nav-link">Новости</a>
+        <a href="/test" class="nav-link">Задачи</a>
       </li>
-      <li class="nav-item dropdown">
-        <a href="" class="nav-link dropdown-toggle" id="NavbarTasks" role="button" data-bs-toggle="dropdown" aria-expanded="false">Задачи</a>
-        <ul class="dropdown-menu" aria-labelledby="NavbarTasks">
-          <li><a class="dropdown-item" href="/test">Задачи для практикумов 9 класс</a></li>
-          <li><a class="dropdown-item" href="/test">Задачи для практикумов 10 класс</a></li>
-        </ul>
+      <li class="nav-item">
+        <a href="/telegram_bot" class="nav-link">Telegram bot</a>
       </li>
-      <li class="nav-item dropdown">
-        <a href="" class="nav-link dropdown-toggle" id="NavbarAnother" role="button" data-bs-toggle="dropdown" aria-expanded="false">Другое</a>
-        <ul class="dropdown-menu" aria-labelledby="NavbarAnother">
-          <li><a class="dropdown-item" href="/rules">Правила сдачи практикумов</a></li>
-          <li><a class="dropdown-item" href="/telegram_bot">Telegram bot</a></li>
-          <li><a class="dropdown-item" href="/contacts">Контакты</a></li>
-        </ul>
+      <li class="nav-item">
+        <a href="/contacts" class="nav-link">Контакты</a>
       </li>
     </ul>
     <div class="d-flex">

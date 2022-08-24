@@ -107,7 +107,7 @@ def schedule_page(request):
             arr.append((obj_day, obj_time, obj_holder, obj_task))
         arr = sorted(arr, key=lambda i: (i[0], i[1]))
         context['content'] = [f'{i[2]}: {i[0]} {["12:00 - 14:00", "14:00 - 16:00", "16:00 - 18:00"][int(i[1]) - 1]}, {["task 1", "task 2", "task 3"][int(i[3]) - 1]}' for i in arr]
-        return render(request, 'showoff.html', context)
+        return render(request, 'show_records.html', context)
     else:
         if request.POST:
             form = SchedulingSystemForm(request.POST)
