@@ -121,10 +121,12 @@ def schedule_page(request):
                     obj_day = getattr(obj, 'day')
                     obj_time = getattr(obj, 'time')
                     if inst_task == obj_task and inst_day == obj_day and inst_time == obj_time:
-                        return HttpResponse('<h1>Запись уже занята</h1>')
+                        messages.error(request, 'ВНИМАНИЕ! Запись занята. Попробуйте еще раз')
+                        return HttpResponseRedirect('/schedule')
                 object_instance.holder = request.user.get_bio()
                 form.save()
-                return HttpResponseRedirect('/main')
+                messages.success(request, 'Запись прошла успешно')
+                return HttpResponseRedirect('/schedule')
         else:
             form = SchedulingSystemForm()
         context['scheduling_form'] = form
@@ -133,5 +135,30 @@ def schedule_page(request):
 
 def tg_bot_page(request):
     context = get_context_base()
-    context['title'] = 'Telegram_bot_page'
+    context['title'] = 'Telegram bot page'
     return render(request, 'telegram_bot.html', context)
+
+
+def contacts_page(request):
+    context = get_context_base()
+    context['title'] = 'Contacts page'
+    return render(request, 'contacts.html', context)
+
+
+def rules_page(request):
+    context = get_context_base()
+    context['title'] = 'Rules page'
+    return render(request, 'rules.html', context)
+
+
+def recording_success_page(request):
+    context = get_context_base()
+    context['title'] = 'Congratulations!'
+    return render(request, 'recording_done_successfully.html', context)
+
+
+def recording_error_page(request):
+    context = get_context_base()
+    context['title'] = 'Recoding error page'
+    return render(request, 'recording_is_busy.html', context)
+

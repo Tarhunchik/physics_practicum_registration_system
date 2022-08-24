@@ -28,4 +28,8 @@ urlpatterns = [
     path('non_auth_user/', views.non_authorised_user_page),
     path('schedule/', views.schedule_page),
     path('telegram_bot/', views.tg_bot_page),
+    path('contacts/', views.contacts_page),
+    path('rules/', views.rules_page),
+    path('recording_error/', views.recording_error_page),
+    path('recording_success/', views.recording_success_page),
 ]
