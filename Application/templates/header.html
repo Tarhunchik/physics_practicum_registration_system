@@ -28,7 +28,9 @@
     </ul>
     <div class="d-flex">
       {% if request.user.is_authenticated %}
-            <p class="text-light my-auto fs-5">{{request.user.first_name}} {{request.user.last_name}} {{request.user.is_authenticate}}</p>
+            <a class="nav-link text-light my-auto fs-5" href="/account">
+              {{request.user.first_name}} {{request.user.last_name}} {{request.user.is_authenticate}}
+            </a>
             <a href="/logout" class="btn btn-outline-light ms-4" role="button">Выход</a>
       {% else %}
             <a href="/register" class="btn btn-outline-light" role="button">Регистрация</a>

@@ -80,6 +80,12 @@ def logout_view(request):
     return HttpResponseRedirect('/main')
 
 
+def test_page(request):
+    context = get_context_base()
+    context['title'] = 'Test page'
+    return render(request, 'test.html', context)
+
+
 def non_authorised_user_page(request):
     context = get_context_base()
     context['title'] = 'Authorise now!'
@@ -170,11 +176,9 @@ def account_page(request):
                 time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
                 past_recs.append((task, obj.day, time))
         context['title'] = f'{request.user.username} account'
-        context['name'] = request.user.username
+        context['first_name'] = request.user.first_name
+        context['last_name'] = request.user.last_name
         context['cur_recs'] = cur_recs
         context['past_recs'] = past_recs
         return render(request, 'account.html', context)
 
-
-def test_page(request):
-    return HttpResponseRedirect('/main')

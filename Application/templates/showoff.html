@@ -3,11 +3,32 @@
 {% block title %} {{title}} {% endblock title %}
 {% block css_style %} <link href="{% static 'contacts.css' %}" rel="stylesheet"/> {% endblock css_style %}
 {% block content %}
-        {% include 'header.html' %}
-<h2 class="mt-5 text-center"><ins>Ближайшие записи:</ins></h2>
-        <ul class="ms-5 mt-4 fs-3">
-                {% for rec in recs %}
-                        <li class="my-2">{{rec.0}} {{rec.1}} {{rec.2}} {{rec.3}}</li>
-                {% endfor %}
-        </ul>
+  {% include 'header.html' %}
+  <h2 class="mt-5 mb-4 text-center"><ins>Ближайшие записи:</ins></h2>
+  <div class="container">
+    <table class="table table-bordered table-striped align-middle caption-top">
+      <caption>*записи отсортированы по времени, сначала выводятся ближайшие</caption>
+      <thead class="">
+        <tr>
+          <th scope="col">Имя</th>
+          <th scope="col">Время</th>
+          <th scope="col">Дата</th>
+          <th scope="col">Задача</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rec in recs %}
+          <tr>
+            <td>{{ rec.0 }}</td>
+            <td>{{ rec.1 }}</td>
+            <td>{{ rec.2 }}</td>
+            <td>{{ rec.3 }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% include 'footer.html' %}
+
 {% endblock content %}

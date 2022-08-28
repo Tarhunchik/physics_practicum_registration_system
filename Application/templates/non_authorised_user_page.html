@@ -1,8 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %} {{title}} {% endblock title %}
-{% block css_style %} <link href="{% static 'non_authorised_user_page.css' %}" rel="stylesheet"/> {% endblock css_style %}
+{% block css_style %}
+    <link href="{% static 'contacts.css' %}" rel="stylesheet"/>
+    <link href="{% static 'beautiful_buttons.css' %}" rel="stylesheet"/>
+{% endblock css_style %}
 {% block content %}
+
+    {% include 'header.html' %}
+
     <div class="container mt-5">
         <div class="row mt-5 mb-4">
             <div class="col-md-5 text-center">
@@ -10,13 +16,16 @@
             </div>
             <div class="col-md-7 text-center my-auto">
                 <h2>Для продолжения необходимо авторизоваться</h2>
-                <div class="row mt-4">
+                <div class="row mt-5">
                     <div class="d-grid gap-2 col-6 mx-auto">
-                        <a class="btn btn-auth mb-3" href="/register" role="button">Зарегистрироваться</a>
-                        <a class="btn btn-auth" href="/login" role="button">Войти</a>
+                        <a class="btn btn-success mb-4" href="/register" role="button">Зарегистрироваться</a>
+                        <a class="btn btn-success" href="/login" role="button">Войти</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    {% include 'footer.html' %}
+
 {% endblock content %}
