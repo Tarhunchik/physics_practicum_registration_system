@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate
 from .forms import RegisterForm, LoginForm, SchedulingSystemForm
@@ -80,12 +80,6 @@ def logout_view(request):
     return HttpResponseRedirect('/main')
 
 
-def test_page(request):
-    context = get_context_base()
-    context['title'] = 'Test page'
-    return render(request, 'test.html', context)
-
-
 def non_authorised_user_page(request):
     context = get_context_base()
     context['title'] = 'Authorise now!'
@@ -100,7 +94,7 @@ def schedule_page(request):
     if request.user.is_teacher:
         recs = []
         for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
-            recs.append(obj.holder_name, obj.task, obj.day, obj.time)
+            recs.append((obj.holder_name, obj.task, obj.day, obj.time))
         context['recs'] = sorted(recs, key=lambda i: (i[0], i[1]))
         return render(request, 'showoff.html', context)
     else:
@@ -157,11 +151,30 @@ def account_page(request):
     context = get_context_base()
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/non_auth_user')
-    context['title'] = f'{request.user.username} account'
-    context['name'] = request.user.username
-    recs = []
-    for obj in SchedulingSystem.objects.all():
-        if obj.holder == context['name']:
-            recs.append(obj.task, obj.day, obj.time)
-    context['recs'] = recs
-    return render(request, 'account.html', context)
+    cur_recs = []
+    for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
+        if obj.holder == request.user.username:
+            task = ['task 1', 'task 2', 'task 3'][int(obj.task) - 1]
+            time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
+            cur_recs.append((task, obj.day, time, obj.id))
+    if request.method == 'POST':
+        for rec in cur_recs:
+            if str(rec[3]) in request.POST:
+                SchedulingSystem.objects.filter(id=rec[3]).delete()
+        return HttpResponseRedirect('/account')
+    else:
+        past_recs = []
+        for obj in SchedulingSystem.objects.filter(day__lte=date.today()):
+            if obj.holder == request.user.username:
+                task = ['task 1', 'task 2', 'task 3'][int(obj.task) - 1]
+                time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
+                past_recs.append((task, obj.day, time))
+        context['title'] = f'{request.user.username} account'
+        context['name'] = request.user.username
+        context['cur_recs'] = cur_recs
+        context['past_recs'] = past_recs
+        return render(request, 'account.html', context)
+
+
+def test_page(request):
+    return HttpResponseRedirect('/main')
