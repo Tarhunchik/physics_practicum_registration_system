@@ -122,4 +122,6 @@ class SchedulingSystemForm(forms.ModelForm):
     class Meta:
         model = SchedulingSystem
         fields = ('task', 'day', 'time', 'additional_info')
-        widgets = {'day': DayInput(attrs={'min': date.today()})}
+        widgets = {
+            'day': DateInput(attrs={'class': 'datepicker'})
+        }

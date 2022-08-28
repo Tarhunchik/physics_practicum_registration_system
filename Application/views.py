@@ -111,6 +111,7 @@ def schedule_page(request):
     else:
         if request.POST:
             form = SchedulingSystemForm(request.POST)
+            print(form)
             if form.is_valid():
                 object_instance = form.save(commit=False)
                 for obj in SchedulingSystem.objects.all():
