@@ -36,24 +36,63 @@
         </div>
       </div>
     </div>
-    <div class="d-grid gap-2 col-xs-10 col-sm-6 mx-auto mt-5">
-      <a class="btn btn-success btn-lg" role="button" href="">История записей</a>
+    <div class="container mt-5">
+      <h3 class="text-center mb-5"><ins>Текущие записи:</ins></h3>
+      {% if cur_recs|length == 0 %}
+        <h4 class="text-center">
+          У Вас нет текущих записей. Записаться можно <a class="success" href="/schedule">здесь</a>.
+        </h4>
+      {% else %}
+        {% for rec in cur_recs %}
+          <form method="POST">{% csrf_token %}
+            <div class="row mb-4">
+              <div class="col-md-6 text-center my-auto">
+                <h4>{{rec.0}} {{rec.1}} {{rec.2}}</h4>
+              </div>
+              <div class="col-md-6 text-center">
+<!--                <button type="submit" name="{{rec.3}}" class="btn btn-danger">Удалить</button>-->
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#DeleteRecord">
+                  Удалить
+                </button>
+
+              </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="DeleteRecord" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title mx-auto" id="staticBackdropLabel">Вы уверены...</h5>
+                  </div>
+                  <div class="modal-body mx-auto">
+                    ...что хотите удалить эту запись?
+                  </div>
+                  <div class="modal-footer mx-auto">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Отмена</button>
+                    <button type="submit" name="{{rec.3}}" class="btn btn-danger">Да, удалить</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        {% endfor %}
+
+
+
+      {% endif %}
+    </div>
+    <div class="container mt-5">
+      <h3 class="text-center mb-5"><ins>История записей:</ins></h3>
+      {% if past_recs|length == 0 %}
+        <h4 class="text-center">Пока здесь нет записей.</h4>
+      {% else %}
+        {% for rec in past_recs %}
+          <h4 class="text-center">{{rec.0}} {{rec.1}} {{rec.2}}</h4>
+        {% endfor %}
+      {% endif %}
     </div>
   </div>
   {% include 'footer.html' %}
-<!--        <h1>{{name}}</h1>-->
-<!--        <br><br>-->
-<!--        <h2>Текущие записи</h2>-->
-<!--        {% for rec in cur_recs %}-->
-<!--                <form method="POST">-->
-<!--                        {% csrf_token %}-->
-<!--                        <h5>{{rec.0}} {{rec.1}} {{rec.2}}</h5>-->
-<!--                        <button type="submit" name="{{rec.3}}" class="btn btn-danger btn-lg">Удалить</button>-->
-<!--                </form>-->
-<!--        {% endfor %}-->
-<!--        <br>-->
-<!--        <h2>История записей</h2>-->
-<!--        {% for rec in past_recs %}-->
-<!--                <h5>{{rec.0}} {{rec.1}} {{rec.2}}</h5>-->
-<!--        {% endfor %}-->
 {% endblock content %}

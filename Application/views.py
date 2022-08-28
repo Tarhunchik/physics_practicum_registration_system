@@ -170,14 +170,16 @@ def account_page(request):
         return HttpResponseRedirect('/account')
     else:
         past_recs = []
-        for obj in SchedulingSystem.objects.filter(day__lte=date.today()):
+        for obj in SchedulingSystem.objects.filter(day__lt=date.today()):
             if obj.holder == request.user.username:
                 task = ['task 1', 'task 2', 'task 3'][int(obj.task) - 1]
                 time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
                 past_recs.append((task, obj.day, time))
         context['title'] = f'{request.user.username} account'
+        context['name'] = request.user.username
         context['first_name'] = request.user.first_name
         context['last_name'] = request.user.last_name
+        cur_recs.reverse()
         context['cur_recs'] = cur_recs
         context['past_recs'] = past_recs
         return render(request, 'account.html', context)

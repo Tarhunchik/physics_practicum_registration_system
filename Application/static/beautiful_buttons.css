@@ -16,6 +16,21 @@
 
 }
 
+.btn-danger {
+    background-color: #780415;
+    color: white;
+}
+
+.btn-danger:hover,
+
+.btn-danger:focus{
+
+    background-color: #2f442d;
+
+    color: white;
+
+}
+
 .link-success{
     color: #456043;
 }
