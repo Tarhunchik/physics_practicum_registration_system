@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock title %}
+{% block content %}
+        {% include 'header.html' %}
+        <h1>{{name}}</h1>
+        <br><br>
+        <h2>Текущие записи</h2>
+        {% for rec in cur_recs %}
+                <form method="POST">
+                        {% csrf_token %}
+                        <h5>{{rec.0}} {{rec.1}} {{rec.2}}</h5>
+                        <button type="submit" name="{{rec.3}}" class="btn btn-danger btn-lg">Удалить</button>
+                </form>
+        {% endfor %}
+        <br>
+        <h2>История записей</h2>
+        {% for rec in past_recs %}
+                <h5>{{rec.0}} {{rec.1}} {{rec.2}}</h5>
+        {% endfor %}
+{% endblock content %}

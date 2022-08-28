@@ -32,4 +32,5 @@ urlpatterns = [
     path('rules/', views.rules_page),
     path('recording_error/', views.recording_error_page),
     path('recording_success/', views.recording_success_page),
+    path('account/', views.account_page),
 ]
