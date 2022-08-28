@@ -100,7 +100,7 @@ def schedule_page(request):
     if request.user.is_teacher:
         recs = []
         for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
-            recs.append(obj.holder_name, obj.task, obj.day, obj.time)
+            recs.append((obj.holder_name, obj.task, obj.day, obj.time))
         context['recs'] = sorted(recs, key=lambda i: (i[0], i[1]))
         return render(request, 'showoff.html', context)
     else:
@@ -141,27 +141,17 @@ def rules_page(request):
     return render(request, 'rules.html', context)
 
 
-def recording_success_page(request):
-    context = get_context_base()
-    context['title'] = 'Congratulations!'
-    return render(request, 'recording_done_successfully.html', context)
-
-
-def recording_error_page(request):
-    context = get_context_base()
-    context['title'] = 'Recoding error page'
-    return render(request, 'recording_is_busy.html', context)
-
-
 def account_page(request):
     context = get_context_base()
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/non_auth_user')
     context['title'] = f'{request.user.username} account'
     context['name'] = request.user.username
+    context['first_name'] = request.user.first_name
+    context['last_name'] = request.user.last_name
     recs = []
     for obj in SchedulingSystem.objects.all():
         if obj.holder == context['name']:
-            recs.append(obj.task, obj.day, obj.time)
+            recs.append((obj.task, obj.day, obj.time))
     context['recs'] = recs
     return render(request, 'account.html', context)
