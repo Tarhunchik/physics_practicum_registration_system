@@ -13,22 +13,6 @@ class TimeField(models.CharField):
         super().__init__(*args, **kwargs)
 
 
-class DayField(models.CharField):
-    def __init__(self, *args, **kwargs):
-        self.day_list = {
-            '1': u'Monday',
-            '2': u'Tuesday',
-            '3': u'Wednesday',
-            '4': u'Thursday',
-            '5': u'Friday',
-            '6': u'Saturday',
-            '7': u'Sunday',
-        }
-        kwargs['choices'] = tuple(sorted(self.day_list.items()))
-        kwargs['max_length'] = 1
-        super().__init__(*args, **kwargs)
-
-
 class TaskField(models.CharField):
     def __init__(self, *args, **kwargs):
         self.task_list = {

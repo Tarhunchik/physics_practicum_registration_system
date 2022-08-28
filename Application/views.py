@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate
-from .forms import RegisterForm, LoginForm, SchedulingSystemForm
+from .forms import RegisterForm, LoginForm, SchSysForm1, SchSysForm2, SchSysForm3
 from .models import UserManager, User, SchedulingSystem
 from django.contrib import messages
 from datetime import date
@@ -110,7 +110,7 @@ def schedule_page(request):
         return render(request, 'showoff.html', context)
     else:
         if request.POST:
-            form = SchedulingSystemForm(request.POST)
+            form = SchSysForm1(request.POST)
             if form.is_valid():
                 object_instance = form.save(commit=False)
                 for obj in SchedulingSystem.objects.all():
@@ -135,8 +135,9 @@ def schedule_page(request):
                 messages.success(request, 'Запись прошла успешно')
                 return HttpResponseRedirect('/schedule')
         else:
-            form = SchedulingSystemForm()
+            form = SchSysForm1()
         context['scheduling_form'] = form
+        context['disabled_dates'] = ['2022-08-30', '2022-09-2']
     return render(request, 'schedule.html', context)
 
 

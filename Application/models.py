@@ -1,6 +1,6 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
-from .fields import TaskField, DayField, TimeField
+from .fields import TaskField, TimeField
 
 
 class UserManager(BaseUserManager):
