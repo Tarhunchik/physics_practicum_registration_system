@@ -129,7 +129,7 @@ class SchSysForm2(forms.ModelForm):
     class Meta:
         model = SchedulingSystem
         fields = ('day',)
-        widgets = {'day': DayInput(attrs={'id': 'datepicker', 'min': date.today()})}
+        widgets = {'day': DayInput(attrs={'class': 'datepicker'})}
 
 
 class SchSysForm3(forms.ModelForm):

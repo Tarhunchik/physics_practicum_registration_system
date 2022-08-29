@@ -92,7 +92,7 @@ def non_authorised_user_page(request):
     return render(request, 'non_authorised_user_page.html', context)
 
 
-def schedule_page(request):
+def schedule_page1(request):
     context = get_context_base()
     context['title'] = 'Schedule page'
     if not request.user.is_authenticated:
@@ -105,23 +105,60 @@ def schedule_page(request):
         return render(request, 'showoff.html', context)
     else:
         if request.method == 'POST':
-            form = SchedulingSystemForm(request.POST)
+            form = SchSysForm1(request.POST)
             print(form)
             if form.is_valid():
                 inst = form.save(commit=False)
-                for obj in SchedulingSystem.objects.all():
-                    if inst.task == obj.task and inst.day == obj.day and inst.time == obj.time:
-                        messages.error(request, 'ВНИМАНИЕ! Запись занята. Попробуйте еще раз')
-                        return HttpResponseRedirect('/schedule')
-                inst.holder = request.user.username
-                inst.holder_name = f'{request.user.first_name} {request.user.last_name}'
-                form.save()
-                messages.success(request, 'Запись прошла успешно')
-                return HttpResponseRedirect('/schedule')
+                prohibited_days = []
+                for day in set(SchedulingSystem.objects.filter(task=inst.task).values_list('day', flat=True)):
+                    if SchedulingSystem.objects.filter(task=inst.task).filter(day=day):
+                        prohibited_days.append(day)
+                return (prohibited_days, inst.task)
         else:
             form = SchSysForm1()
         context['scheduling_form'] = form
-        context['disabled_dates'] = ['2022-08-30', '2022-09-2']
+    return render(request, 'schedule.html', context)
+
+
+def schedule_page2(request):
+    context = get_context_base()
+    response = schedule_page1(request)
+    if request.method == 'POST':
+        form = SchSysForm2(request.POST)
+        if form.is_valid():
+            inst = form.save(commit=False)
+            prohibited_time = []
+            for time in set(SchedulingSystem.objects.filter(task=response[1]).filter(day=inst.day).values_list('time', flat=True)):
+                if SchedulingSystem.objects.filter(task=response[1]).filter(task=inst.day).filter(time=time):
+                    prohibited_time.append(time)
+            return (prohibited_time, task, inst.day)
+    else:
+        form = SchSysForm2()
+    context['scheduling_form'] = form
+    context['prohibited_days'] = response[0]
+    return render(request, 'schedule.html', context)
+
+
+def schedule_page3(request):
+    context = get_context_base()
+    response = schedule_page2(request)
+    if request.method == 'POST':
+        form = SchSysForm3(request.POST)
+        if form.is_valid():
+            inst = form.save(commit=False)
+            inst.task = response[1]
+            inst.day = response[2]
+            inst.holder = request.user.username
+            inst.holder_name = f'{request.user.first_name} {request.user.last_name}'
+            inst.save()
+            return HttpResponseRedirect('/schedule')
+    else:
+        form = SchSysForm3()
+        for i in range(len(form.cleaned_data['time'].time_list)):
+            if form.cleaned_data['time'].time_list[i] in response[0]:
+                del form.cleaned_data['time'].time_list[i]
+    # context['prohibited_time'] = prohibited_time
+    context['scheduling_form'] = form
     return render(request, 'schedule.html', context)
 
 

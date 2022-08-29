@@ -34,7 +34,7 @@
         <button class="ms-5 mb-5" type="submit">Готово</button>
     </form>
     <script type="text/javascript">
-        var disableDates = ["9-11-2022", "14-11-2022", "15-11-2022","27-12-2022"];
+        var disableDates = {{prohibited_days}};
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd',
             beforeShowDay: function(date){
@@ -49,4 +49,5 @@
         });
     </script>
     {% include 'footer.html' %}
+    <input type="text"  name="date" class="datepicker form-control" autocomplete="off">
 {% endblock content %}
