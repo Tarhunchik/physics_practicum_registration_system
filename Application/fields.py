@@ -2,13 +2,8 @@ from django.db import models
 
 
 class TimeField(models.CharField):
-    def __init__(self, *args, **kwargs):
-        self.time_list = {
-            '1': u'12:00 - 14:00',
-            '2': u'14:00 - 16:00',
-            '3': u'16:00 - 18:00',
-        }
-        kwargs['choices'] = tuple(sorted(self.time_list.items()))
+    def __init__(self, choices={'1': u'12:00 - 14:00', '2': u'14:00 - 16:00', '3': u'16:00 - 18:00'}, *args, **kwargs):
+        kwargs['choices'] = tuple(sorted(dict(choices).items()))
         kwargs['max_length'] = 1
         super().__init__(*args, **kwargs)
 

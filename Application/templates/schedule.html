@@ -34,12 +34,17 @@
         <button class="ms-5 mb-5" type="submit">Готово</button>
     </form>
     <script type="text/javascript">
-        var disableDates = {{prohibited_days}};
+        var disableDates = "{{prohibited_days}}";
+        function htmlDecode(str) {
+            const doc = new DOMParser().parseFromString(str, "text/html");
+            return doc.documentElement.textContent;
+        };
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd',
             beforeShowDay: function(date){
-                dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
-                if(disableDates.indexOf(dmy) != -1){
+                dmy = date.getFullYear() + "-" + ('0'+(date.getMonth() + 1)).slice(-2) + "-" + ('0'+(date.getDate())).slice(-2);
+                cleanedDates = htmlDecode(disableDates);
+                if(cleanedDates.indexOf(dmy) != -1){
                     return false;
                 }
                 else{
