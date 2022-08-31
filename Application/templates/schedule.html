@@ -10,7 +10,7 @@
 
     {% include 'message.html' %}
     <h2 class="text-center mt-4">Запись на практикум</h2>
-    <form method="post">{% csrf_token %}
+    <form method="post" autocomplete="off">{% csrf_token %}
         {% for field in scheduling_form %}
             <p class="mt-5 mb-5 text-center">
 
