@@ -35,12 +35,17 @@
     </form>
     <script type="text/javascript">
         var disableDates = "{{prohibited_days}}";
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
         function htmlDecode(str) {
             const doc = new DOMParser().parseFromString(str, "text/html");
             return doc.documentElement.textContent;
         };
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd',
+            startDate: date,
+            daysOfWeekDisabled: [0, 6],
+            language: 'ru',
             beforeShowDay: function(date){
                 dmy = date.getFullYear() + "-" + ('0'+(date.getMonth() + 1)).slice(-2) + "-" + ('0'+(date.getDate())).slice(-2);
                 cleanedDates = htmlDecode(disableDates);
