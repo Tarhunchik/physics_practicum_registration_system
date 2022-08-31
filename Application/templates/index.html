@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %} {{title}} {% endblock title %}
-{% block css_style %} <link href="{% static 'index.css' %}" rel="stylesheet"/> {% endblock css_style %}
+{% block css_style %} <link href="{% static 'index_page.css' %}" rel="stylesheet"/> {% endblock css_style %}
 {% block content %}
 
   {% include 'header.html' %}
@@ -9,14 +9,14 @@
   <main>
     <div class="carousel slide" id="carouselControls" data-bs-ride="carousel">
       <div class="carousel-inner">
+        <div class="carousel-item">
+          <img class="d-block w-100" src="{% static 'images/first.jpg' %}" alt="slide 1">
+        </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" src="{% static 'images/second.png' %}" alt="slide 2">
+        </div>
         <div class="carousel-item active">
-          <img class="d-block w-100" src="{% static 'images/pic_1.jpg' %}" alt="slide 1">
-        </div>
-        <div class="carousel-item">
-          <img class="d-block w-100" src="{% static 'images/pic_2.jpg' %}" alt="slide 2">
-        </div>
-        <div class="carousel-item">
-          <img class="d-block w-100" src="{% static 'images/pic_3.jpg' %}" alt="slide-3">
+          <img class="d-block w-100" src="{% static 'images/third.jpeg' %}" alt="slide-3">
         </div>
       </div>
       <a href="#carouselControls" class="carousel-control-prev" role="button" data-bs-slide="prev">
@@ -26,6 +26,7 @@
         <span class="carousel-control-next-icon"></span>
       </a>
     </div>
+    {% include 'message.html' %}
     <div class="container my-5">
       <div class="row">
         <div class="col-md-7 text-center my-auto">
@@ -122,7 +123,7 @@
           </li>
           <li class="mb-3">
             Вам необходимо записаться на сдачу, потому что просто так Вас вряд ли кто-то примет. Записаться можно
-            на этом сайте (ссылка <a href="/schedule">здесь</a>).<br>
+            на этом сайте (ссылка <a href="/schedule/1">здесь</a>).<br>
             Если Вы по каким-то причинам (разумеется, уважительным) не сможете прийти в назначенное время, нужно
             как можно раньше уведомить об этом Ольгу Алексеевну.
           </li>

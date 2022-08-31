@@ -1,7 +1,7 @@
 .carousel-item {
-    height: 300px;
+    height: auto;
 }
 
 .carousel-item img {
-    height: 300px;
+    height: auto;
 }

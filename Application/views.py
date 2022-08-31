@@ -119,6 +119,7 @@ def schedule_page1(request):
         else:
             form = SchSysForm1()
         context['scheduling_form'] = form
+        context['href'] = '/main'
     return render(request, 'schedule.html', context)
 
 
@@ -139,6 +140,7 @@ def schedule_page2(request):
         form = SchSysForm2()
     context['scheduling_form'] = form
     context['prohibited_days'] = request.session.get('prohibited_days')
+    context['href'] = '/schedule/1'
     return render(request, 'schedule.html', context)
 
 
@@ -157,6 +159,7 @@ def schedule_page3(request):
             inst.holder = request.user.username
             inst.holder_name = f'{request.user.first_name} {request.user.last_name}'
             inst.save()
+            messages.success(request, 'Запись прошла успешно')
             return HttpResponseRedirect('/main')
     else:
         i = 0
@@ -168,6 +171,7 @@ def schedule_page3(request):
         print(base_choices)
         form = SchSysForm3(choices=base_choices)
     context['scheduling_form'] = form
+    context['href'] = '/schedule/2'
     return render(request, 'schedule.html', context)
 
 

@@ -1,7 +1,7 @@
 from django import forms
 from .models import User, SchedulingSystem
 from django.contrib.auth import authenticate
-from django.forms import ModelForm, DateInput
+from django.forms import ModelForm, DateInput, RadioSelect, TextInput, Select
 from datetime import date
 from .fields import TimeField
 
@@ -124,13 +124,14 @@ class SchSysForm1(forms.ModelForm):
     class Meta:
         model = SchedulingSystem
         fields = ('task',)
+        widgets = {'task': Select(attrs={'class': 'form-control mx-auto w-50'})}
 
 
 class SchSysForm2(forms.ModelForm):
     class Meta:
         model = SchedulingSystem
         fields = ('day',)
-        widgets = {'day': DateInput(attrs={'class': 'datepicker'})}
+        widgets = {'day': DateInput(attrs={'class': 'datepicker form-control w-50 mx-auto'})}
 
 
 class SchSysForm3(forms.ModelForm):
@@ -141,3 +142,5 @@ class SchSysForm3(forms.ModelForm):
     class Meta:
         model = SchedulingSystem
         fields = ('time', 'additional_info')
+        widgets = {'additional_info': TextInput(attrs={'class': 'textarea form-control w-75 mx-auto'}),
+                   'time': Select(attrs={'class': 'form-control w-75 mx-auto'})}
