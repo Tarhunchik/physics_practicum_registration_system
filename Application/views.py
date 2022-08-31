@@ -100,7 +100,7 @@ def schedule_page1(request):
     if request.user.is_teacher:
         recs = []
         for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
-            recs.append((obj.holder_name, obj.task, obj.day, obj.time))
+            recs.append((obj.holder_name, obj.task, obj.day, obj.time, obj.additional_info))
         context['recs'] = sorted(recs, key=lambda i: (i[0], i[1]))
         return render(request, 'showoff.html', context)
     else:
