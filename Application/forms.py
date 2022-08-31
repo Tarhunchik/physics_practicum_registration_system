@@ -3,6 +3,8 @@ from .models import User, SchedulingSystem
 from django.contrib.auth import authenticate
 from django.forms import ModelForm, DateInput
 from datetime import date
+from .fields import TimeField
+
 
 class DayInput(forms.DateInput):
     input_type = 'date'
@@ -118,8 +120,24 @@ class LoginForm(forms.ModelForm):
             raise forms.ValidationError('Invalid login')
 
 
-class SchedulingSystemForm(forms.ModelForm):
+class SchSysForm1(forms.ModelForm):
     class Meta:
         model = SchedulingSystem
-        fields = ('task', 'day', 'time', 'additional_info')
-        widgets = {'day': DayInput(attrs={'min': date.today()})}
+        fields = ('task',)
+
+
+class SchSysForm2(forms.ModelForm):
+    class Meta:
+        model = SchedulingSystem
+        fields = ('day',)
+        widgets = {'day': DateInput(attrs={'class': 'datepicker'})}
+
+
+class SchSysForm3(forms.ModelForm):
+    def __init__(self, choices, *args, **kwargs):
+        super(SchSysForm3, self).__init__(*args, **kwargs)
+        self.fields['time'] = forms.ChoiceField(choices=choices, initial='1')
+
+    class Meta:
+        model = SchedulingSystem
+        fields = ('time', 'additional_info')
