@@ -123,11 +123,12 @@ class SchSysForm1(forms.ModelForm):
     def __init__(self, choices, *args, **kwargs):
         super(SchSysForm1, self).__init__(*args, **kwargs)
         self.fields['task'] = forms.ChoiceField(choices=choices, initial='1')
+        self.fields['task'].widget.attrs['class'] = 'form-control w-50 mx-auto'
 
     class Meta:
         model = SchedulingSystem
         fields = ('task',)
-        widgets = {'task': Select(attrs={'class': 'form-control mx-auto w-50'})}
+        # widgets = {'task': DateInput(attrs={'class': 'form-control w-50 mx-auto'})}
 
 
 class SchSysForm2(forms.ModelForm):
@@ -141,9 +142,9 @@ class SchSysForm3(forms.ModelForm):
     def __init__(self, choices, *args, **kwargs):
         super(SchSysForm3, self).__init__(*args, **kwargs)
         self.fields['time'] = forms.ChoiceField(choices=choices, initial='1')
+        self.fields['time'].widget.attrs['class'] = 'form-control w-50 mx-auto'
 
     class Meta:
         model = SchedulingSystem
         fields = ('time', 'additional_info')
-        widgets = {'additional_info': TextInput(attrs={'class': 'textarea form-control w-75 mx-auto'}),
-                   'time': Select(attrs={'class': 'form-control w-75 mx-auto'})}
+        widgets = {'additional_info': TextInput(attrs={'class': 'textarea form-control input-lg w-75 mh-200 mx-auto'})}

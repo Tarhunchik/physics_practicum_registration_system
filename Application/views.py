@@ -149,7 +149,6 @@ def schedule_page2(request):
         form = SchSysForm2()
     context['scheduling_form'] = form
     context['prohibited_days'] = request.session.get('prohibited_days')
-    context['href'] = '/schedule/1'
     return render(request, 'schedule.html', context)
 
 
@@ -168,7 +167,6 @@ def schedule_page3(request):
             inst.holder = request.user.username
             inst.holder_name = f'{request.user.first_name} {request.user.last_name}'
             inst.save()
-            messages.success(request, 'Запись прошла успешно')
             return HttpResponseRedirect('/main')
     else:
         i = 0
@@ -180,7 +178,6 @@ def schedule_page3(request):
         print(base_choices)
         form = SchSysForm3(choices=base_choices)
     context['scheduling_form'] = form
-    context['href'] = '/schedule/2'
     return render(request, 'schedule.html', context)
 
 
@@ -231,16 +228,13 @@ def account_page(request):
         return HttpResponseRedirect('/account')
     else:
         past_recs = []
-        for obj in SchedulingSystem.objects.filter(day__lt=date.today()):
+        for obj in SchedulingSystem.objects.filter(day__lte=date.today()):
             if obj.holder == request.user.username:
                 task = ['task 1', 'task 2', 'task 3'][int(obj.task) - 1]
                 time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
                 past_recs.append((task, obj.day, time))
         context['title'] = f'{request.user.username} account'
         context['name'] = request.user.username
-        context['first_name'] = request.user.first_name
-        context['last_name'] = request.user.last_name
-        cur_recs.reverse()
         context['cur_recs'] = cur_recs
         context['past_recs'] = past_recs
         return render(request, 'account.html', context)
