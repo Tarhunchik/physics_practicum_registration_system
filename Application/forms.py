@@ -3,7 +3,6 @@ from .models import User, SchedulingSystem
 from django.contrib.auth import authenticate
 from django.forms import ModelForm, DateInput, RadioSelect, TextInput, Select
 from datetime import date
-from .fields import TimeField
 
 
 class DayInput(forms.DateInput):
@@ -121,6 +120,10 @@ class LoginForm(forms.ModelForm):
 
 
 class SchSysForm1(forms.ModelForm):
+    def __init__(self, choices, *args, **kwargs):
+        super(SchSysForm1, self).__init__(*args, **kwargs)
+        self.fields['task'] = forms.ChoiceField(choices=choices, initial='1')
+
     class Meta:
         model = SchedulingSystem
         fields = ('task',)

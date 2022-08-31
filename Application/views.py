@@ -104,20 +104,28 @@ def schedule_page1(request):
         context['recs'] = sorted(recs, key=lambda i: (i[0], i[1]))
         return render(request, 'showoff.html', context)
     else:
+        base_choices = [('1', u'task 1'), ('2', u'task 2'), ('3', u'task 3')]
         if request.method == 'POST':
-            form = SchSysForm1(request.POST)
+            form = SchSysForm1(base_choices, request.POST)
             if form.is_valid():
                 inst = form.save(commit=False)
                 prohibited_days = []
-                for d in set(SchedulingSystem.objects.filter(task=inst.task).values_list('day', flat=True)):
-                    if len(SchedulingSystem.objects.filter(task=inst.task).filter(day=d)) == 3:
-                        prohibited_days.append(d)
+                for day in set(SchedulingSystem.objects.filter(task=inst.task).values_list('day', flat=True)):
+                    if len(SchedulingSystem.objects.filter(task=inst.task).filter(day=day)) == 3:
+                        prohibited_days.append(day)
                 task = inst.task
                 request.session['task'] = task
                 request.session['prohibited_days'] = [str(i) for i in prohibited_days]
                 return HttpResponseRedirect('/schedule/2')
         else:
-            form = SchSysForm1()
+            for task in SchedulingSystem.objects.filter(holder=request.user.username).values_list('task', flat=True):
+                i = 0
+                while i != len(base_choices):
+                    if base_choices[i][0] == task:
+                        del base_choices[i]
+                        i -= 1
+                    i += 1
+            form = SchSysForm1(base_choices)
         context['scheduling_form'] = form
         context['href'] = '/main'
     return render(request, 'schedule.html', context)
