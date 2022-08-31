@@ -4,7 +4,7 @@ from django.contrib.auth import login, logout, authenticate
 from .forms import RegisterForm, LoginForm, SchSysForm1, SchSysForm2, SchSysForm3
 from .models import UserManager, User, SchedulingSystem
 from django.contrib import messages
-from datetime import date
+from datetime import date, timedelta
 
 
 def get_context_base():
@@ -98,10 +98,11 @@ def schedule_page1(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/non_auth_user')
     if request.user.is_teacher:
-        recs = []
-        for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
-            recs.append((obj.holder_name, obj.task, obj.day, obj.time, obj.additional_info))
-        context['recs'] = sorted(recs, key=lambda i: (i[0], i[1]))
+        recs, days = [], ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
+        for obj in SchedulingSystem.objects.filter(day__gte=date.today()).filter(day__lte=(date.today() + timedelta(6))):
+            recs.append((obj.holder_name, obj.task, obj.day, obj.time, days[obj.day.weekday()]))
+        context['recs'] = sorted(recs, key=lambda i: (i[2], i[3]))
+        context['days'] = days
         return render(request, 'showoff.html', context)
     else:
         base_choices = [('1', u'task 1'), ('2', u'task 2'), ('3', u'task 3')]
@@ -243,4 +244,3 @@ def account_page(request):
         context['cur_recs'] = cur_recs
         context['past_recs'] = past_recs
         return render(request, 'account.html', context)
-
