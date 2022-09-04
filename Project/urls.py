@@ -33,4 +33,5 @@ urlpatterns = [
     path('contacts/', views.contacts_page),
     path('rules/', views.rules_page),
     path('account/', views.account_page),
+    path('purple_box/', views.purple_bow_pdf)
 ]
