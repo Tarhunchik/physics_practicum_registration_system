@@ -10,78 +10,14 @@ class DayInput(forms.DateInput):
 
 
 class RegisterForm(forms.Form):
-    username = forms.CharField(
-        label='Придумайте username',
-        max_length=20,
-        help_text="",
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': '',
-            }
-        )
-    )
-    first_name = forms.CharField(
-        label='Имя',
-        max_length=20,
-        help_text="",
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': '',
-            }
-        )
-    )
-    last_name = forms.CharField(
-        label='Фамилия',
-        max_length=20,
-        help_text="",
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': '',
-            }
-        )
-    )
-    email = forms.EmailField(
-        label='Email',
-        max_length=60,
-        help_text="",
-        required=True,
-        widget=forms.EmailInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': '',
-            }
-        )
-    )
-    password1 = forms.CharField(
-        label='Придумайте пароль',
-        max_length=20,
-        help_text="",
-        required=True,
-        widget=forms.PasswordInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': '',
-            }
-        )
-    )
-    password2 = forms.CharField(
-        label='Введите пароль еще раз',
-        max_length=20,
-        help_text="",
-        required=True,
-        widget=forms.PasswordInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': '',
-            }
-        )
-    )
+    username = forms.CharField(label='Придумайте username', max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    first_name = forms.CharField(label='Имя', max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    last_name = forms.CharField(label='Фамилия', max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(label='Email', max_length=60, required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    grade = forms.ChoiceField(choices=[('9', '9-6'), ('9', '9-7'), ('10', '10-6'), ('10', '10-7')], widget=forms.Select(attrs={'class': 'form-control'}))
+    password1 = forms.CharField(label='Придумайте пароль', max_length=20, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(label='Введите пароль еще раз', max_length=20, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    rule_check = forms.BooleanField(label='Я согласен с правилами сайта', required=True, widget=forms.CheckboxInput(attrs={}))
 
     class Meta:
         model = User
@@ -89,24 +25,8 @@ class RegisterForm(forms.Form):
 
 
 class LoginForm(forms.ModelForm):
-    username = forms.CharField(
-        label='Введите свой username',
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': '',
-            }
-        )
-    )
-    password = forms.CharField(
-        label='Введите пароль',
-        widget=forms.PasswordInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': '',
-            }
-        )
-    )
+    username = forms.CharField(label='Введите свой username', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(label='Введите пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
     class Meta:
         model = User
@@ -122,7 +42,7 @@ class LoginForm(forms.ModelForm):
 class SchSysForm1(forms.ModelForm):
     def __init__(self, choices, *args, **kwargs):
         super(SchSysForm1, self).__init__(*args, **kwargs)
-        self.fields['task'] = forms.ChoiceField(choices=choices, initial='1')
+        self.fields['task'] = forms.ChoiceField(choices=choices)
         self.fields['task'].widget.attrs['class'] = 'form-control w-50 mx-auto'
 
     class Meta:
