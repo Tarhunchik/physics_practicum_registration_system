@@ -1,10 +1,11 @@
-from django.http import HttpResponseRedirect, HttpResponse, FileResponse
+from django.http import HttpResponseRedirect, HttpResponse, FileResponse, Http404
 from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate
 from .forms import RegisterForm, LoginForm, SchSysForm1, SchSysForm2, SchSysForm3
 from .models import UserManager, User, SchedulingSystem
 from django.contrib import messages
 from datetime import date, timedelta
+import datetime
 
 
 def get_context_base():
@@ -98,11 +99,27 @@ def schedule_page1(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/non_auth_user')
     if request.user.is_teacher:
-        recs, days = [], ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
+        recs, used, days = [], set(), ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
+        used.add('')
         for obj in SchedulingSystem.objects.filter(day__gte=date.today()).filter(day__lte=(date.today() + timedelta(6))):
-            recs.append((obj.holder_name, obj.task, obj.day, obj.time, days[obj.day.weekday()]))
-        context['recs'] = sorted(recs, key=lambda i: (i[2], i[3]))
+            day = f'{obj.day}'.split('-')
+            day.reverse()
+            recs.append([obj.holder_name, obj.task, '.'.join(day), obj.time, days[obj.day.weekday()], obj.additional_info])
+            used.add(days[obj.day.weekday()])
+        recs = sorted(recs, key=lambda i: (i[2], i[3]))
+        for day in days:
+            if day not in used:
+                recs.append(['', '', '', '', day, ''])
+        staff = set()
+        recs = sorted(recs, key=lambda i: (days.index(i[4])))
+        for rec in recs:
+            if rec[4] in staff:
+                rec[4] = ''
+            else:
+                staff.add(rec[4])
+        context['recs'] = recs
         context['days'] = days
+        context['used'] = used
         return render(request, 'showoff.html', context)
     else:
         base_choices = [('1', u'task 1'), ('2', u'task 2'), ('3', u'task 3')]
@@ -244,3 +261,12 @@ def account_page(request):
         context['cur_recs'] = cur_recs
         context['past_recs'] = past_recs
         return render(request, 'account.html', context)
+
+
+def purple_bow_pdf(request):
+    context = get_context_base()
+    context['title'] = 'purple_box_page'
+    try:
+        return FileResponse(open('Application/static/pdf/purple_box.pdf', 'rb'), content_type='application/pdf')
+    except FileNotFoundError:
+        raise Http404()
