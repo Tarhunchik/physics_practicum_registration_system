@@ -104,7 +104,10 @@ def schedule_page1(request):
         context['recs'] = sorted(recs, key=lambda i: (i[0], i[1]))
         return render(request, 'showoff.html', context)
     else:
-        base_choices = [('1', u'task 1'), ('2', u'task 2'), ('3', u'task 3')]
+        if request.user.grade == '9':
+            base_choices = [('1', u'task 1'), ('2', u'task 2'), ('3', u'task 3')]
+        else:
+            base_choices = [('4', u'task 4'), ('5', u'task 5'), ('6', u'task 6')]
         for task in SchedulingSystem.objects.filter(holder=request.user.username).values_list('task', flat=True):
             i = 0
             while i != len(base_choices):
