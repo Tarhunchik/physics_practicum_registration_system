@@ -25,6 +25,11 @@
       <li class="nav-item">
         <a href="/contacts" class="nav-link">Контакты</a>
       </li>
+      {% if request.user.is_admin %}
+        <li class="nav-item">
+          <a href="/admin" class="nav-link">Админ</a>
+        </li>
+      {% endif %}
     </ul>
     <div class="d-flex">
       {% if request.user.is_authenticated %}

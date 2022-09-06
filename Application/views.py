@@ -16,6 +16,7 @@ def get_context_base():
 
 
 def index_page(request):
+    messages.success(request, 'Запись прошла успешно. Проверьте свой личный кабинет')
     context = get_context_base()
     context['title'] = 'Main Menu'
     return render(request, 'index.html', context)
@@ -249,15 +250,11 @@ def account_page(request):
                 past_recs.append((task, obj.day, time))
         context['title'] = f'{request.user.username} account'
         context['name'] = request.user.username
+        context['teacher'] = request.user.is_teacher
+        context['admin'] = request.user.is_admin
+        context['class'] = request.user.grade
+        context['first_name'] = request.user.first_name
+        context['last_name'] = request.user.last_name
         context['cur_recs'] = cur_recs
         context['past_recs'] = past_recs
         return render(request, 'account.html', context)
-
-
-def purple_bow_pdf(request):
-    context = get_context_base()
-    context['title'] = 'purple_box_page'
-    try:
-        return FileResponse(open('Application/static/pdf/purple_box.pdf', 'rb'), content_type='application/pdf')
-    except FileNotFoundError:
-        raise Http404()

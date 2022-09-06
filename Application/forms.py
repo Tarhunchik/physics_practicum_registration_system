@@ -14,10 +14,10 @@ class RegisterForm(forms.Form):
     first_name = forms.CharField(label='Имя', max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
     last_name = forms.CharField(label='Фамилия', max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label='Email', max_length=60, required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    grade = forms.ChoiceField(choices=[('9', '9-6'), ('9', '9-7'), ('10', '10-6'), ('10', '10-7')], widget=forms.Select(attrs={'class': 'form-control'}))
+    grade = forms.ChoiceField(label='Выберите Ваш класс:', choices=[('9', '9-6'), ('9', '9-7'), ('10', '10-6'), ('10', '10-7')], widget=forms.Select(attrs={'class': 'form-control'}))
     password1 = forms.CharField(label='Придумайте пароль', max_length=20, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     password2 = forms.CharField(label='Введите пароль еще раз', max_length=20, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    rule_check = forms.BooleanField(label='Я согласен с правилами сайта', required=True, widget=forms.CheckboxInput(attrs={}))
+    rule_check = forms.BooleanField(label='Я согласен с правилами сайта', required=True, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
 
     class Meta:
         model = User

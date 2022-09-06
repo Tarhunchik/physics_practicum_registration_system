@@ -7,48 +7,49 @@
 {% endblock css_style %}
 {% block content %}
     {% include 'header.html' %}
-    <h1 class="text-center mt-5">Запись на практикум</h1>
-    <div class="container mt-5">
+<form class="my-auto" method="post" autocomplete="off">{% csrf_token %}
+    <div class="container p-3">
         <div class="row">
-            <div class="col-xs-2 col-md-2"></div>
-            <div class="col-xs-8 col-md-8">
-                <img class="d-block mx-auto rounded-5 w-100" src="{% static 'images/green_time.png' %}" alt="время, вперед!">
-            </div>
-            <div class="col-xs-2 col-md-2"></div>
-        </div>
-    </div>
-    <form method="post" autocomplete="off">{% csrf_token %}
-        {% for field in scheduling_form %}
-            <div class="mt-5 mb-5 text-center">
-                <div class="container">
-                    {{ field.label_tag }}<br>
-                    {{ field }}
-                </div>
+            <div class="col-md-6 my-auto">
+                <h1 class="text-center mt-3 align-text-top">Запись на практикум</h1>
 
-                {% if field.help_text %}
-                    <small style="color: grey;">{{field.help_text}}</small>
-                {% endif %}
+                {% for field in scheduling_form %}
+                    <div class="mt-5 mb-4 text-center">
+                        <div class="container">
+                            {{ field.label_tag }}<br>
+                            {{ field }}
+                        </div>
 
-                {% for error in field.errors %}
-                    <p style="color: red;">{{error}}</p>
+                        {% if field.help_text %}
+                            <small style="color: grey;">{{field.help_text}}</small>
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <p style="color: red;">{{error}}</p>
+                        {% endfor %}
+
+                        {% if form.non_field_errors %}
+                            <div style="color:red;">
+                                <p>{{form.non_field_errors}}</p>
+                            </div>
+                        {% endif %}
+                    </div>
                 {% endfor %}
 
-                {% if form.non_field_errors %}
-                    <div style="color:red;">
-                        <p>{{form.non_field_errors}}</p>
-                    </div>
-                {% endif %}
             </div>
-        {% endfor %}
-        <div class="container mb-5">
-            <div class="row">
-                <div class="d-grid gap-2 col-6 col-sm-4 col-lg-3 mx-auto">
-                  <button class="btn btn-success mb-2" type="submit">Дальше</button>
-                  <a role="button" class="btn btn-danger" href="{{ href }}">Назад</a>
+            <div class="col-md-6 text-center">
+                <img class="d-block mx-auto my-auto rounded-5 w-75 mt-4" src="{% static 'images/green_time.png' %}" alt="время, вперед!">
+                <div class="mt-5 mb-4">
+                    <button class="btn btn-success btn-lg me-4 text-center mx-auto" type="submit">Дальше</button>
+                    <a role="button" class="btn btn-danger btn-lg" href="{{ href }}">Назад</a>
                 </div>
+
             </div>
         </div>
-    </form>
+
+    </div>
+</form>
+
     <script type="text/javascript">
         var disableDates = "{{prohibited_days}}";
         var date = new Date();
@@ -74,5 +75,6 @@
             }
         });
     </script>
+
     {% include 'footer.html' %}
 {% endblock content %}
