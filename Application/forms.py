@@ -59,8 +59,13 @@ class SchSysForm2(forms.ModelForm):
 class SchSysForm3(forms.ModelForm):
     def __init__(self, choices, *args, **kwargs):
         super(SchSysForm3, self).__init__(*args, **kwargs)
-        self.fields['time'] = forms.ChoiceField(choices=choices, initial='1')
+        self.fields['time'] = forms.ChoiceField(choices=choices)
+        self.fields['user'].queryset = User.objects.all()
+        # if 'user' in self.data:
+        #     self.fields['user'].queryset = User.objects.all()
+        # elif self.instance.pk:
+        #     self.fields['user'].queryset = User.objects.all()
 
     class Meta:
         model = SchedulingSystem
-        fields = ('time', 'additional_info')
+        fields = ('time', 'additional_info', 'user')
