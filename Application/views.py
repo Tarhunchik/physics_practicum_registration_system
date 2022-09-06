@@ -123,7 +123,10 @@ def schedule_page1(request):
         context['used'] = used
         return render(request, 'showoff.html', context)
     else:
-        base_choices = [('1', u'task 1'), ('2', u'task 2'), ('3', u'task 3')]
+        if request.user.grade == '9':
+            base_choices = [('1', u'task 1'), ('2', u'task 2'), ('3', u'task 3')]
+        else:
+            base_choices = [('4', u'task 4'), ('5', u'task 5'), ('6', u'task 6')]
         for task in SchedulingSystem.objects.filter(holder=request.user.username).values_list('task', flat=True):
             i = 0
             while i != len(base_choices):
@@ -149,8 +152,8 @@ def schedule_page2(request):
     response = schedule_page1(request)
     prohibited_days = []
     for day in set(SchedulingSystem.objects.filter(task=request.session.get('task')).values_list('day', flat=True)):
-        if len(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=day)) == 3:
-            prohibited_days.append(day)
+        if len(set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=day).values_list('time', flat=True)).union(set(SchedulingSystem.objects.filter(holder=request.user.username).values_list('time', flat=True)))) == 3:
+            prohibited_days.append(str(day))
     if request.method == 'POST':
         form = SchSysForm2(request.POST)
         if form.is_valid():
@@ -159,6 +162,7 @@ def schedule_page2(request):
             return HttpResponseRedirect('/schedule/3')
     else:
         form = SchSysForm2()
+    print(prohibited_days)
     context['scheduling_form'] = form
     context['prohibited_days'] = prohibited_days
     return render(request, 'schedule.html', context)
@@ -169,7 +173,7 @@ def schedule_page3(request):
     response = schedule_page2(request)
     base_choices = [('1', u'12:00 - 14:00'), ('2', u'14:00 - 16:00'), ('3', u'16:00 - 18:00')]
     prohibited_time = []
-    for time in set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=request.session.get('day')).values_list('time', flat=True)):
+    for time in set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=request.session.get('day')).values_list('time', flat=True)).union(set(SchedulingSystem.objects.filter(holder=request.user.username).values_list('time', flat=True))):
         prohibited_time.append(time)
     i = 0
     while i != len(base_choices):
