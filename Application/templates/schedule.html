@@ -50,6 +50,16 @@
     </div>
 </form>
 
+                {% if form.non_field_errors %}
+                    <div style="color:red;">
+                        <p>{{form.non_field_errors}}</p>
+                    </div>
+                {% endif %}
+            </p>
+        {% endfor %}
+        <button class="ms-5 mb-5" type="submit">Готово</button>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script type="text/javascript">
         var disableDates = "{{prohibited_days}}";
         var date = new Date();
@@ -73,6 +83,23 @@
                     return true;
                 }
             }
+        });
+        $('#id_user').select2({
+            ajax: {
+                url: '{% url 'schedule/3' %}',
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            console.log({id: item.id, username: item.username});
+                            return {id: item.id, text: item.username};
+                        })
+                    };
+                }
+            },
+            multiple: true,
+            maximumSelectionLength: 2,
+            minimumInputLength: 1
         });
     </script>
 

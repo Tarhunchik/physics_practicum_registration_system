@@ -68,7 +68,8 @@ class User(AbstractBaseUser):
 class SchedulingSystem(models.Model):
     holder = models.CharField(max_length=100, default='')
     holder_name = models.CharField(max_length=100, default='')
-    task = models.CharField(max_length=1, choices=[('1', u'task 1'), ('2', u'task 2'), ('3', u'task 3')])
+    task = models.CharField(max_length=1, choices=[('1', u'task 1'), ('2', u'task 2'), ('3', u'task 3'), ('4', u'task 4'), ('5', u'task 5'), ('6', u'task 6')])
     day = models.DateField()
     time = models.CharField(max_length=1, choices=[('1', u'12:00 - 14:00'), ('2', u'14:00 - 16:00'), ('3', u'16:00 - 18:00')])
     additional_info = models.TextField(blank=True)
+    user = models.ForeignKey(User, models.CASCADE)

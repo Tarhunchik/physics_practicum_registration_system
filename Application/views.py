@@ -5,7 +5,7 @@ from .forms import RegisterForm, LoginForm, SchSysForm1, SchSysForm2, SchSysForm
 from .models import UserManager, User, SchedulingSystem
 from django.contrib import messages
 from datetime import date, timedelta
-import datetime
+from django.http import JsonResponse
 
 
 def get_context_base():
@@ -162,7 +162,6 @@ def schedule_page2(request):
             return HttpResponseRedirect('/schedule/3')
     else:
         form = SchSysForm2()
-    print(prohibited_days)
     context['scheduling_form'] = form
     context['prohibited_days'] = prohibited_days
     return render(request, 'schedule.html', context)
@@ -181,18 +180,20 @@ def schedule_page3(request):
             del base_choices[i]
             i -= 1
         i += 1
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        term = request.GET.get('term')
+        if term:
+            users = User.objects.all().filter(username__icontains=term)
+            return JsonResponse(list(users.values()), safe=False)
     if request.method == 'POST':
-        form = SchSysForm3(base_choices, request.POST)
+        form = SchSysForm3(base_choices, request.POST, instance=SchedulingSystem.objects.first())
         if form.is_valid():
             inst = form.save(commit=False)
             inst.task = request.session.get('task')
             inst.day = request.session.get('day')
             inst.holder = request.user.username
             inst.holder_name = f'{request.user.first_name} {request.user.last_name}'
-            if SchedulingSystem.objects.filter(holder=request.user.username).filter(task=inst.task) or SchedulingSystem.objects.filter(holder=request.user.username).filter(day=inst.day) or SchedulingSystem.objects.filter(holder=request.user.username).filter(time=inst.time):
-                print('error')
-            else:
-                inst.save()
+            inst.save()
             return HttpResponseRedirect('/main')
     else:
         form = SchSysForm3(choices=base_choices)
