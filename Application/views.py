@@ -174,6 +174,7 @@ def schedule_page3(request):
             inst.day = request.session.get('day')
             inst.holder = request.user.username
             inst.holder_name = f'{request.user.first_name} {request.user.last_name}'
+            print(inst.user)
             inst.save()
             return HttpResponseRedirect('/main')
     else:
