@@ -16,7 +16,6 @@ def get_context_base():
 
 
 def index_page(request):
-    messages.success(request, 'Запись прошла успешно. Проверьте свой личный кабинет')
     context = get_context_base()
     context['title'] = 'Main Menu'
     return render(request, 'index.html', context)
@@ -34,13 +33,15 @@ def register_page(request):
             email = request.POST['email']
             password1 = request.POST['password1']
             password2 = request.POST['password2']
+            grade = request.POST['grade']
             if password1 == password2:
                 user = User.objects.create_user(
                     username=username,
                     email=email,
                     first_name=first_name,
                     last_name=last_name,
-                    password=password1
+                    password=password1,
+                    grade=grade
                 )
                 user.save()
                 # messages.success(request, 'User created successfully')
@@ -139,6 +140,7 @@ def schedule_page1(request):
             if form.is_valid():
                 inst = form.save(commit=False)
                 request.session['task'] = inst.task
+                context['href'] = '/main'
                 return HttpResponseRedirect('/schedule/2')
         else:
             form = SchSysForm1(base_choices)
@@ -159,11 +161,13 @@ def schedule_page2(request):
         if form.is_valid():
             inst = form.save(commit=False)
             request.session['day'] = str(inst.day)
+            context['href'] = '/schedule/1'
             return HttpResponseRedirect('/schedule/3')
     else:
         form = SchSysForm2()
     context['scheduling_form'] = form
     context['prohibited_days'] = prohibited_days
+    context['href'] = '/schedule/1'
     return render(request, 'schedule.html', context)
 
 
@@ -194,10 +198,13 @@ def schedule_page3(request):
             inst.holder = request.user.username
             inst.holder_name = f'{request.user.first_name} {request.user.last_name}'
             inst.save()
-            return HttpResponseRedirect('/main')
+            context['href'] = '/schedule/2'
+            messages.success(request, 'Запись прошла успешно. Проверьте свой личный кабинет')
+            return render(request, 'index.html', context)
     else:
         form = SchSysForm3(choices=base_choices)
     context['scheduling_form'] = form
+    context['href'] = '/schedule/2'
     return render(request, 'schedule.html', context)
 
 
@@ -238,7 +245,7 @@ def account_page(request):
     cur_recs = []
     for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
         if obj.holder == request.user.username:
-            task = ['task 1', 'task 2', 'task 3'][int(obj.task) - 1]
+            task = ['task 1', 'task 2', 'task 3', 'task 4', 'task 5', 'task 6'][int(obj.task) - 1]
             time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
             cur_recs.append((task, obj.day, time, obj.id))
     if request.method == 'POST':

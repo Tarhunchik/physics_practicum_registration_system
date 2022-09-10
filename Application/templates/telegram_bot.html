@@ -1,20 +1,22 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %} {{title}} {% endblock title %}
-{% block css_style %} <link href="{% static 'contacts.css' %}" rel="stylesheet"/> {% endblock css_style %}
+{% block css_style %} <link href="{% static 'standard.css' %}" rel="stylesheet"/> {% endblock css_style %}
 {% block content %}
   {% include 'header.html' %}
-  <h1 class="my-5 text-center">Наш Телеграм Бот скоро здесь!</h1>
-  <div class="container my-5">
-    <div class="row">
-      <div class="col-md-6">
-        <img src="{% static 'images/bot_picture_green.png' %}" alt="телеграм бот" class="w-100">
-      </div>
-      <div class="col-md-6 text-center my-auto">
-        <h2 class="mb-4"><b><a href="">@practicum_1514_bot - </a></b></h2>
-        <p class="fs-3">это телеграм бот, разработанный специально для Вашего удобства!</p>
-        <p class="fs-3">С его помощью Вы также сможете записываться на практикумы, если Вам не понравится записываться с сайта</p>
-        <!--<p>Нажмите <ahref="">здесь</a>, чтобы начать работу с ботом!</p>-->
+  <div class="my-auto">
+    <h1 class="my-5 text-center">Наш Телеграм Бот скоро здесь!</h1>
+    <div class="container my-5">
+      <div class="row">
+        <div class="col-md-6 my-auto">
+          <img src="{% static 'images/bot_picture_green.png' %}" alt="телеграм бот" class="w-100">
+        </div>
+        <div class="col-md-6 text-center my-auto">
+          <h2 class="mb-4"><b><a class="" href="">@practicum_1514_bot - </a></b></h2>
+          <p class="fs-3">это телеграм бот, разработанный специально для Вашего удобства!</p>
+          <p class="fs-3">С его помощью Вы также сможете записываться на практикумы, если Вам не понравится записываться с сайта</p>
+          <!--<p>Нажмите <ahref="">здесь</a>, чтобы начать работу с ботом!</p>-->
+        </div>
       </div>
     </div>
   </div>

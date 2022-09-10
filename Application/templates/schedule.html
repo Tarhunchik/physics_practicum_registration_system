@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %} {{title}} {% endblock %}
 {% block css_style %}
-    <link href="{% static 'contacts.css' %}" rel="stylesheet"/>
+    <link href="{% static 'standard.css' %}" rel="stylesheet"/>
     <link href="{% static 'buttons.css' %}" rel="stylesheet"/>
 {% endblock css_style %}
 {% block content %}
@@ -16,7 +16,7 @@
                 {% for field in scheduling_form %}
                     <div class="mt-5 mb-4 text-center">
                         <div class="container">
-                            {{ field.label_tag }}<br>
+                            <span class="fs-4">{{ field.label_tag }}</span><br>
                             {{ field }}
                         </div>
 
@@ -48,16 +48,6 @@
         </div>
 
     </div>
-</form>
-
-                {% if form.non_field_errors %}
-                    <div style="color:red;">
-                        <p>{{form.non_field_errors}}</p>
-                    </div>
-                {% endif %}
-            </p>
-        {% endfor %}
-        <button class="ms-5 mb-5" type="submit">Готово</button>
     </form>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script type="text/javascript">
@@ -91,7 +81,6 @@
                 processResults: function (data) {
                     return {
                         results: $.map(data, function (item) {
-                            console.log({id: item.id, username: item.username});
                             return {id: item.id, text: item.username};
                         })
                     };

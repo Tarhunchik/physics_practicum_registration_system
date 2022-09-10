@@ -43,34 +43,42 @@ class SchSysForm1(forms.ModelForm):
     def __init__(self, choices, *args, **kwargs):
         super(SchSysForm1, self).__init__(*args, **kwargs)
         self.fields['task'] = forms.ChoiceField(choices=choices)
-        self.fields['task'].widget.attrs['class'] = 'form-control w-50 mx-auto'
+        self.fields['task'].label = 'Выберите задачу'
+        self.fields['task'].widget.attrs['class'] = 'form-control w-50 mx-auto mt-2'
 
     class Meta:
         model = SchedulingSystem
         fields = ('task',)
-        # widgets = {'task': DateInput(attrs={'class': 'form-control w-50 mx-auto'})}
 
 
 class SchSysForm2(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(SchSysForm2, self).__init__(*args, **kwargs)
+        self.fields['day'].label = 'Выберите день записи'
+
     class Meta:
         model = SchedulingSystem
         fields = ('day',)
-        widgets = {'day': DateInput(attrs={'class': 'datepicker form-control w-50 mx-auto'})}
+        widgets = {'day': DateInput(attrs={'class': 'datepicker form-control w-50 mx-auto mt-2'})}
 
 
 class SchSysForm3(forms.ModelForm):
     def __init__(self, choices, *args, **kwargs):
         super(SchSysForm3, self).__init__(*args, **kwargs)
-        self.fields['time'] = forms.ChoiceField(choices=choices)
+        self.fields['time'] = forms.ChoiceField(choices=choices, initial='1')
+        self.fields['time'].label = 'Выберите время'
+        self.fields['time'].widget.attrs['class'] = 'form-control w-50 mx-auto mt-2'
         self.fields['user'].queryset = User.objects.all()
         # if 'user' in self.data:
         #     self.fields['user'].queryset = User.objects.all()
         # elif self.instance.pk:
         #     self.fields['user'].queryset = User.objects.all()
-        self.fields['time'] = forms.ChoiceField(choices=choices, initial='1')
-        self.fields['time'].widget.attrs['class'] = 'form-control w-50 mx-auto'
+        self.fields['user'].label = 'Соберите свою команду'
+        self.fields['user'].widget.attrs['class'] = 'form-control w-50 mx-auto'
+        self.fields['additional_info'].label = 'Дополнительная информация'
+        self.fields['additional_info'].widget.attrs['class'] = 'form-control w-50 mt-2 mx-auto'
 
     class Meta:
         model = SchedulingSystem
-        fields = ('time', 'additional_info', 'user')
+        fields = ('time', 'user', 'additional_info')
         widgets = {'additional_info': TextInput(attrs={'class': 'textarea form-control input-lg w-75 mh-200 mx-auto'})}
