@@ -107,10 +107,10 @@ def schedule_page1(request):
     if request.user.is_teacher:
         recs, used, days = [], set(), ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
         used.add('')
-        for obj in SchedulingSystem.objects.filter(day__gte=date.today()).filter(day__lte=(date.today() + timedelta(6))):
+        for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
             day = f'{obj.day}'.split('-')
             day.reverse()
-            recs.append([obj.holder_name, obj.task, '.'.join(day), obj.time, days[obj.day.weekday()], obj.additional_info])
+            recs.append([obj.holder_name, obj.task, '.'.join(day), days[obj.day.weekday()], obj.time, 'test', obj.additional_info])
             used.add(days[obj.day.weekday()])
         recs = sorted(recs, key=lambda i: (i[2], i[3]))
         for day in days:
@@ -191,7 +191,7 @@ def schedule_page3(request):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         term = request.GET.get('term')
         if term:
-            users = User.objects.all().filter(username__icontains=term)
+            users = User.objects.all().filter(username__icontains=term).filter(is_teacher=false).filter(grade=request.user.grade)
             return JsonResponse(list(users.values()), safe=False)
     if request.method == 'POST':
         form = SchSysForm3(base_choices, request.POST, instance=SchedulingSystem.objects.first())
