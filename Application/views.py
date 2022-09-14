@@ -187,12 +187,13 @@ def schedule_page3(request):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         term = request.GET.get('term')
         if term:
-            users = User.objects.all().filter(username__icontains=term).filter(is_teacher=false).filter(grade=request.user.grade)
+            users = User.objects.all().filter(username__icontains=term).filter(is_teacher=False).filter(grade=request.user.grade)
             return JsonResponse(list(users.values()), safe=False)
     if request.method == 'POST':
-        form = SchSysForm3(base_choices, request.POST, instance=SchedulingSystem.objects.first())
+        form = SchSysForm3(base_choices, request.POST)
         if form.is_valid():
             inst = form.save(commit=False)
+            inst.user = '\n'.join([User.objects.get(id=i).username for i in eval(inst.user)])
             inst.task = request.session.get('task')
             inst.day = request.session.get('day')
             inst.holder = request.user.username
