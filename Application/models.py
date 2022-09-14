@@ -4,7 +4,7 @@ from django import forms
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, first_name, last_name, password=None):
+    def create_user(self, email, username, first_name, last_name, password=None, grade=None):
         if not email:
             raise ValueError("Users must have an email address")
         if not username:
@@ -19,7 +19,8 @@ class UserManager(BaseUserManager):
             username=username,
             first_name=first_name,
             last_name=last_name,
-            password=password
+            password=password,
+            grade=grade
         )
 
         user.set_password(password)
@@ -72,5 +73,4 @@ class SchedulingSystem(models.Model):
     day = models.DateField()
     time = models.CharField(max_length=1, choices=[('1', u'12:00 - 14:00'), ('2', u'14:00 - 16:00'), ('3', u'16:00 - 18:00')])
     additional_info = models.TextField(blank=True)
-    # users = models.CharField(max_length=256, default='')
-    user = models.ForeignKey(User, models.CASCADE)
+    user = models.TextField()

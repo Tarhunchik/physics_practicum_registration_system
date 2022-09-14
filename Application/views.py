@@ -33,13 +33,15 @@ def register_page(request):
             email = request.POST['email']
             password1 = request.POST['password1']
             password2 = request.POST['password2']
+            grade = request.POST['grade']
             if password1 == password2:
                 user = User.objects.create_user(
                     username=username,
                     email=email,
                     first_name=first_name,
                     last_name=last_name,
-                    password=password1
+                    password=password1,
+                    grade=grade
                 )
                 user.save()
                 # messages.success(request, 'User created successfully')
@@ -99,10 +101,27 @@ def schedule_page1(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/non_auth_user')
     if request.user.is_teacher:
-        recs = []
+        recs, used, days = [], set(), ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
+        used.add('')
         for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
-            recs.append((obj.holder_name, obj.task, obj.day, obj.time))
-        context['recs'] = sorted(recs, key=lambda i: (i[0], i[1]))
+            day = f'{obj.day}'.split('-')
+            day.reverse()
+            recs.append([obj.holder_name, obj.task, '.'.join(day), days[obj.day.weekday()], obj.time, 'test', obj.additional_info])
+            used.add(days[obj.day.weekday()])
+        recs = sorted(recs, key=lambda i: (i[2], i[3]))
+        for day in days:
+            if day not in used:
+                recs.append(['', '', '', '', day, ''])
+        staff = set()
+        recs = sorted(recs, key=lambda i: (days.index(i[4])))
+        for rec in recs:
+            if rec[4] in staff:
+                rec[4] = ''
+            else:
+                staff.add(rec[4])
+        context['recs'] = recs
+        context['days'] = days
+        context['used'] = used
         return render(request, 'showoff.html', context)
     else:
         if request.user.grade == '9':
@@ -121,10 +140,12 @@ def schedule_page1(request):
             if form.is_valid():
                 inst = form.save(commit=False)
                 request.session['task'] = inst.task
+                context['href'] = '/main'
                 return HttpResponseRedirect('/schedule/2')
         else:
             form = SchSysForm1(base_choices)
         context['scheduling_form'] = form
+        context['href'] = '/main'
     return render(request, 'schedule.html', context)
 
 
@@ -140,11 +161,13 @@ def schedule_page2(request):
         if form.is_valid():
             inst = form.save(commit=False)
             request.session['day'] = str(inst.day)
+            context['href'] = '/schedule/1'
             return HttpResponseRedirect('/schedule/3')
     else:
         form = SchSysForm2()
     context['scheduling_form'] = form
     context['prohibited_days'] = prohibited_days
+    context['href'] = '/schedule/1'
     return render(request, 'schedule.html', context)
 
 
@@ -164,22 +187,25 @@ def schedule_page3(request):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         term = request.GET.get('term')
         if term:
-            users = User.objects.all().filter(username__icontains=term)
+            users = User.objects.all().filter(username__icontains=term).filter(is_teacher=False).filter(grade=request.user.grade)
             return JsonResponse(list(users.values()), safe=False)
     if request.method == 'POST':
-        form = SchSysForm3(base_choices, request.POST, instance=SchedulingSystem.objects.first())
+        form = SchSysForm3(base_choices, request.POST)
         if form.is_valid():
             inst = form.save(commit=False)
+            inst.user = '\n'.join([User.objects.get(id=i).username for i in eval(inst.user)])
             inst.task = request.session.get('task')
             inst.day = request.session.get('day')
             inst.holder = request.user.username
             inst.holder_name = f'{request.user.first_name} {request.user.last_name}'
-            print(inst.user)
             inst.save()
-            return HttpResponseRedirect('/main')
+            context['href'] = '/schedule/2'
+            messages.success(request, 'Запись прошла успешно. Проверьте свой личный кабинет')
+            return render(request, 'index.html', context)
     else:
         form = SchSysForm3(choices=base_choices)
     context['scheduling_form'] = form
+    context['href'] = '/schedule/2'
     return render(request, 'schedule.html', context)
 
 
@@ -220,7 +246,7 @@ def account_page(request):
     cur_recs = []
     for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
         if obj.holder == request.user.username:
-            task = ['task 1', 'task 2', 'task 3'][int(obj.task) - 1]
+            task = ['task 1', 'task 2', 'task 3', 'task 4', 'task 5', 'task 6'][int(obj.task) - 1]
             time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
             cur_recs.append((task, obj.day, time, obj.id))
     if request.method == 'POST':
@@ -237,6 +263,11 @@ def account_page(request):
                 past_recs.append((task, obj.day, time))
         context['title'] = f'{request.user.username} account'
         context['name'] = request.user.username
+        context['teacher'] = request.user.is_teacher
+        context['admin'] = request.user.is_admin
+        context['class'] = request.user.grade
+        context['first_name'] = request.user.first_name
+        context['last_name'] = request.user.last_name
         context['cur_recs'] = cur_recs
         context['past_recs'] = past_recs
         return render(request, 'account.html', context)
