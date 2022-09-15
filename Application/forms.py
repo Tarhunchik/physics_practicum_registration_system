@@ -66,8 +66,8 @@ class SchSysForm3(forms.ModelForm):
     def __init__(self, choices, *args, **kwargs):
         super(SchSysForm3, self).__init__(*args, **kwargs)
         self.fields['time'] = forms.ChoiceField(choices=choices)
-        users = list(User.objects.values_list('id', 'username'))
-        self.fields['user'] = forms.MultipleChoiceField(choices=users)
+        users = [('', '')] + list(User.objects.values_list('id', 'username'))
+        self.fields['user'] = forms.MultipleChoiceField(choices=users, required=False)
 
     class Meta:
         model = SchedulingSystem
