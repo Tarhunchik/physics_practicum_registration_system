@@ -111,12 +111,10 @@ def schedule_page1(request):
             day.reverse()
             recs.append([obj.holder_name, obj.task, '.'.join(day), days[obj.day.weekday()], obj.time, 'test', obj.additional_info])
             used.add(days[obj.day.weekday()])
-        recs = sorted(recs, key=lambda i: (i[2], i[3]))
         for day in days:
             if day not in used:
                 recs.append(['', '', '', '', day, ''])
         staff = set()
-        recs = sorted(recs, key=lambda i: (days.index(i[4])))
         for rec in recs:
             if rec[4] in staff:
                 rec[4] = ''
@@ -196,7 +194,7 @@ def schedule_page3(request):
         form = SchSysForm3(base_choices, request.POST)
         if form.is_valid():
             inst = form.save(commit=False)
-            inst.user = '\n'.join([User.objects.get(id=i).username for i in eval(inst.user or '[]')])
+            inst.user = '\n'.join([User.objects.get(id=i).username for i in eval(inst.user or '[] ')])
             inst.task = request.session.get('task')
             inst.day = request.session.get('day')
             inst.holder = request.user.username
