@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock title %}
+{% block css_style %}
+  <link href="{% static 'standard.css' %}" rel="stylesheet"/>
+{% endblock css_style %}
+{% block content %}
+  {% include 'header.html' %}
+  <div class="my-auto">
+    <h2 class="mt-5 mb-5 text-center"><ins>Ближайшие записи:</ins></h2>
+    <div class="container mb-5">
+      {% if recs %}
+        {% for week in weeks %}
+          <table class="table table-secondary table-bordered border-dark align-middle mb-5">
+            <thead>
+              <tr>
+                <th scope="col">День</th>
+                <th scope="col">Время</th>
+                <th scope="col">Сдающие</th>
+                <th scope="col">Задача</th>
+                <th scope="col">Дополнительная информация</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for day in week %}
+                {% if day.0 %}
+                  <tr class="table-active">
+                    <td>{{day.3}} {{day.2}}</td>
+                    <td>{{day.4}}</td>
+                    <td>{{day.0}} {{day.7}}</td>
+                    <td>{{day.1}} {{day.5}}</td>
+                    <td>{{day.6}}</td>
+                  </tr>
+                {% else %}
+                  <tr>
+                    <td>{{day.3}} {{day.2}}</td>
+                    <td colspan="5">---</td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endfor %}
+      {% else %}
+        ---
+      {% endif %}
+    </div>
+  </div>
+
+  {% include 'footer.html' %}
+
+{% endblock content %}

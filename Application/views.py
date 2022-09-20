@@ -1,3 +1,5 @@
+import datetime
+
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse, Http404
 from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate
@@ -89,6 +91,7 @@ def logout_view(request):
 
 def test_page(request):
     context = get_context_base()
+    context['grade'] = int(request.user.grade)
     context['title'] = 'Test page'
     return render(request, 'test.html', context)
 
@@ -105,28 +108,59 @@ def schedule_page1(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/non_auth_user')
     if request.user.is_teacher:
-        recs, used, days = [], set(), ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
-        used.add('')
+        recs, days_interval, used, days = \
+            [], 0, [], ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
         for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
-            day = f'{obj.day}'.split('-')
-            day.reverse()
-            recs.append([obj.holder_name, obj.task, '.'.join(day), days[obj.day.weekday()], obj.time, 'test', obj.additional_info])
-            used.add(days[obj.day.weekday()])
-        recs = sorted(recs, key=lambda i: (i[2], i[3]))
-        for day in days:
-            if day not in used:
-                recs.append(['', '', '', '', day, ''])
-        staff = set()
-        recs = sorted(recs, key=lambda i: (days.index(i[4])))
-        for rec in recs:
-            if rec[4] in staff:
-                rec[4] = ''
-            else:
-                staff.add(rec[4])
+            day = obj.day
+            recs.append([obj.holder_name, obj.task, day, days[obj.day.weekday()], obj.time,
+                         'test', obj.additional_info, obj.user])
+        if recs:
+            recs.sort(key=lambda x: x[2])
+            days_interval = recs[-1][2] - datetime.date.today()
+            data = datetime.date.today()
+            dates = [i[2] for i in recs]
+            for d in range(days_interval.days):
+                data += datetime.timedelta(days=1)
+                if data not in dates and data.weekday() != 6:
+                    recs.append(['', '', data, days[data.weekday()], '', '', '', ''])
+                    day = f'{data}'.split('-')
+                    day.reverse()
+                    used.append('.'.join(day))
+            recs.sort(key=lambda x: x[2])
+            staff = []
+            for par in recs:
+                day = f'{par[2]}'.split('-')
+                day.reverse()
+                par[2] = '.'.join(day)
+                if par[2] in staff:
+                    par[3] = ''
+                    par[2] = ''
+                if par[2]:
+                    staff.append(par[2])
         context['recs'] = recs
         context['days'] = days
         context['used'] = used
-        return render(request, 'showoff.html', context)
+        # return render(request, 'showoff.html', context)
+        weeks, week = [], []
+        if recs[0][3] == 'Понедельник':
+            week = [recs[0]]
+            for rec in recs[1:]:
+                if rec[3] == 'Понедельник':
+                    weeks.append(week)
+                    week = [rec]
+                else:
+                    week.append(rec)
+        else:
+            for rec in recs:
+                if rec[3] == 'Понедельник':
+                    weeks.append(week)
+                    week = [rec]
+                else:
+                    week.append(rec)
+        if week:
+            weeks.append(week)
+        context['weeks'] = weeks
+        return render(request, 'staff.html', context)
     else:
         if request.user.grade == '9':
             base_choices = [('1', u'task 1'), ('2', u'task 2'), ('3', u'task 3')]
@@ -276,54 +310,10 @@ def account_page(request):
         context['past_recs'] = past_recs
         return render(request, 'account.html', context)
 
-def link_callback(uri, rel):
-            """
-            Convert HTML URIs to absolute system paths so xhtml2pdf can access those
-            resources
-            """
-            result = finders.find(uri)
-            if result:
-                if not isinstance(result, (list, tuple)):
-                    result = [result]
-                result = list(os.path.realpath(path) for path in result)
-                path = result[0]
-            else:
-                sUrl = settings.STATIC_URL  # Typically /static/
-                sRoot = settings.STATIC_ROOT  # Typically /home/userX/project_static/
-                mUrl = settings.MEDIA_URL  # Typically /media/
-                mRoot = settings.MEDIA_ROOT  # Typically /home/userX/project_static/media/
-
-                if uri.startswith(mUrl):
-                    path = os.path.join(mRoot, uri.replace(mUrl, ""))
-                elif uri.startswith(sUrl):
-                    path = os.path.join(sRoot, uri.replace(sUrl, ""))
-                else:
-                    return uri
-
-            # make sure that file exists
-            if not os.path.isfile(path):
-                raise Exception(
-                    'media URI must start with %s or %s' % (sUrl, mUrl)
-                )
-            return path
-
 
 def agreement_page(request):
     template_path = 'agreement.html'
     context = {'myvar': 'this is your template context'}
-    # Create a Django response object, and specify content_type as pdf
-    response = HttpResponse(content_type='Application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="agreement.pdf"'
-    # find the template and render it.
-    print(template_path)
-    template = get_template(template_path)
-    html = template.render(context)
 
-    # create a pdf
-    pisa_status = pisa.CreatePDF(html, dest=response, link_callback=link_callback)
-    # if error then show some funny view
-    if pisa_status.err:
-        return HttpResponse('We had some errors <pre>' + html + '</pre>')
-    return response
 
 

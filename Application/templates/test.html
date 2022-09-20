@@ -2,29 +2,78 @@
 {% load static %}
 {% block title %} {{title}} {% endblock title %}
 {% block css_style %}
-  <link href="{% static 'standard.css' %}" rel="stylesheet"/>
+  <link href="{% static 'new.css' %}" rel="stylesheet"/>
   <link href="{% static 'buttons.css' %}" rel="stylesheet"/>
 {% endblock css_style %}
 {% block content %}
   {% include 'header.html' %}
   <h1 class="text-center mt-4">Задачи</h1>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6 mt-4 mb-4">
-        <h3 class="text-center mb-4">Задачи для 9 классов</h3>
-          <div class="d-grid gap-2 col-6 mx-auto">
-            <a href="{% static 'pdf/the_brotherhood_and_the_ring.pdf' %}" class="btn btn-success mb-3" role="button">Братство и кольцо</a>
-            <a href="{% static 'pdf/two_rams.pdf' %}" class="btn btn-success" role="button">Два барана</a>
-          </div>
+{% if grade == 9 %}
+  <div class="container mb-4">
+    <div class="row mx-auto">
+      <div class="col-md-4">
+        <div class="imp">
+          <a href=""><img src="{% static 'images/barans.jpg' %}" alt="" class="d-block w-100 imp-foto" style='border-bottom: 4px groove #c1c1c1'></a>
+          <p class="fs-4 mb-4 mt-2 text-center my-auto"><ins>Задача</ins><br>Два барана</p>
+        </div>
       </div>
-      <div class="col-md-6">
-        <h3 class="text-center mb-4 mt-4">Задачи для 10 классов</h3>
-        <div class="d-grid gap-2 col-6 mx-auto">
-            <a href="/purple_box" class="btn btn-success mb-3" role="button">Фиолетовый ящик</a>
-            <a href="{% static 'pdf/in_the_bank.pdf' %}" class="btn btn-success" role="button">В банке</a>
-          </div>
+      <div class="col-md-4">
+        <div class="imp">
+          <a href=""><img src="{% static 'images/archimed.jpg' %}" alt="" class="d-block w-100 imp-foto" style='border-bottom: 4px groove #c1c1c1'></a>
+          <p class="fs-4 mb-2 mt-2 text-center my-auto"><ins>Задача</ins><br>Мистер Архимед</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="imp">
+          <a href=""><img src="{% static 'images/zastoy.jpg' %}" alt="" class="d-block w-100 imp-foto" style='border-bottom: 4px groove #c1c1c1'></a>
+          <p class="fs-4 mb-2 mt-2 text-center my-auto"><ins>Задача</ins><br>Застой</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="imp">
+          <a href=""><img src="{% static 'images/pots.png' %}" alt="" class="d-block w-100 imp-foto" style='border-bottom: 4px groove #c1c1c1'></a>
+          <p class="fs-4 mb-2 mt-2 text-center my-auto"><ins>Задача</ins><br>Для чайников</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="imp">
+          <a href=""><img src="{% static 'images/soprotivlenie.jpg' %}" alt="" class="d-block w-100 imp-foto" style='border-bottom: 4px groove #c1c1c1'></a>
+          <p class="fs-4 mb-2 mt-2 text-center my-auto"><ins>Задача</ins><br>Непонятное сопротивление</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="imp">
+          <a href=""><img src="{% static 'images/the_ring.jpg' %}" alt="" class="d-block w-100 imp-foto" style='border-bottom: 4px groove #c1c1c1'></a>
+          <p class="fs-4 mb-2 mt-2 text-center my-auto"><ins>Задача</ins><br>Братва и колько</p>
+        </div>
       </div>
     </div>
   </div>
+{% else %}
+ <div class="container mb-4">
+   <div class="row mx-auto">
+      <div class="col-md-4">
+        <div class="imp">
+          <a href=""><img src="{% static 'images/DTP.jpg' %}" alt="" class="d-block w-100 imp-foto" style='border-bottom: 4px groove #c1c1c1'></a>
+          <p class="fs-4 mb-4 mt-2 text-center my-auto"><ins>Задача</ins><br>ДТП</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="imp">
+          <a href=""><img src="{% static 'images/mem.jpg' %}" alt="" class="d-block w-100 imp-foto" style='border-bottom: 4px groove #c1c1c1'></a>
+          <p class="fs-4 mb-2 mt-2 text-center my-auto"><ins>Задача</ins><br>Реактивный двигатель</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="imp">
+          <a href=""><img src="{% static 'images/box.jpg' %}" alt="" class="d-block w-100 imp-foto" style='border-bottom: 4px groove #c1c1c1'></a>
+          <p class="fs-4 mb-2 mt-2 text-center my-auto"><ins>Задача</ins><br>Фиолетовый ящик</p>
+        </div>
+      </div>
+    </div>
+ </div>
+{% endif %}
   {% include 'footer.html' %}
 {% endblock content %}
