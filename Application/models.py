@@ -73,4 +73,4 @@ class SchedulingSystem(models.Model):
     day = models.DateField()
     time = models.CharField(max_length=1, choices=[('1', u'12:00 - 14:00'), ('2', u'14:00 - 16:00'), ('3', u'16:00 - 18:00')])
     additional_info = models.TextField(blank=True)
-    user = models.TextField()
+    user = models.TextField(blank=True)

@@ -4,7 +4,6 @@ from django.http import HttpResponseRedirect, HttpResponse, FileResponse, Http40
 from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate
 from django.template.loader import get_template
-from xhtml2pdf import pisa
 import os
 from .forms import RegisterForm, LoginForm, SchSysForm1, SchSysForm2, SchSysForm3
 from .models import UserManager, User, SchedulingSystem
@@ -225,13 +224,13 @@ def schedule_page3(request):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         term = request.GET.get('term')
         if term:
-            users = User.objects.all().filter(username__icontains=term).filter(is_teacher=False).filter(grade=request.user.grade)
+            users = User.objects.all().filter(username__icontains=term).filter(is_teacher=False).filter(grade=request.user.grade).exclude(username__icontains=request.user.username)
             return JsonResponse(list(users.values()), safe=False)
     if request.method == 'POST':
         form = SchSysForm3(base_choices, request.POST)
         if form.is_valid():
             inst = form.save(commit=False)
-            inst.user = '\n'.join([User.objects.get(id=i).username for i in eval(inst.user)])
+            inst.user = '\n'.join([User.objects.get(id=i).username for i in eval(inst.user or '[]')])
             inst.task = request.session.get('task')
             inst.day = request.session.get('day')
             inst.holder = request.user.username
