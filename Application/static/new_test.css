@@ -1,0 +1,94 @@
+body {
+    background-color: #d9e2d8;
+}
+
+
+.image_for_card{
+    width: 100%;
+    height: 100%;
+    border-radius: 30px 30px 0px 0px;
+}
+
+.card{
+    width: 70%;
+    background: #ffffff;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+    border-radius: 30px;
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.card_content{
+    padding: 16px;
+}
+
+.card_image{
+    border-radius: 30px 30px 0px 0px;
+}
+
+.card_title{
+    padding-top: 15.59px;
+    padding-bottom: 15.59px;
+
+    font-weight: 700;
+    font-size: 1.4em;
+    line-height: 24px;
+
+    color: #000000;
+
+}
+
+.card_text{
+    padding-right: 19px;
+    padding-bottom: 15.11px;
+
+    width: 100%;
+
+    font-weight: 300;
+    font-size: 1em;
+    line-height: 14px;
+
+    color: #000000;
+}
+
+.card_btn{
+    border: 0;
+    padding: 1em 1.5em 1em 1.5em;
+
+    background: #3f523e;
+    border-radius: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1em;
+    line-height: 14px;
+
+    color: #FFFFFF;
+    border: 4px solid #3f523e;
+}
+
+.card_btn:hover,
+
+.card_btn:focus {
+    background-color: #ffffff;
+    color: #2f442d;
+    border: 4px solid #2f442d;
+}
+
+.test {
+    font-style: normal;
+    font-weight: 450;
+    font-size: 5em;
+    line-height: 14px;
+    margin-top: 0.8em;
+    margin-bottom: 1.25em;
+}
+
+.col-md-4 {
+    margin-bottom: 5em;
+}

@@ -1,0 +1,24 @@
+.main_foto {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 6em;
+}
+
+.list_box {
+    margin: 0;
+    margin-top: 6em;
+}
+
+.list {
+    padding: 20px;
+    border-radius: 0px 60px 60px 0;
+    background: linear-gradient(to right, #bac6bc, 10%, #dde5de);
+    width: 75%;
+    min-width: 310px;
+    margin-bottom: 3em;
+}
+
+.rules {
+    background-color: #dde5de;
+}
+

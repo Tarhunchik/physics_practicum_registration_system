@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock title %}
+{% block css_style %}
+  <link href="{% static 'new_test.css' %}" rel="stylesheet"/>
+{% endblock css_style %}
+{% block content %}
+  {% include 'new_header.html' %}
+    <section class="my-auto mb-5">
+      <h1 class="text-center test">Задачи</h1>
+      {% if grade == '9' %}
+        <div class="container">
+          <div class="row my-auto">
+            <div class="col-md-4">
+              <div class="card mx-auto my-auto">
+                <div class="card_image">
+                  <img src="{% static 'images/Archimed.png' %}" alt="Архимед" class="image_for_card d-block w-100">
+                </div>
+                <div class="card_content">
+                  <div class="card_title text-center mb-2">Мистер Архимед</div>
+                  <div class="card_text">МЯУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ</div>
+                  <a href="#" class="btn card_btn mx-auto mt-2 w-75" role="button">Смотреть</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mx-auto my-auto">
+                <div class="card_image">
+                  <img src="{% static 'images/teapot.jpg' %}" alt="Для чайников" class="image_for_card d-block w-100">
+                </div>
+                <div class="card_content">
+                  <div class="card_title text-center mb-2">Для чайников</div>
+                  <div class="card_text">МЯУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ</div>
+                  <a href="#" class="btn card_btn mx-auto mt-2 w-75" role="button">Смотреть</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mx-auto my-auto">
+                <div class="card_image">
+                  <img src="{% static 'images/trap.jpg' %}" alt="Сопротивление" class="image_for_card d-block w-100">
+                </div>
+                <div class="card_content">
+                  <div class="card_title text-center mb-2">Сопротивление</div>
+                  <div class="card_text">МЯУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ</div>
+                  <a href="#" class="btn card_btn mx-auto mt-2 w-75" role="button">Смотреть</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row my-auto">
+            <div class="col-md-4">
+              <div class="card mx-auto my-auto">
+                <div class="card_image">
+                  <img src="{% static 'images/ring.jpg' %}" alt="Братва и кольцо" class="image_for_card d-block w-100">
+                </div>
+                <div class="card_content">
+                  <div class="card_title text-center mb-2">Братва и кольцо</div>
+                  <div class="card_text">МЯУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ</div>
+                  <a href="{% static 'pdf/the_brotherhood_and_the_ring.pdf' %}" class="btn card_btn mx-auto mt-2 w-75" role="button">Смотреть</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mx-auto my-auto">
+                <div class="card_image">
+                  <img src="{% static 'images/two_rams.jpg' %}" alt="Два барана" class="image_for_card d-block w-100">
+                </div>
+                <div class="card_content">
+                  <div class="card_title text-center mb-2">Два барана</div>
+                  <div class="card_text">МЯУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ</div>
+                  <a href="{% static 'pdf/two_rams.pdf' %}" class="btn card_btn mx-auto mt-2 w-75" role="button">Смотреть</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mx-auto my-auto">
+                <div class="card_image">
+                  <img src="{% static 'images/zastoy.jpg' %}" alt="Застой" class="image_for_card d-block w-100">
+                </div>
+                <div class="card_content">
+                  <div class="card_title text-center mb-2">Застой</div>
+                  <div class="card_text">МЯУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ</div>
+                  <a href="#" class="btn card_btn mx-auto mt-2 w-75" role="button">Смотреть</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div class="container">
+          <div class="row my-auto">
+            <div class="col-md-4">
+              <div class="card mx-auto my-auto">
+                <div class="card_image">
+                  <img src="{% static 'images/rocket.png' %}" alt="Реактивный двигатель" class="image_for_card d-block w-100">
+                </div>
+                <div class="card_content">
+                  <div class="card_title text-center mb-2">Реактивный двигатель</div>
+                  <div class="card_text">МЯУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ</div>
+                  <a href="#" class="btn card_btn mx-auto mt-2 w-75" role="button">Смотреть</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mx-auto my-auto">
+                <div class="card_image">
+                  <img src="{% static 'images/two_cars.jpg' %}" alt="ДТП" class="image_for_card d-block w-100">
+                </div>
+                <div class="card_content">
+                  <div class="card_title text-center mb-2">ДТП</div>
+                  <div class="card_text">МЯУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ</div>
+                  <a href="#" class="btn card_btn mx-auto mt-2 w-75" role="button">Смотреть</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mx-auto my-auto">
+                <div class="card_image">
+                  <img src="{% static 'images/box.jpg' %}" alt="Фиолетовый ящик" class="image_for_card d-block w-100">
+                </div>
+                <div class="card_content">
+                  <div class="card_title text-center mb-2">Фиолетовый ящик</div>
+                  <div class="card_text">МЯУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУУ</div>
+                  <a href="#" class="btn card_btn mx-auto mt-2 w-75" role="button">Смотреть</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row my-auto">
+            <div class="col-md-4">
+              <div class="card mx-auto my-auto">
+                <div class="card_image">
+                  <img src="{% static 'images/none.jpg' %}" alt="???" class="image_for_card d-block w-100">
+                </div>
+                <div class="card_content">
+                  <div class="card_title text-center mb-2">???</div>
+                  <div class="card_text">?????????????????????????</div>
+                  <a href="#" class="btn card_btn mx-auto mt-2 w-75" role="button">Скоро...</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mx-auto my-auto">
+                <div class="card_image">
+                  <img src="{% static 'images/none.jpg' %}" alt="???" class="image_for_card d-block w-100">
+                </div>
+                <div class="card_content">
+                  <div class="card_title text-center mb-2">???</div>
+                  <div class="card_text">?????????????????????????</div>
+                  <a href="#" class="btn card_btn mx-auto mt-2 w-75" role="button">Скоро...</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mx-auto my-auto">
+                <div class="card_image">
+                  <img src="{% static 'images/none.jpg' %}" alt="???" class="image_for_card d-block w-100">
+                </div>
+                <div class="card_content">
+                  <div class="card_title text-center mb-2">???</div>
+                  <div class="card_text">?????????????????????????</div>
+                  <a href="#" class="btn card_btn mx-auto mt-2 w-75" role="button">Скоро...</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </section>
+  {% include 'new_footer.html' %}
+{% endblock content %}
