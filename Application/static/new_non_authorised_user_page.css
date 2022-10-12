@@ -1,0 +1,40 @@
+body {
+    background-color: #d9e2d8;
+}
+
+.non_auth_image {
+    box-shadow: 0 0 2em 0.15em #3f523e;
+}
+
+
+.add_padd {
+    padding: 4.5em;
+}
+
+h1 {
+    padding: 0.35em;
+    text-align: center;
+    margin-top: 0.5em;
+    font-size: 3em;
+    font-weight: 450;
+}
+
+h3 {
+    font-size: 2em;
+}
+
+.non_auth_btn {
+    margin-top: 1em;
+    display-flex: flex;
+    padding: 0.6em 0.6em 0.6em 0.6em;
+    background: #3f523e;
+    border-radius: 3em;
+    font-weight: 700;
+    font-size: 1.1em;
+    color: white;
+    border: 0.3em solid #3f523e;
+}
+
+.non_auth_btn:hover {
+    color: #3f523e;
+}

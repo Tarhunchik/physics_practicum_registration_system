@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock title %}
+{% block css_style %}<link href="{% static 'new_non_authorised_user_page.css' %}" rel="stylesheet"/>{% endblock css_style %}
+{% block content %}
+  {% include 'new_header.html' %}
+    <section class="my-class">
+      <h1 class="text-center">Кажется, вы не вошли в аккаунт</h1>
+      <div class="container mb-5">
+        <div class="row">
+          <div class="col-md-6 my-auto order-2 order-md-1">
+            <h3 class="text-center mx-auto">
+              Вы не можете записываться на практикумы, пока вы не зарегистрировались на сайте<br>
+              <small class="text-muted">
+                ... но зарегистрироваться вы тоже пока не можете, потому что мы временно отключили
+                эту возможность :)
+              </small>
+            </h3>
+            <div class="d-grid gap-2 col-7 mx-auto">
+<!--              <a href="/register" class="btn non_auth_btn mt-5" role="button">Регистрация</a>-->
+<!--              <a href="/login" class="btn non_auth_btn" role="button">Вход</a>-->
+              <a href="/main" class="btn non_auth_btn" role="button">На главную</a>
+            </div>
+          </div>
+          <div class="col-md-6 add_padd order-1 order-md-2">
+            <img src="{% static 'images/anonimus.png' %}" alt="" class="d-block w-100 rounded-circle non_auth_image mx-auto my-auto">
+          </div>
+        </div>
+      </div>
+    </section>
+  {% include 'new_footer.html' %}
+{% endblock content %}

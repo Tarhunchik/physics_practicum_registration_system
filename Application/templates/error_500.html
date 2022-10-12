@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock title %}
+{% block css_style %}
+  <link href="{% static 'error_500.css' %}" rel="stylesheet"/>
+{% endblock css_style %}
+{% block content %}
+  <section class="my-auto p-4 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 my-auto">
+          <img src="{% static 'images/angry_cat.png' %}" alt="недовольный кот" class="d-block w-75 rounded-circle mx-auto my-auto" style="border: 0.5em double black;">
+          <h1 class="text-center mt-5 mb-5">Ошибка 500</h1>
+        </div>
+        <div class="col-md-6 my-auto">
+          <h2 class="text-center mb-4">
+            Оно само, честно... <br>
+            <small class="text-muted">мы ничего не трогали!</small>
+          </h2>
+          <h4 class="mb-5">
+            Вы встретили ошибку 500, это значит, что что-то пошло не так.
+            Повторите попытку чуть позже.
+          </h4>
+          <div class="d-grid gap-2 col-md-6 col-8 mx-auto">
+            <a class="btn btn-success btn-lg" type="button" role="button" href="/main">На главную</a>
+            <a class="btn btn-success btn-lg mt-3" type="button" role="button" href="/contacts">Сообщить об ошибке</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock title %}
+{% block css_style %} <link href="{% static 'new_account.css' %}" rel="stylesheet"/> {% endblock css_style %}
+{% block content %}
+  {% include 'new_header.html' %}
+  <section class="my-auto mt-5 mb-5">
+
+    <div class="container">
+      <div class="row mx-auto">
+        <div class="d-grid col-md-6 mx-auto my-auto">
+          <img src="{% static 'images/personal_cabinet.png' %}" alt="картинка личного кабинета" class="d-block my-auto mx-auto w-50">
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-4 my-auto mx-auto">
+          <div id="for_header" class="p-3">
+            <h1>Личный кабинет</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-grid col-md-8 mx-auto">
+      <div class="container p-5 mx-auto">
+        <div class="row pt-4 ps-4 p-2" style="border-top: 0.1em solid #939393;">
+          <div class="col">
+            <h4>Никнейм:</h4>
+          </div>
+          <div class="col">
+            <h4>{{name}}</h4>
+          </div>
+        </div>
+        <div class="row ps-4 p-2">
+          <div class="col">
+            <h4>Имя:</h4>
+          </div>
+          <div class="col">
+            <h4>{{first_name}}</h4>
+          </div>
+        </div>
+        <div class="row ps-4 p-2">
+          <div class="col">
+            <h4>Фамилия:</h4>
+          </div>
+          <div class="col">
+            <h4>{{last_name}}</h4>
+          </div>
+        </div>
+        {% if not teacher %}
+          <div class="row ps-4 p-2">
+            <div class="col ">
+              <h4 class="my-auto">Класс:</h4>
+            </div>
+            <div class="col">
+              <h4>{{class}}</h4>
+            </div>
+          </div>
+        {% endif %}
+        <div class="row pb-4 ps-4 p-2" style="border-bottom: 0.1em solid #939393;">
+          <div class="col">
+            <h4>Статус:</h4>
+          </div>
+          <div class="col">
+            {% if teacher %}
+              <h4>Учитель</h4>
+            {% elif admin %}
+              <h4>Админ</h4>
+            {% else %}
+              <h4>Ученик</h4>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if not teacher %}
+      <h3 class="text-center p-5">Отслеживание записей скоро здесь!</h3>
+    {% else %}
+      <div class="d-grid col-md-4 col-8 mx-auto mt-2 mb-4">
+        <a href="#" class="btn account_btn" type="button" role="button">Записать на практикум</a>
+        <a href="/admin" class="btn account_btn" type="button" role="button">Админ</a>
+      </div>
+    {% endif %}
+
+  </section>
+  {% include 'new_footer.html' %}
+{% endblock content %}
