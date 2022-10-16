@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock title %}
+{% block css_style %} <link href="{% static 'new_telegram_bot.css' %}" rel="stylesheet"/> {% endblock css_style %}
+{% block content %}
+  {% include 'new_header.html' %}
+    <section class="my-auto">
+      <h1 class="text-center">Наш <a href="#" class="site-link">Telegram bot</a> <strong>скоро</strong> здесь!</h1>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-5 p-5 my-auto">
+              <img src="{% static 'images/BOT.png' %}" alt="телеграм бот здесь" class="d-block w-100 image rounded-circle mx-auto my-auto">
+          </div>
+          <div class="col-md-7 p-5 my-auto">
+            <h2 class="text-center">
+              Мы понимаем - ...<br>
+              <small class="t text-muted">... не всем удобно пользоваться сайтом</small>
+            </h2>
+            <p class="fs-4 text-center">
+              Специально для вас мы разрабатываем <a href="#" class="site-link">telegram bot</a>, где
+              также можно будет записываться на практикумы!
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  {% include 'new_footer.html' %}
+{% endblock content %}

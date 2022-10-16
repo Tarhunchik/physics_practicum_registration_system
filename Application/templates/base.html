@@ -12,15 +12,18 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
     <script src="{% static 'home/locales/bootstrap-datepicker.ru.min.js' %}" charset="UTF-8"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+    <link rel="icon" href="{% static 'images/green_atom.png' %}" type="image/x-icon">
     {% block css_style %}{% endblock css_style %}
     <title>
-      {% block title %}
-      {% endblock title %}
+      {% block title %}{% endblock title %}
     </title>
     <style>
       ::selection {
         background-color: #648461;
         color: white;
+      }
+      body {
+        font-family: Tahoma, sans-serif;
       }
     </style>
 

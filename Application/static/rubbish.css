@@ -1,0 +1,46 @@
+body {
+    background-color: #d9e2d8;
+}
+
+h1 {
+    margin-top: 1.25em;
+    margin-bottom: 1.2em;
+    margin-right: 1em;
+    margin-left: 1em;
+}
+
+.site-link {
+    color: #42673a;
+}
+
+.site-link:hover {
+    color: #668c5d;
+}
+
+.image {
+    position: relative;
+    border-radius: 3em;
+    opacity: 1;
+    transition: opacity 0.5s;
+    padding: 1em;
+    z-index: 1;
+}
+
+.image:focus,
+
+.image:hover {
+    opacity: 0;
+    transition-delay: 0.1s;
+}
+
+.image-container {
+    position: relative;
+    border-radius: 3em;
+    background-color: #000c2c;
+    z-index: 2;
+}
+.image-container-text {
+    padding: 2em;
+    color: white;
+    font-weight: 400;
+}

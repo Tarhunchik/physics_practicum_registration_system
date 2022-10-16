@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock title %}
+{% block css_style %} <link href="{% static 'new_contacts.css' %}" rel="stylesheet"/> {% endblock css_style %}
+{% block content %}
+  {% include 'new_header.html' %}
+  <section class="my-auto mt-5 mb-5">
+    <h1 class="mx-auto">Контакты для связи с нами</h1>
+
+    <div class="container">
+      <div class="row mt-5">
+        <div class="col-md-6 order-1 oder-md-2 my-auto">
+          <img src="{% static 'images/boom_parrot.jpg' %}" alt="Лёша" class="d-block w-100 rounded-circle my-auto">
+        </div>
+        <div class="col-md-6 p-4 order-2 order-md-1 my-auto">
+          <h2 class="text-center">
+            Лёша<br>
+            <small class="text-muted">10-6 (М) класс</small>
+          </h2>
+          <p>
+            Backend разработчик... а еще тестировщик, full-stack developer, системный
+            аналитик и инженер баз данных в нашей маленькой команде)
+            В общем и целом, занимался всем тем, чего не видно: прописывал логику и функционал сайта,
+            работал с базами данных, сводил и чистил код.<br>
+            Так что когда вы, например, регистрируетесь на сайте, тыкаете по кнопке, записываетесь на задачу, и оно
+            всё работает, нужно благодарить за это Лешу) по техническим вопросам писать ему <br> <br>
+            Телеграм: *** <br>
+            Почта: ***
+          </p>
+        </div>
+      </div>
+      <div class="row middle">
+        <div class="col-md-6 p-4 order-2 order-md-1 my-auto">
+          <h2 class="text-center">
+            Варя<br>
+            <small class="text-muted">10-6 (М) класс</small>
+          </h2>
+          <p>
+            Frontend разработчик. А также дизайнер, художник и менеджер по работе с клиентами. Занималась
+            внешним видом сайта, соответственно, его дизайном, палитрой цветов, анимациями, сочиняла
+            и писала тексты, которые ныне вы видите на сайте, как, например, этот)<br>
+            За графические и орфографические ошибки писать стоит ей <br> <br>
+            Телеграм: *** <br>
+            Почта: <a href="mailto:BondareVarechka@yandex.ru" class="site-link">BondareVarechka@yandex.ru</a>
+          </p>
+        </div>
+        <div class="col-md-6 order-1 order-md-2 my-auto">
+          <img src="{% static 'images/parrot_3.jpg' %}" alt="Варя" class="d-block w-100 rounded-circle">
+        </div>
+      </div>
+      <div class="row middle">
+        <div class="col-md-6 order-1 order-md-1 my-auto">
+          <img src="{% static 'images/parrot.jpg' %}" alt="Ольга Алексеевна" class="d-block w-100 rounded-circle">
+        </div>
+        <div class="col-md-6 p-4 order-2 order-md-2 my-auto">
+          <h2 class="text-center">
+            Ольга Алексеевна<br>
+            <small class="text-muted">учитель физики</small>
+          </h2>
+          <p>
+            Ольга Алексеевна и product manager, и project manager. А по совместительству еще и
+            заказчик сайта, контролёр его качества) Наставляла и направляла нашу команду разработчиков
+            (из двух человек))), выдавала новые тз, формулировала основные цели, бдительно следя за их достижением. <br>
+            К Ольге Алексеевне обращаться стоит только в том случае, если Лёша и Варя не выходят на связь.
+            Зачастую найти можно в 415 кабинете, но если вдруг её там нет, а дело срочное, контакты ниже. <br> <br>
+            Телеграм: *** <br>
+            Почта: ***
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% include 'new_footer.html' %}
+{% endblock content %}

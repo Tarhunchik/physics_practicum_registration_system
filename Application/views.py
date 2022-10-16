@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse, Http404
 from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate
+from django.template import RequestContext
 from django.template.loader import get_template
 import os
 from .forms import RegisterForm, LoginForm, SchSysForm1, SchSysForm2, SchSysForm3
@@ -20,13 +21,13 @@ def get_context_base():
 
 def index_page(request):
     context = get_context_base()
-    context['title'] = 'Main Menu'
-    return render(request, 'index.html', context)
+    context['title'] = 'Главная страница'
+    return render(request, 'new_index.html', context)
 
 
 def register_page(request):
     context = get_context_base()
-    context['title'] = 'Sign up page'
+    context['title'] = 'Регистрация'
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -62,7 +63,7 @@ def register_page(request):
 
 def login_page(request):
     context = get_context_base()
-    context['title'] = 'Login page'
+    context['title'] = 'Вход в аккаунт'
     user = request.user
     if user.is_authenticated:
         return HttpResponseRedirect('/main')
@@ -88,19 +89,23 @@ def logout_view(request):
 
 def test_page(request):
     context = get_context_base()
-    context['title'] = 'Test page'
-    return render(request, 'test.html', context)
+    context['title'] = 'Задачи'
+    if not request.user.is_authenticated:
+        context['grade'] = None
+    else:
+        context['grade'] = request.user.grade
+    return render(request, 'new_test.html', context)
 
 
 def non_authorised_user_page(request):
     context = get_context_base()
-    context['title'] = 'Authorise now!'
-    return render(request, 'non_authorised_user_page.html', context)
+    context['title'] = 'Вы не авторизованы'
+    return render(request, 'new_non_authorised_user_page.html', context)
 
 
 def schedule_page1(request):
     context = get_context_base()
-    context['title'] = 'Schedule page'
+    context['title'] = 'Запись'
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/non_auth_user')
     if request.user.is_teacher:
@@ -212,32 +217,14 @@ def schedule_page3(request):
 
 def tg_bot_page(request):
     context = get_context_base()
-    context['title'] = 'Telegram bot page'
-    return render(request, 'telegram_bot.html', context)
+    context['title'] = 'Телеграм бот'
+    return render(request, 'new_telegram_bot.html', context)
 
 
 def contacts_page(request):
     context = get_context_base()
-    context['title'] = 'Contacts page'
-    return render(request, 'contacts.html', context)
-
-
-def rules_page(request):
-    context = get_context_base()
-    context['title'] = 'Rules page'
-    return render(request, 'rules.html', context)
-
-
-def recording_success_page(request):
-    context = get_context_base()
-    context['title'] = 'Congratulations!'
-    return render(request, 'recording_done_successfully.html', context)
-
-
-def recording_error_page(request):
-    context = get_context_base()
-    context['title'] = 'Recoding error page'
-    return render(request, 'recording_is_busy.html', context)
+    context['title'] = 'Наши контакты'
+    return render(request, 'new_contacts.html', context)
 
 
 def account_page(request):
@@ -262,7 +249,7 @@ def account_page(request):
                 task = ['task 1', 'task 2', 'task 3'][int(obj.task) - 1]
                 time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
                 past_recs.append((task, obj.day, time))
-        context['title'] = f'{request.user.username} account'
+        context['title'] = f'{request.user.username} аккаунт'
         context['name'] = request.user.username
         context['teacher'] = request.user.is_teacher
         context['admin'] = request.user.is_admin
@@ -271,56 +258,12 @@ def account_page(request):
         context['last_name'] = request.user.last_name
         context['cur_recs'] = cur_recs
         context['past_recs'] = past_recs
-        return render(request, 'account.html', context)
-
-def link_callback(uri, rel):
-            """
-            Convert HTML URIs to absolute system paths so xhtml2pdf can access those
-            resources
-            """
-            result = finders.find(uri)
-            if result:
-                if not isinstance(result, (list, tuple)):
-                    result = [result]
-                result = list(os.path.realpath(path) for path in result)
-                path = result[0]
-            else:
-                sUrl = settings.STATIC_URL  # Typically /static/
-                sRoot = settings.STATIC_ROOT  # Typically /home/userX/project_static/
-                mUrl = settings.MEDIA_URL  # Typically /media/
-                mRoot = settings.MEDIA_ROOT  # Typically /home/userX/project_static/media/
-
-                if uri.startswith(mUrl):
-                    path = os.path.join(mRoot, uri.replace(mUrl, ""))
-                elif uri.startswith(sUrl):
-                    path = os.path.join(sRoot, uri.replace(sUrl, ""))
-                else:
-                    return uri
-
-            # make sure that file exists
-            if not os.path.isfile(path):
-                raise Exception(
-                    'media URI must start with %s or %s' % (sUrl, mUrl)
-                )
-            return path
+        return render(request, 'new_account.html', context)
 
 
-def agreement_page(request):
-    template_path = 'agreement.html'
-    context = {'myvar': 'this is your template context'}
-    # Create a Django response object, and specify content_type as pdf
-    response = HttpResponse(content_type='Application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="agreement.pdf"'
-    # find the template and render it.
-    print(template_path)
-    template = get_template(template_path)
-    html = template.render(context)
-
-    # create a pdf
-    pisa_status = pisa.CreatePDF(html, dest=response, link_callback=link_callback)
-    # if error then show some funny view
-    if pisa_status.err:
-        return HttpResponse('We had some errors <pre>' + html + '</pre>')
-    return response
+def error_404(request, exception):
+    return render(request, 'error_404.html')
 
 
+def error_500(request):
+    return render(request, 'error_500.html')

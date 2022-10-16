@@ -1,0 +1,28 @@
+body {
+    background-color: #a5c1a5;
+}
+
+.btn-success{
+    background-color: #667C65;
+    color: white;
+    padding: 0.5em;
+    border-radius: 0.7em;
+    border: 0.2em solid #495949;
+}
+
+.btn-success:hover,
+
+.btn-success:focus{
+    border: 0.2em solid #667C65;
+    background-color: #495949;
+    color: white;
+}
+
+h1 {
+    font-size: 2.6em;
+    font-weight: 550;
+}
+
+h2 {
+    font-size: 2em;
+}
