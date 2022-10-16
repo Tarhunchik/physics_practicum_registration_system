@@ -1,0 +1,41 @@
+body {
+    background: #a5c1a5;
+}
+
+
+.btn-success{
+
+    background-color: #456043;
+
+    color: white;
+
+}
+
+.btn-success:hover,
+
+.btn-success:focus{
+
+    background-color: #2f442d;
+
+    color: white;
+
+}
+
+.btn-danger {
+    background-color: #9a1124;
+    color: white;
+}
+
+.btn-danger:hover,
+
+.btn-danger:focus{
+
+    background-color: #690917;
+
+    color: white;
+
+}
+
+.link-success{
+    color: #456043;
+}

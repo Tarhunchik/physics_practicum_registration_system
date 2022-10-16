@@ -1,0 +1,23 @@
+body {
+    background-color: #a5c1a5;
+}
+
+h1,
+
+div,
+
+li,
+
+h2 {
+    font-family: "Century gothic";
+}
+
+a {
+    color: #456043;
+}
+
+a:hover {
+    color: #2f442d;
+}
+
+

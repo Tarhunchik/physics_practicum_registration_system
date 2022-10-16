@@ -1,0 +1,33 @@
+body {
+    background-color: #d9e2d8;
+}
+
+#for_header {
+    text-align: center;
+}
+
+h1 {
+    display: inline-block;
+    font-size: 2.2em;
+}
+
+.account_btn {
+    padding: 0.5em;
+    margin-top: 1.75em;
+    font-size: 1.25em;
+    font-weight: 500;
+    border: 0.13em solid #3f523e;
+    color: #3f523e;
+    border-radius: 1em;
+    box-shadow: 0;
+    transition: transform 200ms, box-shadow 0.2s;
+}
+
+.account_btn:focus,
+
+.account_btn:hover {
+    border: 0.13em solid #3f523e;
+    color: #3f523e;
+    box-shadow: 0;
+    box-shadow: 0 0 0.7em rgba(63, 82, 62, 0.34);
+}
