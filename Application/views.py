@@ -3,7 +3,6 @@ from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate
 from django.template import RequestContext
 from django.template.loader import get_template
-from xhtml2pdf import pisa
 import os
 from .forms import RegisterForm, LoginForm, SchSysForm1, SchSysForm2, SchSysForm3
 from .models import UserManager, User, SchedulingSystem
@@ -134,9 +133,9 @@ def schedule_page1(request):
         return render(request, 'showoff.html', context)
     else:
         if request.user.grade == '9':
-            base_choices = [('1', u'task 1'), ('2', u'task 2'), ('3', u'task 3')]
+            base_choices = [('1', u'Мистер Архимед'), ('2', u'Для чайников'), ('3', u'Сопротивление')]
         else:
-            base_choices = [('4', u'task 4'), ('5', u'task 5'), ('6', u'task 6')]
+            base_choices = [('4', u'Реактивный двигатель'), ('5', u'Машина Атвуда'), ('6', u'ДТП')]
         for task in SchedulingSystem.objects.filter(holder=request.user.username).values_list('task', flat=True):
             i = 0
             while i != len(base_choices):
@@ -155,11 +154,12 @@ def schedule_page1(request):
             form = SchSysForm1(base_choices)
         context['scheduling_form'] = form
         context['href'] = '/main'
-    return render(request, 'schedule.html', context)
+    return render(request, 'new_schedule.html', context)
 
 
 def schedule_page2(request):
     context = get_context_base()
+    context['title'] = 'Запись'
     response = schedule_page1(request)
     prohibited_days = []
     for day in set(SchedulingSystem.objects.filter(task=request.session.get('task')).values_list('day', flat=True)):
@@ -177,11 +177,12 @@ def schedule_page2(request):
     context['scheduling_form'] = form
     context['prohibited_days'] = prohibited_days
     context['href'] = '/schedule/1'
-    return render(request, 'schedule.html', context)
+    return render(request, 'new_schedule.html', context)
 
 
 def schedule_page3(request):
     context = get_context_base()
+    context['title'] = 'Запись'
     response = schedule_page2(request)
     base_choices = [('1', u'12:00 - 14:00'), ('2', u'14:00 - 16:00'), ('3', u'16:00 - 18:00')]
     prohibited_time = []
@@ -210,12 +211,12 @@ def schedule_page3(request):
             inst.save()
             context['href'] = '/schedule/2'
             messages.success(request, 'Запись прошла успешно. Проверьте свой личный кабинет')
-            return render(request, 'index.html', context)
+            return render(request, 'new_index.html', context)
     else:
         form = SchSysForm3(choices=base_choices)
     context['scheduling_form'] = form
     context['href'] = '/schedule/2'
-    return render(request, 'schedule.html', context)
+    return render(request, 'new_schedule.html', context)
 
 
 def tg_bot_page(request):
