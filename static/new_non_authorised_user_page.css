@@ -38,3 +38,11 @@ h3 {
 .non_auth_btn:hover {
     color: #3f523e;
 }
+
+.site-link {
+    color: #42673a;
+}
+
+.site-link:hover {
+    color: #668c5d;
+}
