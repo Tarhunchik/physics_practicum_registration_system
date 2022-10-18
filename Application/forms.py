@@ -25,7 +25,7 @@ class RegisterForm(forms.Form):
 
 
 class LoginForm(forms.ModelForm):
-    username = forms.CharField(label='Введите свой username', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    username = forms.CharField(label='Введите свой никнейм', widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(label='Введите пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
     class Meta:
@@ -45,6 +45,9 @@ class SchSysForm1(forms.ModelForm):
         self.fields['task'] = forms.ChoiceField(choices=choices)
         self.fields['task'].label = 'Выберите задачу'
         self.fields['task'].widget.attrs['class'] = 'form-control w-50 mx-auto mt-2'
+        for k, field in self.fields.items():
+            if 'required' in field.error_messages:
+                field.error_messages['required'] = 'Пока нет доступных задач для записи'
 
     class Meta:
         model = SchedulingSystem
@@ -66,10 +69,19 @@ class SchSysForm3(forms.ModelForm):
     def __init__(self, choices, *args, **kwargs):
         super(SchSysForm3, self).__init__(*args, **kwargs)
         self.fields['time'] = forms.ChoiceField(choices=choices)
+        self.fields['time'].label = 'Выберите время:'
+        self.fields['time'].widget.attrs['class'] = 'form-control w-75 mx-auto'
         users = [('', '')] + list(User.objects.values_list('id', 'username'))
         self.fields['user'] = forms.MultipleChoiceField(choices=users, required=False)
+        self.fields['user'].label = 'Соберите свою команду:'
+        self.fields['additional_info'] = forms.CharField(widget=forms.Textarea)
+        self.fields['additional_info'].label = 'Дополнительная инфа:'
+        self.fields['additional_info'].widget.attrs['class'] = 'textarea form-control mx-auto w-75'
+        self.fields['additional_info'].widget.attrs['rows'] = 5
+        self.fields['additional_info'].widget.attrs['rows'] = 5
 
     class Meta:
         model = SchedulingSystem
         fields = ('time', 'user', 'additional_info')
-        widgets = {'additional_info': TextInput(attrs={'class': 'textarea form-control input-lg w-75 mh-200 mx-auto'})}
+        # widgets = {'additional_info': TextInput(attrs={'class': 'textarea form-control
+        # input-lg w-75 mh-200 mx-auto'})}
