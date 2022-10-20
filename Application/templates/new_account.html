@@ -74,10 +74,14 @@
       </div>
     </div>
     {% if not teacher %}
-      <h3 class="text-center p-5">Отслеживание записей скоро здесь!</h3>
+      {% if past_recs|length == 0 %}
+
+      {% else %}
+
+      {% endif %}
     {% else %}
       <div class="d-grid col-md-4 col-8 mx-auto mt-2 mb-4">
-        <a href="#" class="btn account_btn" type="button" role="button">Записать на практикум</a>
+<!--        <a href="#" class="btn account_btn" type="button" role="button">Записать на практикум</a>-->
         <a href="/admin" class="btn account_btn" type="button" role="button">Админ</a>
       </div>
     {% endif %}

@@ -10,6 +10,7 @@ from django.contrib import messages
 from datetime import date, timedelta
 from django.http import JsonResponse
 from django.conf import settings
+from django.db.models import Q
 
 
 def get_context_base():
@@ -110,29 +111,67 @@ def schedule_page1(request):
         return HttpResponseRedirect('/non_auth_user')
     if request.user.is_teacher:
         recs, used, days = [], set(), ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
-        used.add('')
+        records = dict()
         for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
-            day = f'{obj.day}'.split('-')
-            day.reverse()
-            recs.append([obj.holder_name, obj.task, '.'.join(day), days[obj.day.weekday()], obj.time, 'test', obj.additional_info])
-            used.add(days[obj.day.weekday()])
-        recs = sorted(recs, key=lambda i: (i[2], i[3]))
-        for day in days:
-            if day not in used:
-                recs.append(['', '', '', '', day, ''])
-        staff = set()
-        recs = sorted(recs, key=lambda i: (days.index(i[4])))
-        for rec in recs:
-            if rec[4] in staff:
-                rec[4] = ''
+            inst_user = User.objects.filter(username=obj.holder).first()
+            inst_grade = inst_user.grade
+            users = [inst_user] + eval(obj.user)
+            people = []
+            for i in users:
+                user = User.objects.filter(username=i).first()
+                people.append(f'{user.first_name} {user.last_name} {user.grade}')
+            task_index = int(obj.task)
+            time_index = int(obj.time)
+            info = obj.additional_info
+            day = obj.day
+            if inst_grade.startswith('9'):
+                tasks = ['Мистер Архимед', 'Для чайников', 'Сопротивление']
             else:
-                staff.add(rec[4])
-        context['recs'] = recs
-        context['days'] = days
-        context['used'] = used
-        return render(request, 'showoff.html', context)
+                tasks = ['', '', '', 'Реактивный двигатель', 'Машина Атвуда', 'ДТП']
+            records.setdefault(day, [])
+            records[day].append([days[obj.day.weekday()],
+                                 people,
+                                 tasks[task_index - 1],
+                                 ['12:00-14:00', '14:00-16:00', '16:00-18:00'][time_index - 1],
+                                 info
+                                 ])
+
+        records = [list(i) for i in sorted(records.items(), key=lambda x: x[0])]
+
+        for rec in range(len(records)):
+            day = str(records[rec][0]).split('-')
+            day.reverse()
+            records[rec][0] = '.'.join(day)
+            records[rec][1].sort(key=lambda x: int(x[3].split(':')[0]))
+            records[rec].insert(1, records[rec][1][0])
+            records[rec][2] = records[rec][2][1:]
+            records[rec].append(len(records[rec][2]) + 1)
+
+        # for ind in range(len(records)):
+        #     rec = records[ind]
+        #     records[ind] = [rec[0]] + rec[1]
+
+        print(records)
+        context['records'] = records
+        #     recs.append([obj.holder_name, obj.task, '.'.join(day), days[obj.day.weekday()], obj.time, 'test', obj.additional_info])
+        #     used.add(days[obj.day.weekday()])
+        # recs = sorted(recs, key=lambda i: (i[2], i[3]))
+        # for day in days:
+        #     if day not in used:
+        #         recs.append(['', '', '', '', day, ''])
+        # staff = set()
+        # recs = sorted(recs, key=lambda i: (days.index(i[4])))
+        # for rec in recs:
+        #     if rec[4] in staff:
+        #         rec[4] = ''
+        #     else:
+        #         staff.add(rec[4])
+        # context['recs'] = recs
+        # context['days'] = days
+        # context['used'] = used
+        return render(request, 'new_showoff.html', context)
     else:
-        if request.user.grade == '9':
+        if request.user.grade[0] == '9':
             base_choices = [('1', u'Мистер Архимед'), ('2', u'Для чайников'), ('3', u'Сопротивление')]
         else:
             base_choices = [('4', u'Реактивный двигатель'), ('5', u'Машина Атвуда'), ('6', u'ДТП')]
@@ -163,7 +202,10 @@ def schedule_page2(request):
     response = schedule_page1(request)
     prohibited_days = []
     for day in set(SchedulingSystem.objects.filter(task=request.session.get('task')).values_list('day', flat=True)):
-        if len(set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=day).values_list('time', flat=True)).union(set(SchedulingSystem.objects.filter(holder=request.user.username).values_list('time', flat=True)))) == 3:
+        if len(set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=day).values_list('time',
+                                                                                                                 flat=True)).union(
+            set(SchedulingSystem.objects.filter(holder=request.user.username).values_list('time',
+                                                                                          flat=True)))) == 3:
             prohibited_days.append(str(day))
     if request.method == 'POST':
         form = SchSysForm2(request.POST)
@@ -186,7 +228,9 @@ def schedule_page3(request):
     response = schedule_page2(request)
     base_choices = [('1', u'12:00 - 14:00'), ('2', u'14:00 - 16:00'), ('3', u'16:00 - 18:00')]
     prohibited_time = []
-    for time in set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=request.session.get('day')).values_list('time', flat=True)).union(set(SchedulingSystem.objects.filter(holder=request.user.username).values_list('time', flat=True))):
+    for time in set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(
+            day=request.session.get('day')).values_list('time', flat=True)).union(
+        set(SchedulingSystem.objects.filter(holder=request.user.username).values_list('time', flat=True))):
         prohibited_time.append(time)
     i = 0
     while i != len(base_choices):
@@ -197,13 +241,14 @@ def schedule_page3(request):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         term = request.GET.get('term')
         if term:
-            users = User.objects.all().filter(username__icontains=term).filter(is_teacher=False).filter(grade=request.user.grade)
+            users = User.objects.all().filter(username__icontains=term).filter(is_teacher=False).filter(Q(grade=request.user.grade[0] + '-6') | Q(grade=request.user.grade[0] + '-7') | Q(grade=request.user.grade[0] + '0-6') | Q(grade=request.user.grade[0] + '0-7')).filter(~Q(username=request.user.username))
             return JsonResponse(list(users.values()), safe=False)
     if request.method == 'POST':
         form = SchSysForm3(base_choices, request.POST)
         if form.is_valid():
             inst = form.save(commit=False)
-            inst.user = '\n'.join([User.objects.get(id=i).username for i in eval(inst.user)])
+            inst.user = '[' + ', '.join(
+                ['"' + User.objects.get(id=i).username + '"' for i in eval(inst.user or '[]')]) + ']'
             inst.task = request.session.get('task')
             inst.day = request.session.get('day')
             inst.holder = request.user.username
@@ -250,9 +295,10 @@ def account_page(request):
         past_recs = []
         for obj in SchedulingSystem.objects.filter(day__lte=date.today()):
             if obj.holder == request.user.username:
-                task = ['task 1', 'task 2', 'task 3'][int(obj.task) - 1]
+                task = ['Мистер Архимед', 'task 2', 'task 3'][int(obj.task) - 1]
                 time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
                 past_recs.append((task, obj.day, time))
+        print(past_recs)
         context['title'] = f'{request.user.username} аккаунт'
         context['name'] = request.user.username
         context['teacher'] = request.user.is_teacher

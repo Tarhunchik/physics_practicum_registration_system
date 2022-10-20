@@ -1,0 +1,70 @@
+body {
+    background-color: #d9e2d8;
+}
+
+table {
+    width: 95%;
+}
+
+h1 {
+    font-weight: bold;
+}
+
+.swf-table {
+    border-collapse: collapse;
+    margin: 100px;
+    font-size: 1em;
+    border-radius: 1em 1em 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.swf-table thead tr {
+    background-color: #5f7a64;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+
+.swf-table thead tr th {
+    padding: 0.65em;
+}
+
+.swf-table th,
+
+.swf-table td {
+    padding: 0.5em;
+}
+
+.swf-table tbody td {
+    border: 0.01em solid #b8b8b8;
+    background-color: #F0F3EF;
+}
+
+.swf-table tbody tr {
+    border: 0.025em solid grey;
+    border-bottom: 0.05em solid grey;
+}
+
+.swf-table tbody tr:last-of-type {
+    border-bottom: 0.17em solid #5f7a64;
+}
+
+
+@media all and (min-width: 463px) and (max-width: 783px){
+    .swf-table {
+        font-size: 0.7em;
+    }
+}
+
+@media all and (min-width: 345px) and (max-width: 463px){
+    .swf-table {
+        font-size: 0.5em;
+    }
+}
+
+@media all and (min-width: 0px) and (max-width: 345px){
+    .swf-table {
+        font-size: 0.35em;
+    }
+}

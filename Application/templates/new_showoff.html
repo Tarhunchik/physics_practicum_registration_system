@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock %}
+{% block css_style %}
+  <link href="{% static 'new_showoff.css' %}" rel="stylesheet"/>
+{% endblock css_style %}
+{% block content %}
+  {% include 'new_header.html' %}
+  <section class="my-auto mt-5">
+    <h1 class="text-center">Записи</h1>
+    <div class="container mx-auto text-center w-100" style="overflow-x:auto;">
+      <table class="swf-table mx-auto text-center mt-5">
+
+        <thead>
+          <tr>
+            <th>День</th>
+            <th>Сдающие</th>
+            <th>Задача</th>
+            <th>Время</th>
+            <th>Дополнительно</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for day in records %}
+            {% if day.2 %}
+              <tr>
+                <td rowspan="{{day.3}}">{{day.1.0}}<br>{{day.0}}</td>
+                <td>
+                  {% for person in day.1.1 %}
+                    {{person}} <br><br>
+                  {% endfor %}
+                </td>
+                <td>{{day.1.2}}</td>
+                <td>{{day.1.3}}</td>
+                <td>{{day.1.4}}</td>
+              </tr>
+              {% for rec in day.2 %}
+                <tr>
+                <td>
+                  {% for person in rec.1 %}
+                    {{person}} <br><br>
+                  {% endfor %}
+                </td>
+                <td>{{rec.2}}</td>
+                <td>{{rec.3}}</td>
+                <td>{{rec.4}}</td>
+                </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td>{{day.1.0}}<br>{{day.0}}</td>
+                <td>
+                  {% for person in day.1.1 %}
+                    {{person}} <br><br>
+                  {% endfor %}
+                </td>
+                <td>{{day.1.2}}</td>
+                <td>{{day.1.3}}</td>
+                <td>{{day.1.4}}</td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+  </section>
+  {% include 'new_footer.html' %}
+{% endblock content %}

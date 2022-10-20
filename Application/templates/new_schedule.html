@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %} {{title}} {% endblock %}
 {% block css_style %}
-  <link href="{% static 'aaa.css' %}" rel="stylesheet"/>
+  <link href="{% static 'new_schedule.css' %}" rel="stylesheet"/>
 {% endblock css_style %}
 {% block content %}
   {% include 'new_header.html' %}
@@ -15,7 +15,8 @@
             {% for field in scheduling_form %}
               <div class="mt-5 mb-4 text-center">
                 <div class="container">
-                  <span class="fs-3">{{ field.label_tag }}</span> {{ field }}
+                  <span class="fs-3 mb-4">{{ field.label_tag }}</span><br>
+                  <span class="">{{ field }}</span>
                 </div>
 
                 {% if field.help_text %}
@@ -38,8 +39,8 @@
               <a role="button" class="btn btn-danger btn-lg" href="{{ href }}">Назад</a>
             </div>
           </div>
-          <div class="col-md-7 order-1 order-md-2 mb-5 my-auto">
-            <img src="{% static 'images/new_clock.png' %}" alt="часы" class="d-block w-100 my-auto">
+          <div class="col-md-7 order-1 order-md-2 mb-5">
+            <img src="{% static 'images/new_clock.png' %}" alt="часы" class="d-block w-100 mx-auto">
           </div>
         </div>
       </div>
@@ -47,7 +48,9 @@
   </section>
 
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/i18n/ru.js"></script>
   <script type="text/javascript">
+        $.fn.select2.defaults.set('language', 'ru');
         var disableDates = "{{prohibited_days}}";
         var date = new Date();
         date.setDate(date.getDate() + 1);
@@ -86,7 +89,8 @@
             required: false,
             multiple: true,
             maximumSelectionLength: 2,
-            minimumInputLength: 1
+            minimumInputLength: 1,
+            language: "ru"
         });
   </script>
 

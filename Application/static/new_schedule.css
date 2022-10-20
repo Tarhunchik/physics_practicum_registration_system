@@ -3,6 +3,7 @@ body {
 }
 
 .btn-success{
+    min-width: 6em;
     background-color: #667C65;
     color: white;
     padding: 0.5em;
@@ -17,3 +18,20 @@ body {
     background-color: #495949;
     color: white;
 }
+
+.btn-danger {
+    min-width: 6em;
+    background-color: #A75050;
+    color: white;
+    padding: 0.5em;
+    border-radius: 0.7em;
+    border: 0.2em solid #923434;
+}
+
+.btn-danger:focus,
+
+.btn-danger:hover {
+    background-color: #923434;
+    border: 0.2em solid #A75050;
+}
+
