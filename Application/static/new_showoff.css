@@ -50,6 +50,11 @@ h1 {
     border-bottom: 0.17em solid #5f7a64;
 }
 
+.special {
+    margin-bottom: 2em;
+    margin-top: 4em;
+}
+
 
 @media all and (min-width: 463px) and (max-width: 783px){
     .swf-table {

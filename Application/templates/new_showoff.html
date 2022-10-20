@@ -6,9 +6,22 @@
 {% endblock css_style %}
 {% block content %}
   {% include 'new_header.html' %}
-  <section class="my-auto mt-5">
-    <h1 class="text-center">Записи</h1>
+  <section class="my-auto mt-5 mb-5">
+    <h1 class="text-center my-auto">Записи</h1>
     <div class="container mx-auto text-center w-100" style="overflow-x:auto;">
+      {% if not records %}
+        <div class="container my-auto mt-5">
+          <div class="row special">
+            <div class="col-md-6 my-auto">
+              <img src="{% static 'images/new2.jpg' %}" alt="попугаи" class="d-block w-75 mx-auto border border-dark border-1">
+            </div>
+            <div class="col-md-6 my-auto">
+              <h2 class="text center my-auto mt-5 p-3">Пока никто не записывался на практикумы!)</h2>
+            </div>
+          </div>
+        </div>
+
+      {% else %}
       <table class="swf-table mx-auto text-center mt-5">
 
         <thead>
@@ -64,6 +77,7 @@
         </tbody>
 
       </table>
+      {% endif %}
     </div>
   </section>
   {% include 'new_footer.html' %}

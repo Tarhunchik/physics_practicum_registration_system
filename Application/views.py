@@ -283,9 +283,12 @@ def account_page(request):
     cur_recs = []
     for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
         if obj.holder == request.user.username:
-            task = ['task 1', 'task 2', 'task 3', 'task 4', 'task 5', 'task 6'][int(obj.task) - 1]
+            task = ['Мистер Архимед', 'Для чайников', 'Сопротивление',
+                    'Реактивный двигатель', 'Машина Атвуда', 'ДТП'][int(obj.task) - 1]
             time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
-            cur_recs.append((task, obj.day, time, obj.id))
+            day = str(obj.day).split('-')
+            day.reverse()
+            cur_recs.append((task, time, '.'.join(day), obj.id))
     if request.method == 'POST':
         for rec in cur_recs:
             if str(rec[3]) in request.POST:
@@ -295,10 +298,21 @@ def account_page(request):
         past_recs = []
         for obj in SchedulingSystem.objects.filter(day__lte=date.today()):
             if obj.holder == request.user.username:
-                task = ['Мистер Архимед', 'task 2', 'task 3'][int(obj.task) - 1]
+                task = ['Мистер Архимед', 'Для чайников', 'Сопротивление',
+                        'Реактивный двигатель', 'Машина Атвуда', 'ДТП'][int(obj.task) - 1]
                 time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
-                past_recs.append((task, obj.day, time))
-        print(past_recs)
+                day = str(obj.day).split('-')
+                day.reverse()
+                past_recs.append((task, time, '.'.join(day)))
+        other_recs = []
+        for obj in SchedulingSystem.objects.all():
+            if request.user.username in eval(obj.user):
+                task = ['Мистер Архимед', 'Для чайников', 'Сопротивление',
+                        'Реактивный двигатель', 'Машина Атвуда', 'ДТП'][int(obj.task) - 1]
+                time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
+                day = str(obj.day).split('-')
+                day.reverse()
+                other_recs.append((task, time, '.'.join(day), obj.id))
         context['title'] = f'{request.user.username} аккаунт'
         context['name'] = request.user.username
         context['teacher'] = request.user.is_teacher
@@ -307,6 +321,8 @@ def account_page(request):
         context['first_name'] = request.user.first_name
         context['last_name'] = request.user.last_name
         context['cur_recs'] = cur_recs
+        print(other_recs)
+        context['other_recs'] = other_recs
         context['past_recs'] = past_recs
         return render(request, 'new_account.html', context)
 
