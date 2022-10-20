@@ -14,7 +14,7 @@ class RegisterForm(forms.Form):
     first_name = forms.CharField(label='Имя', max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
     last_name = forms.CharField(label='Фамилия', max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label='Email', max_length=60, required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    grade = forms.ChoiceField(label='Выберите Ваш класс:', choices=[('9', '9-6'), ('9', '9-7'), ('10', '10-6'), ('10', '10-7')], widget=forms.Select(attrs={'class': 'form-control'}))
+    grade = forms.ChoiceField(label='Выберите Ваш класс:', choices=[('9-6', '9-6'), ('9-7', '9-7'), ('10-6', '10-6'), ('10-7', '10-7')], widget=forms.Select(attrs={'class': 'form-control'}))
     password1 = forms.CharField(label='Придумайте пароль', max_length=20, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     password2 = forms.CharField(label='Введите пароль еще раз', max_length=20, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     rule_check = forms.BooleanField(label='Я согласен с правилами сайта', required=True, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
@@ -44,7 +44,7 @@ class SchSysForm1(forms.ModelForm):
         super(SchSysForm1, self).__init__(*args, **kwargs)
         self.fields['task'] = forms.ChoiceField(choices=choices)
         self.fields['task'].label = 'Выберите задачу'
-        self.fields['task'].widget.attrs['class'] = 'form-control w-50 mx-auto mt-2'
+        self.fields['task'].widget.attrs['class'] = 'form-control w-75 mx-auto mt-2'
         for k, field in self.fields.items():
             if 'required' in field.error_messages:
                 field.error_messages['required'] = 'Пока нет доступных задач для записи'
@@ -74,11 +74,11 @@ class SchSysForm3(forms.ModelForm):
         users = [('', '')] + list(User.objects.values_list('id', 'username'))
         self.fields['user'] = forms.MultipleChoiceField(choices=users, required=False)
         self.fields['user'].label = 'Соберите свою команду:'
-        self.fields['additional_info'] = forms.CharField(widget=forms.Textarea)
+        self.fields['user'].widget.attrs['class'] = 'form-control mx-auto w-75'
+        self.fields['additional_info'] = forms.CharField(widget=forms.Textarea, required=False)
         self.fields['additional_info'].label = 'Дополнительная инфа:'
         self.fields['additional_info'].widget.attrs['class'] = 'textarea form-control mx-auto w-75'
-        self.fields['additional_info'].widget.attrs['rows'] = 5
-        self.fields['additional_info'].widget.attrs['rows'] = 5
+        self.fields['additional_info'].widget.attrs['rows'] = 3
 
     class Meta:
         model = SchedulingSystem

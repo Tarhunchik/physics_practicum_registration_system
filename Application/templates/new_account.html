@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %} {{title}} {% endblock title %}
-{% block css_style %} <link href="{% static 'new_account.css' %}" rel="stylesheet"/> {% endblock css_style %}
+{% block css_style %} <link href="{% static 'aaa.css' %}" rel="stylesheet"/> {% endblock css_style %}
 {% block content %}
   {% include 'new_header.html' %}
   <section class="my-auto mt-5 mb-5">
@@ -74,14 +74,89 @@
       </div>
     </div>
     {% if not teacher %}
-      <h3 class="text-center p-5">Отслеживание записей скоро здесь!</h3>
+      <div class="container mt-5">
+        <h3 class="text-center mb-5"><ins>Текущие записи:</ins></h3>
+        {% if cur_recs|length == 0 and other_recs|length == 0 %}
+          <h4 class="text-center">
+            У Вас нет текущих записей. Записаться можно <a class="site-link" href="/schedule/1">здесь</a>.
+          </h4>
+        {% else %}
+          {% for rec in cur_recs %}
+            <form method="POST">{% csrf_token %}
+              <div class="row mb-4">
+                <div class="col-7 text-center my-auto ps-4">
+                  <p style="text-align: left;" class="fs-5">
+                    Задача: {{rec.0}} <br>
+                    Время: {{rec.1}} <br>
+                    Дата: {{rec.2}}
+                  </p>
+                </div>
+                <div class="col-5 text-center my-auto">
+                  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#DeleteRecord">
+                    Удалить
+                  </button>
+
+                </div>
+              </div>
+
+              <!-- Modal -->
+              <div class="modal fade" id="DeleteRecord" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title mx-auto" id="staticBackdropLabel">Вы уверены...</h5>
+                    </div>
+                    <div class="modal-body mx-auto">
+                      ...что хотите удалить эту запись?
+                    </div>
+                    <div class="modal-footer mx-auto">
+                      <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal" aria-label="Close">Отмена</button>
+                      <button type="submit" name="{{rec.3}}" class="btn btn-danger">Да, удалить</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </form>
+          {% endfor %}
+          <div class="container mt-5">
+          {% for rec in other_recs %}
+              <div class="row mb-4">
+                <div class="col-7 text-center my-auto ps-4">
+                  <p style="text-align: left;" class="fs-5">
+                    Задача: {{rec.0}} <br>
+                    Время: {{rec.1}} <br>
+                    Дата: {{rec.2}}
+                  </p>
+                </div>
+              </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="container mt-5">
+        <h3 class="text-center mb-5"><ins>История записей:</ins></h3>
+        {% if past_recs|length == 0 %}
+          <h4 class="text-center">Пока здесь нет записей.</h4>
+        {% else %}
+          {% for rec in past_recs %}
+            <div class="d-grid col-md-5 col-10 text-start mx-auto mb-4">
+              <h4 class="text-start mb-3" style="display: inline; text-align: left;">
+                Задача: {{rec.0}} <br>
+                Время: {{rec.1}} <br>
+                Дата: {{rec.2}}
+              </h4>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
     {% else %}
-      <div class="d-grid col-md-4 col-8 mx-auto mt-2 mb-4">
-        <a href="#" class="btn account_btn" type="button" role="button">Записать на практикум</a>
-        <a href="/admin" class="btn account_btn" type="button" role="button">Админ</a>
+      <div class="d-grid gap-2 col-md-4 col-10 mt-2 mb-5 mx-auto">
+        <a href="/admin" class="btn account_btn btn-lg" type="button" role="button">Админ</a>
       </div>
     {% endif %}
 
+
+  </div>
   </section>
   {% include 'new_footer.html' %}
 {% endblock content %}

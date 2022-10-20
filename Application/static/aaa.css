@@ -2,21 +2,34 @@ body {
     background-color: #d9e2d8;
 }
 
-.btn-success{
-    min-width: 6em;
-    background-color: #667C65;
-    color: white;
-    padding: 0.5em;
-    border-radius: 0.7em;
-    border: 0.2em solid #495949;
+#for_header {
+    text-align: center;
 }
 
-.btn-success:hover,
+h1 {
+    display: inline-block;
+    font-size: 2.2em;
+}
 
-.btn-success:focus{
-    border: 0.2em solid #667C65;
-    background-color: #495949;
-    color: white;
+.account_btn {
+    padding: 0.5em;
+    margin-top: 1.75em;
+    font-size: 1.25em;
+    font-weight: 500;
+    border: 0.13em solid #3f523e;
+    color: #3f523e;
+    border-radius: 1em;
+    box-shadow: 0;
+    transition: transform 200ms, box-shadow 0.2s;
+}
+
+.account_btn:focus,
+
+.account_btn:hover {
+    border: 0.13em solid #3f523e;
+    color: #3f523e;
+    box-shadow: 0;
+    box-shadow: 0 0 0.7em rgba(63, 82, 62, 0.34);
 }
 
 .btn-danger {
@@ -35,3 +48,26 @@ body {
     border: 0.2em solid #A75050;
 }
 
+.btn-secondary {
+    background-color: #80858a;
+    color: white;
+    padding: 0.5em;
+    border-radius: 0.7em;
+    border: 0.2em solid #5c636a;
+}
+
+.btn-secondary:focus,
+
+.btn-secondary:hover {
+    background-color: #5c636a;
+    color: white;
+    border: 0.2em solid #80858a;
+}
+
+.site-link {
+    color: #42673a;
+}
+
+.site-link:hover {
+    color: #668c5d;
+}

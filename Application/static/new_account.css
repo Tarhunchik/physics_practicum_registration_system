@@ -31,3 +31,43 @@ h1 {
     box-shadow: 0;
     box-shadow: 0 0 0.7em rgba(63, 82, 62, 0.34);
 }
+
+.btn-danger {
+    min-width: 6em;
+    background-color: #A75050;
+    color: white;
+    padding: 0.5em;
+    border-radius: 0.7em;
+    border: 0.2em solid #923434;
+}
+
+.btn-danger:focus,
+
+.btn-danger:hover {
+    background-color: #923434;
+    border: 0.2em solid #A75050;
+}
+
+.btn-secondary {
+    background-color: #80858a;
+    color: white;
+    padding: 0.5em;
+    border-radius: 0.7em;
+    border: 0.2em solid #5c636a;
+}
+
+.btn-secondary:focus,
+
+.btn-secondary:hover {
+    background-color: #5c636a;
+    color: white;
+    border: 0.2em solid #80858a;
+}
+
+.site-link {
+    color: #42673a;
+}
+
+.site-link:hover {
+    color: #668c5d;
+}

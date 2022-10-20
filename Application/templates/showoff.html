@@ -19,15 +19,13 @@
           </tr>
         </thead>
         <tbody>
-          {% for rec in recs %}
+          {% for rec in records %}
             {% if rec.4 in used %}
               <tr class="table-active">
                 <th scope="row">{{ rec.4 }}</th>
                 <td>{{ rec.2 }}</td>
                 <td>{{ rec.3 }}</td>
-                <td>{{ rec.1 }}</td>
-                <td>{{ rec.0 }}</td>
-                <td>{{ rec.5 }}</td>
+
               </tr>
             {% else %}
               <tr>
