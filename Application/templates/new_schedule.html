@@ -61,7 +61,7 @@
         $('.datepicker').datepicker({
             format: 'yyyy-mm-dd',
             startDate: date,
-            daysOfWeekDisabled: [0, 6],
+            daysOfWeekDisabled: [0, 1, 2, 3],
             language: 'ru',
             beforeShowDay: function(date){
                 dmy = date.getFullYear() + "-" + ('0'+(date.getMonth() + 1)).slice(-2) + "-" + ('0'+(date.getDate())).slice(-2);

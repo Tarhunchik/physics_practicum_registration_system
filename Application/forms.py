@@ -80,6 +80,13 @@ class SchSysForm2(forms.ModelForm):
         widgets = {'day': DateInput(attrs={'class': 'datepicker form-control w-50 mx-auto mt-2'})}
 
 
+    def clean(self):
+        cleaned_data = super().clean()
+        day = cleaned_data.get('day')
+        if day.weekday() not in [3, 4, 5]:
+            self.add_error('day', forms.ValidationError('Некорректная дата'))
+
+
 class SchSysForm3(forms.ModelForm):
     def __init__(self, choices, *args, **kwargs):
         super(SchSysForm3, self).__init__(*args, **kwargs)

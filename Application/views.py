@@ -223,12 +223,19 @@ def schedule_page3(request):
     context = get_context_base()
     context['title'] = 'Запись'
     response = schedule_page2(request)
-    base_choices = [('1', u'12:00 - 14:00'), ('2', u'14:00 - 16:00'), ('3', u'16:00 - 18:00')]
+    base_choices = []
+    if date(*map(int, request.session.get('day').split('-'))).weekday() == 3:
+        base_choices = [('1', u'16:45 — 19:00')]
+    if date(*map(int, request.session.get('day').split('-'))).weekday() == 4:
+        base_choices = [('1', u'14:50 — 17:00')]
+    if date(*map(int, request.session.get('day').split('-'))).weekday() == 5:
+        base_choices = [('1', u'8:30 — 10:15'), ('2', u'10:35 — 12:25'), ('3', u'14:50 — 18:00')]
     prohibited_time = []
     for time in set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(
             day=request.session.get('day')).values_list('time', flat=True)).union(
         set(SchedulingSystem.objects.filter(holder=request.user.username).values_list('time', flat=True))):
         prohibited_time.append(time)
+        print(time)
     i = 0
     while i != len(base_choices):
         if base_choices[i][0] in prohibited_time:
