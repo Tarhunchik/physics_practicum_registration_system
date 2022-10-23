@@ -78,8 +78,9 @@ class SchSysForm3(forms.ModelForm):
         self.fields['user'].label = 'Соберите свою команду:'
         self.fields['user'].widget.attrs['class'] = 'form-control mx-auto w-75'
         self.fields['additional_info'] = forms.CharField(widget=forms.Textarea, required=False)
-        self.fields['additional_info'].label = 'Дополнительная инфа:'
+        self.fields['additional_info'].label = 'Информация:'
         self.fields['additional_info'].widget.attrs['class'] = 'textarea form-control mx-auto w-75'
+        self.fields['additional_info'].widget.attrs['placeholder'] = 'Пример: мы придем после 7-ого урока'
         self.fields['additional_info'].widget.attrs['rows'] = 3
 
     class Meta:
