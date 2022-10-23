@@ -14,19 +14,20 @@ class RegisterForm(forms.Form):
     first_name = forms.CharField(label='Имя', max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
     last_name = forms.CharField(label='Фамилия', max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label='Email', max_length=60, required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    grade = forms.ChoiceField(label='Выберите Ваш класс:', choices=[('9-6', '9-6'), ('9-7', '9-7'), ('10-6', '10-6'), ('10-7', '10-7')], widget=forms.Select(attrs={'class': 'form-control'}))
+    grade = forms.ChoiceField(label='Выберите Ваш класс:', required=True, choices=[('9-6', '9-6'), ('9-7', '9-7'), ('10-6', '10-6'), ('10-7', '10-7')], widget=forms.Select(attrs={'class': 'form-control'}))
     password1 = forms.CharField(label='Придумайте пароль', max_length=20, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     password2 = forms.CharField(label='Введите пароль еще раз', max_length=20, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     rule_check = forms.BooleanField(label='Я согласен с правилами сайта', required=True, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
 
     class Meta:
         model = User
-        fields = ("email", "username", "password1", "password2")
+        fields = ("email", "username", "password", "grade")
 
     def clean(self):
         cleaned_data = super().clean()
         username = cleaned_data.get('username')
         email = cleaned_data.get('email')
+        grade = cleaned_data.get('grade')
         password1 = cleaned_data.get('password1')
         password2 = cleaned_data.get('password2')
         if username in User.objects.values_list('username', flat=True):

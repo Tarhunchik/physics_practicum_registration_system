@@ -37,21 +37,21 @@ def register_page(request):
             first_name = request.POST['first_name']
             last_name = request.POST['last_name']
             email = request.POST['email']
-            password1 = request.POST['password1']
+            password = request.POST['password1']
             grade = request.POST['grade']
+            print(grade)
             user = User.objects.create_user(
                 username=username,
                 email=email,
                 first_name=first_name,
                 last_name=last_name,
-                password=password1,
+                password=password,
                 grade=grade
             )
             user.save()
             login(request, user)
             return HttpResponseRedirect('/main')
         else:
-            messages.error(request, 'Input data is not valid')
             context['registration_form'] = form
     else:
         form = RegisterForm()

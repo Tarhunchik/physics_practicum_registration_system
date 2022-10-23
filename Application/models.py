@@ -4,7 +4,7 @@ from django import forms
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, first_name, last_name, password=None, grade=None):
+    def create_user(self, email, username, first_name, last_name, password, grade):
         if not email:
             raise ValueError("Users must have an email address")
         if not username:
@@ -13,7 +13,6 @@ class UserManager(BaseUserManager):
             raise ValueError("Users must have an first name")
         if not last_name:
             raise ValueError("Users must have an last name")
-        print(self)
         user = self.model(
             email=self.normalize_email(email),
             username=username,
@@ -27,7 +26,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username, first_name, last_name, password=None, grade=None):
+    def create_superuser(self, email, username, first_name, last_name, password, grade):
         user = self.create_user(email, username, first_name, last_name, password, grade)
         user.is_admin = True
         user.is_staff = True
@@ -41,7 +40,7 @@ class User(AbstractBaseUser):
     username = models.CharField(max_length=30, unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    grade = models.CharField(max_length=4, choices=[('9-6', '9-6'), ('9-7', '9-7'), ('10-6', '10-6'), ('10-7', '10-7')])
+    grade = models.TextField(max_length=10, choices=[('9-6', '9-6'), ('9-7', '9-7'), ('10-6', '10-6'), ('10-7', '10-7')])
     telegram_id = models.IntegerField(default=0)
     is_teacher = models.BooleanField(default=0)
     date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
