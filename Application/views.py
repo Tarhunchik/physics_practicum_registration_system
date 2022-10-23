@@ -196,13 +196,12 @@ def schedule_page1(request):
 def schedule_page2(request):
     context = get_context_base()
     context['title'] = 'Запись'
-    response = schedule_page1(request)
     prohibited_days = []
     for day in set(SchedulingSystem.objects.filter(task=request.session.get('task')).values_list('day', flat=True)):
         if len(set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=day).values_list('time',
                                                                                                                  flat=True)).union(
             set(SchedulingSystem.objects.filter(holder=request.user.username).values_list('time',
-                                                                                          flat=True)))) == 3:
+                                                                                          flat=True)))) == [1, 1, 3][date(*map(int, request.session.get('day').split('-'))).weekday() - 3]:
             prohibited_days.append(str(day))
     if request.method == 'POST':
         form = SchSysForm2(request.POST)

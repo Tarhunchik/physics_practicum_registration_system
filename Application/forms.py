@@ -75,11 +75,12 @@ class SchSysForm2(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SchSysForm2, self).__init__(*args, **kwargs)
         self.fields['day'].label = 'Выберите день записи'
+        self.fields['day'].widget.attrs['readonly'] = True
 
     class Meta:
         model = SchedulingSystem
         fields = ('day',)
-        widgets = {'day': DateInput(attrs={'class': 'datepicker form-control w-50 mx-auto mt-2'})}
+        widgets = {'day': DateInput(attrs={'class': 'datepicker form-control w-50 mx-auto mt-2', 'style': 'background-color: white;'})}
 
 
     def clean(self):
