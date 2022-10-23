@@ -222,7 +222,6 @@ def schedule_page2(request):
 def schedule_page3(request):
     context = get_context_base()
     context['title'] = 'Запись'
-    response = schedule_page2(request)
     base_choices = []
     if date(*map(int, request.session.get('day').split('-'))).weekday() == 3:
         base_choices = [('1', u'16:45 — 19:00')]
@@ -292,7 +291,7 @@ def account_page(request):
             time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
             day = str(obj.day).split('-')
             day.reverse()
-            cur_recs.append((task, time, '.'.join(day), obj.id))
+            cur_recs.append((task, time, '.'.join(day), obj.id, obj.additional_info))
     if request.method == 'POST':
         for rec in cur_recs:
             if str(rec[3]) in request.POST:
@@ -307,7 +306,7 @@ def account_page(request):
                 time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
                 day = str(obj.day).split('-')
                 day.reverse()
-                past_recs.append((task, time, '.'.join(day)))
+                past_recs.append((task, time, '.'.join(day), obj.additional_info))
         other_recs = []
         for obj in SchedulingSystem.objects.all():
             if request.user.username in eval(obj.user):
@@ -316,7 +315,7 @@ def account_page(request):
                 time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
                 day = str(obj.day).split('-')
                 day.reverse()
-                other_recs.append((task, time, '.'.join(day), obj.id))
+                other_recs.append((task, time, '.'.join(day), obj.id, obj.additional_info))
         context['title'] = f'{request.user.username} аккаунт'
         context['name'] = request.user.username
         context['teacher'] = request.user.is_teacher
