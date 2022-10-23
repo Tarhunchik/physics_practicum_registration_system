@@ -7,10 +7,10 @@
 {% block content %}
   {% include 'new_header.html' %}
   <section class="my-auto mt-5 mb-5">
-    <h1 class="text-center my-auto">Записи</h1>
-    <div class="container mx-auto text-center w-100" style="overflow-x:auto;">
+    <div class="container mx-auto text-center w-100 my-auto" style="overflow-x:auto;">
       {% if not records %}
-        <div class="container my-auto mt-5">
+        <h1 class="text-center my-auto">Записи</h1>
+        <div class="container my-auto">
           <div class="row special">
             <div class="col-md-6 my-auto">
               <img src="{% static 'images/new2.jpg' %}" alt="попугаи" class="d-block w-75 mx-auto border border-dark border-1">
@@ -22,7 +22,8 @@
         </div>
 
       {% else %}
-      <table class="swf-table mx-auto text-center mt-5">
+      <h1 class="text-center my-auto">Записи</h1>
+      <table class="swf-table mx-auto text-center">
 
         <thead>
           <tr>
