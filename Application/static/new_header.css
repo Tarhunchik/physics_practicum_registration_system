@@ -1,0 +1,6 @@
+@media all and (min-width: 0px) and (max-width: 768px){
+    .nav-btns {
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+    }
+}

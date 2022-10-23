@@ -35,8 +35,10 @@ class LoginForm(forms.ModelForm):
     def clean(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
-        if not authenticate(username=username, password=password):
-            raise forms.ValidationError('Invalid login')
+        if username not in User.objects.values_list('username', flat=True):
+            self.add_error('username', forms.ValidationError('Неверный логин'))
+        elif not authenticate(username=username, password=password):
+            self.add_error('password', forms.ValidationError('Неверный пароль'))
 
 
 class SchSysForm1(forms.ModelForm):

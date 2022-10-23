@@ -32,6 +32,7 @@ urlpatterns = [
     path('telegram_bot/', views.tg_bot_page),
     path('contacts/', views.contacts_page),
     path('account/', views.account_page),
+    path('rules/', views.rules_page),
 ]
 
 handler404 = "Application.views.error_404"

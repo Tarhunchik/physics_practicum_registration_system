@@ -241,7 +241,10 @@ def schedule_page3(request):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         term = request.GET.get('term')
         if term:
-            users = User.objects.all().filter(username__icontains=term).filter(is_teacher=False).filter(Q(grade=request.user.grade[0] + '-6') | Q(grade=request.user.grade[0] + '-7') | Q(grade=request.user.grade[0] + '0-6') | Q(grade=request.user.grade[0] + '0-7')).filter(~Q(username=request.user.username))
+            users = User.objects.all().filter(username__icontains=term).filter(is_teacher=False).filter(
+                Q(grade=request.user.grade[0] + '-6') | Q(grade=request.user.grade[0] + '-7') | Q(
+                    grade=request.user.grade[0] + '0-6') | Q(grade=request.user.grade[0] + '0-7')).filter(
+                ~Q(username=request.user.username))
             return JsonResponse(list(users.values()), safe=False)
     if request.method == 'POST':
         form = SchSysForm3(base_choices, request.POST)
@@ -333,3 +336,9 @@ def error_404(request, exception):
 
 def error_500(request):
     return render(request, 'error_500.html')
+
+
+def rules_page(request):
+    context = get_context_base()
+    context['title'] = 'Правила и прочее'
+    return render(request, 'rules.html', context)

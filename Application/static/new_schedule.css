@@ -35,3 +35,19 @@ body {
     border: 0.2em solid #A75050;
 }
 
+.img_with_alert {
+    width: 80%;
+}
+
+div .alert {
+    border-radius: 3em;
+    border: 0.35em solid #a75050;
+    background-color: #E0D7D7;
+    width: 80%;
+}
+
+.error_p {
+    color: #a75050;
+    font-size: 1em;
+    padding: 0.5em;
+}
