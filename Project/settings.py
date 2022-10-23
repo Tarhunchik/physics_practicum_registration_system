@@ -83,7 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'aelaevyt_django',
-        'USER': 'aelaevyt_django',
+        'USER': 'Tarhunchik',
         'PASSWORD': 'Elaev241206',
         'HOST': 'localhost',
     }

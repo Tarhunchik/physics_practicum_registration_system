@@ -11,6 +11,7 @@ from datetime import date, timedelta
 from django.http import JsonResponse
 from django.conf import settings
 from django.db.models import Q
+from django.db import DataError
 
 
 def get_context_base():
@@ -37,22 +38,18 @@ def register_page(request):
             last_name = request.POST['last_name']
             email = request.POST['email']
             password1 = request.POST['password1']
-            password2 = request.POST['password2']
             grade = request.POST['grade']
-            if password1 == password2:
-                user = User.objects.create_user(
-                    username=username,
-                    email=email,
-                    first_name=first_name,
-                    last_name=last_name,
-                    password=password1,
-                    grade=grade
-                )
-                user.save()
-                # messages.success(request, 'User created successfully')
-                login(request, user)
-                return HttpResponseRedirect('/main')
-            messages.error(request, 'Passwords are not same')
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                first_name=first_name,
+                last_name=last_name,
+                password=password1,
+                grade=grade
+            )
+            user.save()
+            login(request, user)
+            return HttpResponseRedirect('/main')
         else:
             messages.error(request, 'Input data is not valid')
             context['registration_form'] = form

@@ -23,6 +23,20 @@ class RegisterForm(forms.Form):
         model = User
         fields = ("email", "username", "password1", "password2")
 
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username')
+        email = cleaned_data.get('email')
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+        if username in User.objects.values_list('username', flat=True):
+            self.add_error('username', forms.ValidationError('Никнейм уже занят'))
+        if email in User.objects.values_list('email', flat=True):
+            self.add_error('email', forms.ValidationError('Email уже привязан'))
+        if password1 != password2:
+            self.add_error('password2', forms.ValidationError('Пароли различаются'))
+        return cleaned_data
+
 
 class LoginForm(forms.ModelForm):
     username = forms.CharField(label='Введите свой никнейм', widget=forms.TextInput(attrs={'class': 'form-control'}))
