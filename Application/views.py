@@ -126,12 +126,8 @@ def schedule_page1(request):
             else:
                 tasks = ['', '', '', 'Реактивный двигатель', 'Машина Атвуда', 'ДТП']
             records.setdefault(day, [])
-            records[day].append([days[obj.day.weekday()],
-                                 people,
-                                 tasks[task_index - 1],
-                                 ['12:00-14:00', '14:00-16:00', '16:00-18:00'][time_index - 1],
-                                 info
-                                 ])
+            base_choices = ['16:45 — 19:00', '14:50 — 17:00', '8:30 — 10:15', '10:35 — 12:25', '14:50 — 18:00']
+            records[day].append([days[obj.day.weekday()], people, tasks[task_index - 1], base_choices[time_index - 1], info])
 
         records = [list(i) for i in sorted(records.items(), key=lambda x: x[0])]
 
@@ -144,28 +140,8 @@ def schedule_page1(request):
             records[rec][2] = records[rec][2][1:]
             records[rec].append(len(records[rec][2]) + 1)
 
-        # for ind in range(len(records)):
-        #     rec = records[ind]
-        #     records[ind] = [rec[0]] + rec[1]
-
         print(records)
         context['records'] = records
-        #     recs.append([obj.holder_name, obj.task, '.'.join(day), days[obj.day.weekday()], obj.time, 'test', obj.additional_info])
-        #     used.add(days[obj.day.weekday()])
-        # recs = sorted(recs, key=lambda i: (i[2], i[3]))
-        # for day in days:
-        #     if day not in used:
-        #         recs.append(['', '', '', '', day, ''])
-        # staff = set()
-        # recs = sorted(recs, key=lambda i: (days.index(i[4])))
-        # for rec in recs:
-        #     if rec[4] in staff:
-        #         rec[4] = ''
-        #     else:
-        #         staff.add(rec[4])
-        # context['recs'] = recs
-        # context['days'] = days
-        # context['used'] = used
         return render(request, 'new_showoff.html', context)
     else:
         if request.user.grade[0] == '9':
@@ -223,11 +199,11 @@ def schedule_page3(request):
     context['title'] = 'Запись'
     base_choices = []
     if date(*map(int, request.session.get('day').split('-'))).weekday() == 3:
-        base_choices = [('1', u'16:45 — 19:00')]
+        base_choices = [('0', u'16:45 — 19:00')]
     if date(*map(int, request.session.get('day').split('-'))).weekday() == 4:
         base_choices = [('1', u'14:50 — 17:00')]
     if date(*map(int, request.session.get('day').split('-'))).weekday() == 5:
-        base_choices = [('1', u'8:30 — 10:15'), ('2', u'10:35 — 12:25'), ('3', u'14:50 — 18:00')]
+        base_choices = [('2', u'8:30 — 10:15'), ('3', u'10:35 — 12:25'), ('4', u'14:50 — 18:00')]
     prohibited_time = []
     for time in set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(
             day=request.session.get('day')).values_list('time', flat=True)).union(
@@ -286,11 +262,12 @@ def account_page(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect('/non_auth_user')
     cur_recs = []
+    base_choices = ['16:45 — 19:00', '14:50 — 17:00', '8:30 — 10:15', '10:35 — 12:25', '14:50 — 18:00']
     for obj in SchedulingSystem.objects.filter(day__gte=date.today()):
         if obj.holder == request.user.username:
             task = ['Мистер Архимед', 'Для чайников', 'Сопротивление',
                     'Реактивный двигатель', 'Машина Атвуда', 'ДТП'][int(obj.task) - 1]
-            time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
+            time = base_choices[int(obj.time) - 1]
             day = str(obj.day).split('-')
             day.reverse()
             cur_recs.append((task, time, '.'.join(day), obj.id, obj.additional_info))
@@ -305,7 +282,7 @@ def account_page(request):
             if obj.holder == request.user.username:
                 task = ['Мистер Архимед', 'Для чайников', 'Сопротивление',
                         'Реактивный двигатель', 'Машина Атвуда', 'ДТП'][int(obj.task) - 1]
-                time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
+                time = base_choices[int(obj.time) - 1]
                 day = str(obj.day).split('-')
                 day.reverse()
                 past_recs.append((task, time, '.'.join(day), obj.additional_info))
@@ -314,7 +291,7 @@ def account_page(request):
             if request.user.username in eval(obj.user):
                 task = ['Мистер Архимед', 'Для чайников', 'Сопротивление',
                         'Реактивный двигатель', 'Машина Атвуда', 'ДТП'][int(obj.task) - 1]
-                time = ['12:00 - 14:00', '14:00 - 16:00', '16:00 - 18:00'][int(obj.time) - 1]
+                time = base_choices[int(obj.time) - 1]
                 day = str(obj.day).split('-')
                 day.reverse()
                 other_recs.append((task, time, '.'.join(day), obj.id, obj.additional_info))
@@ -326,7 +303,6 @@ def account_page(request):
         context['first_name'] = request.user.first_name
         context['last_name'] = request.user.last_name
         context['cur_recs'] = cur_recs
-        print(other_recs)
         context['other_recs'] = other_recs
         context['past_recs'] = past_recs
         return render(request, 'new_account.html', context)
