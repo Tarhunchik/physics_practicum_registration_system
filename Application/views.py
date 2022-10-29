@@ -139,8 +139,6 @@ def schedule_page1(request):
             records[rec].insert(1, records[rec][1][0])
             records[rec][2] = records[rec][2][1:]
             records[rec].append(len(records[rec][2]) + 1)
-
-        print(records)
         context['records'] = records
         return render(request, 'new_showoff.html', context)
     else:
@@ -177,7 +175,7 @@ def schedule_page2(request):
         if len(set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=day).values_list('time',
                                                                                                                  flat=True)).union(
             set(SchedulingSystem.objects.filter(holder=request.user.username).values_list('time',
-                                                                                          flat=True)))) == [1, 1, 3][date(*map(int, request.session.get('day').split('-'))).weekday() - 3]:
+                                                                                          flat=True)))) == [1, 1, 3][day.weekday() - 3]:
             prohibited_days.append(str(day))
     if request.method == 'POST':
         form = SchSysForm2(request.POST)
