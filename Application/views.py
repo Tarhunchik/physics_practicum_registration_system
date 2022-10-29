@@ -218,9 +218,7 @@ def schedule_page3(request):
         term = request.GET.get('term')
         if term:
             users = User.objects.all().filter(username__icontains=term).filter(is_teacher=False).filter(
-                Q(grade=request.user.grade[0] + '-6') | Q(grade=request.user.grade[0] + '-7') | Q(
-                    grade=request.user.grade[0] + '0-6') | Q(grade=request.user.grade[0] + '0-7')).filter(
-                ~Q(username=request.user.username))
+                Q(grade=request.user.grade[0] + '-5') | Q(grade=request.user.grade[0] + '-6') | Q(grade=request.user.grade[0] + '-7') | Q(grade=request.user.grade[0] + '-9') | Q(grade=request.user.grade[0] + '0-6') | Q(grade=request.user.grade[0] + '0-7')).filter(~Q(username=request.user.username))
             return JsonResponse(list(users.values()), safe=False)
     if request.method == 'POST':
         form = SchSysForm3(base_choices, request.POST)
