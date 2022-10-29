@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-39&65*-*9z*h9nior+=ir+@ukq$($*z)y2u+x5c2iq#c_*y*f5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['physprac1514.ru', '127.0.0.1']
 
@@ -83,7 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'aelaevyt_django',
-        'USER': 'Tarhunchik',
+        'USER': 'aelaevyt_django',
         'PASSWORD': 'Elaev241206',
         'HOST': 'localhost',
     }
