@@ -304,6 +304,7 @@ def account_page(request):
         context['last_name'] = request.user.last_name
         context['cur_recs'] = cur_recs
         context['other_recs'] = other_recs
+        context['other_recs'] = other_recs
         context['past_recs'] = past_recs
         return render(request, 'new_account.html', context)
 

@@ -40,7 +40,7 @@ class User(AbstractBaseUser):
     username = models.CharField(max_length=30, unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    grade = models.TextField(max_length=10, choices=[('9-6', '9-6'), ('9-7', '9-7'), ('10-6', '10-6'), ('10-7', '10-7')])
+    grade = models.TextField(max_length=10, choices=[('9-5', '9-5'), ('9-6', '9-6'), ('9-7', '9-7'), ('9-9', '9-9'), ('10-6', '10-6'), ('10-7', '10-7')])
     telegram_id = models.IntegerField(default=0)
     is_teacher = models.BooleanField(default=0)
     date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
