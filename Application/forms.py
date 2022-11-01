@@ -98,7 +98,7 @@ class SchSysForm3(forms.ModelForm):
         self.fields['time'].widget.attrs['class'] = 'form-control w-75 mx-auto'
         users = [('', '')] + list(User.objects.values_list('id', 'username'))
         self.fields['user'] = forms.MultipleChoiceField(choices=users, required=False)
-        self.fields['user'].label = 'Соберите свою команду:'
+        self.fields['user'].label = 'С кем вы придете? (никнеймы)'
         self.fields['user'].widget.attrs['class'] = 'form-control mx-auto w-75'
         self.fields['additional_info'] = forms.CharField(widget=forms.Textarea, required=False)
         self.fields['additional_info'].label = 'Информация:'
