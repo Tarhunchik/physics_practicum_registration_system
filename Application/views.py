@@ -263,12 +263,14 @@ def account_page(request):
         if obj.holder == request.user.username:
             task = ['Мистер Архимед', 'Для чайников', 'Сопротивление',
                     'Реактивный двигатель', 'Машина Атвуда', 'ДТП'][int(obj.task) - 1]
-            time = base_choices[int(obj.time) - 1]
+            time = base_choices[int(obj.time)]
             day = str(obj.day).split('-')
             day.reverse()
             cur_recs.append((task, time, '.'.join(day), obj.id, obj.additional_info))
     if request.method == 'POST':
         for rec in cur_recs:
+            print(rec)
+            print(request.POST)
             if str(rec[3]) in request.POST:
                 SchedulingSystem.objects.filter(id=rec[3]).delete()
         return HttpResponseRedirect('/account')
@@ -278,7 +280,7 @@ def account_page(request):
             if obj.holder == request.user.username:
                 task = ['Мистер Архимед', 'Для чайников', 'Сопротивление',
                         'Реактивный двигатель', 'Машина Атвуда', 'ДТП'][int(obj.task) - 1]
-                time = base_choices[int(obj.time) - 1]
+                time = base_choices[int(obj.time)]
                 day = str(obj.day).split('-')
                 day.reverse()
                 past_recs.append((task, time, '.'.join(day), obj.additional_info))
@@ -287,7 +289,7 @@ def account_page(request):
             if request.user.username in eval(obj.user):
                 task = ['Мистер Архимед', 'Для чайников', 'Сопротивление',
                         'Реактивный двигатель', 'Машина Атвуда', 'ДТП'][int(obj.task) - 1]
-                time = base_choices[int(obj.time) - 1]
+                time = base_choices[int(obj.time)]
                 day = str(obj.day).split('-')
                 day.reverse()
                 other_recs.append((task, time, '.'.join(day), obj.id, obj.additional_info))
