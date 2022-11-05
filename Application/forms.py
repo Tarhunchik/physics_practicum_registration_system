@@ -10,14 +10,23 @@ class DayInput(forms.DateInput):
 
 
 class RegisterForm(forms.Form):
-    username = forms.CharField(label='Придумайте username', max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    first_name = forms.CharField(label='Имя', max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    last_name = forms.CharField(label='Фамилия', max_length=20, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    email = forms.EmailField(label='Email', max_length=60, required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    grade = forms.ChoiceField(label='Выберите Ваш класс:', required=True, choices=[('9-5', '9-5'), ('9-6', '9-6'), ('9-7', '9-7'), ('9-9', '9-9'), ('10-6', '10-6'), ('10-7', '10-7')], widget=forms.Select(attrs={'class': 'form-control'}))
-    password1 = forms.CharField(label='Придумайте пароль', max_length=20, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    password2 = forms.CharField(label='Введите пароль еще раз', max_length=20, required=True, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    rule_check = forms.BooleanField(label='Я согласен с правилами сайта', required=True, widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
+    username = forms.CharField(label='Придумайте username', max_length=20, required=True,
+                               widget=forms.TextInput(attrs={'class': 'form-control'}))
+    first_name = forms.CharField(label='Имя', max_length=20, required=True,
+                                 widget=forms.TextInput(attrs={'class': 'form-control'}))
+    last_name = forms.CharField(label='Фамилия', max_length=20, required=True,
+                                widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(label='Email', max_length=60, required=True,
+                             widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    grade = forms.ChoiceField(label='Выберите Ваш класс:', required=True,
+                              choices=[('9-5', '9-5'), ('9-6', '9-6'), ('9-7', '9-7'), ('9-9', '9-9'), ('10-6', '10-6'),
+                                       ('10-7', '10-7')], widget=forms.Select(attrs={'class': 'form-control'}))
+    password1 = forms.CharField(label='Придумайте пароль', max_length=20, required=True,
+                                widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(label='Введите пароль еще раз', max_length=20, required=True,
+                                widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    rule_check = forms.BooleanField(label='Я согласен с правилами сайта', required=True,
+                                    widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}))
 
     class Meta:
         model = User
@@ -80,12 +89,15 @@ class SchSysForm2(forms.ModelForm):
     class Meta:
         model = SchedulingSystem
         fields = ('day',)
-        widgets = {'day': DateInput(attrs={'class': 'datepicker form-control w-50 mx-auto mt-2', 'style': 'background-color: white;'})}
-
+        widgets = {'day': DateInput(
+            attrs={'class': 'datepicker form-control w-50 mx-auto mt-2', 'style': 'background-color: white;'})}
 
     def clean(self):
         cleaned_data = super().clean()
         day = cleaned_data.get('day')
+        if day is None:
+            self.add_error('day', forms.ValidationError('Введите дату'))
+            return
         if day.weekday() not in [3, 4, 5]:
             self.add_error('day', forms.ValidationError('Некорректная дата'))
 
@@ -101,9 +113,10 @@ class SchSysForm3(forms.ModelForm):
         self.fields['user'].label = 'С кем вы придете? (никнеймы)'
         self.fields['user'].widget.attrs['class'] = 'form-control mx-auto w-75'
         self.fields['additional_info'] = forms.CharField(widget=forms.Textarea, required=False)
-        self.fields['additional_info'].label = 'Информация:'
+        self.fields['additional_info'].label = 'Дополнительно:'
         self.fields['additional_info'].widget.attrs['class'] = 'textarea form-control mx-auto w-75'
-        self.fields['additional_info'].widget.attrs['placeholder'] = 'Пример: мы придем после 7-ого урока'
+        self.fields['additional_info'].widget.attrs['placeholder'] = 'Пример: мы выбрали время 14:50-18:00, ' \
+                                                                     'но придем к 16:00'
         self.fields['additional_info'].widget.attrs['rows'] = 3
 
     class Meta:
