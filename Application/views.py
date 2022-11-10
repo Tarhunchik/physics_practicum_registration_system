@@ -39,7 +39,6 @@ def register_page(request):
             email = request.POST['email']
             password = request.POST['password1']
             grade = request.POST['grade']
-            print(grade)
             user = User.objects.create_user(
                 username=username,
                 email=email,
@@ -207,7 +206,6 @@ def schedule_page3(request):
             day=request.session.get('day')).values_list('time', flat=True)).union(
         set(SchedulingSystem.objects.filter(holder=request.user.username).values_list('time', flat=True))):
         prohibited_time.append(time)
-        print(time)
     i = 0
     while i != len(base_choices):
         if base_choices[i][0] in prohibited_time:
@@ -269,8 +267,6 @@ def account_page(request):
             cur_recs.append((task, time, '.'.join(day), obj.id, obj.additional_info))
     if request.method == 'POST':
         for rec in cur_recs:
-            print(rec)
-            print(request.POST)
             if str(rec[3]) in request.POST:
                 SchedulingSystem.objects.filter(id=rec[3]).delete()
         return HttpResponseRedirect('/account')

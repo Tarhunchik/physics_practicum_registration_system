@@ -5,12 +5,22 @@ from .models import User, SchedulingSystem
 
 
 class AccountAdmin(UserAdmin):
-    list_display = ('first_name', 'last_name', 'date_joined', 'last_login')
+    list_display = ('username', 'first_name', 'last_name', 'grade', 'is_teacher')
     search_fields = ('first_name', 'last_name', 'username', 'email')
     readonly_fields = ('date_joined', 'last_login')
 
     filter_horizontal = ()
-    list_filter = ()
+    list_filter = ('last_name',)
+    fieldsets = ()
+
+
+class SchedulingSystemAdmin(admin.ModelAdmin):
+    list_display = ('holder', 'holder_name', 'user', 'task', 'day', 'time')
+    search_fields = ('holder', 'holder_name', 'task', 'day', 'time')
+    readonly_fields = ('user',)
+
+    filter_horizontal = ()
+    list_filter = ('day', 'time', 'task')
     fieldsets = ()
 
 
