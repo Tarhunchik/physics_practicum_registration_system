@@ -185,6 +185,11 @@ def schedule_page2(request):
             return HttpResponseRedirect('/schedule/3')
     else:
         form = SchSysForm2()
+
+    prohibited_days.append(date(2022, 11, 24))
+    prohibited_days.append(date(2022, 11, 25))
+    prohibited_days.append(date(2022, 11, 26))
+
     context['scheduling_form'] = form
     context['prohibited_days'] = prohibited_days
     context['href'] = '/schedule/1'
