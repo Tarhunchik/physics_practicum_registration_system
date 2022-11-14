@@ -33,6 +33,7 @@ urlpatterns = [
     path('contacts/', views.contacts_page),
     path('account/', views.account_page),
     path('rules/', views.rules_page),
+    path('record_rules/', views.records_rules_page),
 ]
 
 handler404 = "Application.views.error_404"

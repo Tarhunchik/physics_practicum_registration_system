@@ -1,0 +1,57 @@
+body {
+    background-color: #d9e2d8;
+}
+
+h1 {
+    font-size: 2.2em;
+}
+
+.screen_image {
+    border: 0.3em solid #5b745e;
+    border-radius: 5em;
+    box-shadow: 0em 0em 2.2em 0em #7b917e;
+}
+
+.image_link {
+    color: #42673a;
+}
+
+.image_link span{
+    position: absolute;
+    visibility: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    text-align: center;
+}
+
+.image_link:hover {
+    color: #668c5d;
+}
+
+.image_link:hover span{
+    visibility: visible;
+}
+
+.image_link:hover .screen_card {
+    opacity: 1;
+    transition: 700ms;
+}
+
+.p_for_image {
+    position: relative;
+}
+
+.screen_card {
+    border-radius: 2em;
+    transition: 700ms;
+    opacity: 0;
+    border: 0.3em solid #5b745e;
+}
+
+.square_screen {
+    border: 0.3em solid #5b745e;
+    box-shadow: 0em 0em 2.2em 0em #7b917e;
+}

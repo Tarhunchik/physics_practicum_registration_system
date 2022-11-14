@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock title %}
+{% block css_style %} <link href="{% static 'record_rules.css' %}" rel="stylesheet"/> {% endblock css_style %}
+{% block content %}
+  {% include 'new_header.html' %}
+  <section class="mt-5 text-start fs-5">
+    <h1 class="text-center p-md-0 p-2">Тонкости записи на сайте</h1>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md my-auto p-4">
+          <p>Запись состоит из трех этапов:</p>
+          <ol>
+            <li class="mb-2">Вы выбираете задачу, которую хотите сдать</li>
+            <li class="mb-2">Вы выбираете день, в который хотите прийти</li>
+            <li>Вы выбираете время, указываете, с кем вы придете, оставляете дополнительную важную информацию
+                (если она есть). На скриншоте именно третий этап. Рассмотрим его подробнее, потому что,
+                как оказалось, он вызывает множество вопросов</li>
+          </ol>
+        </div>
+        <div class="col-md p-4">
+          <img src="{% static 'images/record_screen.png' %}" alt="скриншот полей для записи"
+               class="d-block w-100 screen_image my-auto mx-auto p-3">
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-7 my-auto p-4 order-1 order-md-2">
+          <p class="p_for_image">Во-первых, дойдя до третьего этапа, вы сможете выбрать
+            <a class="image_link">время<span><img src="{% static 'images/drop_screen_1.png' %}" class="d-block mx-auto w-50 screen_card"></span></a>.
+            Выбирая время, вы должны понимать, что
+            прийти вы должны ХОТЯ БЫ ПРИМЕРНО в его рамках. НЕЛЬЗЯ выбрать, например 8:30 - 10:30 и в графе
+            "дополнительно" написать "мы придем после шестого урока". Нет. Это так не работает
+          </p>
+        </div>
+        <div class="col-md-5 ps-5 pe-5 mt-2 order-2 order-md-1">
+          <img src="{% static 'images/dont_do_that.png' %}" alt="забавная картинка" class="d-block w-100 mx-auto my-auto rounded-circle" style="border: 0.4em double #000;">
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md my-auto p-4">
+          <p class="p_for_image">
+            Во-вторых, вы сможете указать, с кем вы придете сдавать прак (никнеймы). Это можно сделать
+            в поле "С кем вы придете?". Это значит, что всем членам команды нужно будет пройти регистрацию,
+            после чего в эту графу забиваются их ники. Пример на скриншоте. Можно выбрать
+            <a class="image_link">несколько<span><img src="{% static 'images/drop_screen_2.png' %}" class="d-block mx-auto w-50 screen_card"></span></a>
+            человек
+          </p>
+        </div>
+        <div class="col-md my-auto mx-auto p-4">
+          <img src="{% static 'images/screenshot_choose_friends.png' %}" alt="соберите друзей" class="d-block w-100 screen_image p-3 my-auto mx-auto">
+        </div>
+      </div>
+      <div class="row mt-4" style="margin-bottom: 4em;">
+        <div class="col-md-7 my-auto p-4 order-1 order-md-2">
+          <p>В-третьих, графа "Дополнительно" необязательная. Заполнять ее, пожалуй, стоит, когда, например, один
+            член вашей команды будет отсутствовать по какой-либо причине или вы планируете прийти позже назначенного
+            времени (но в его рамках!!!), в других похожих случаях
+          </p>
+        </div>
+        <div class="col-md-5 my-auto p-4 order-2 order-md-1">
+          <img src="{% static 'images/screen_dop_infa.png' %}" alt="скриншот `дополнительно`" class="d-block w-100 mx-auto my-auto square_screen">
+        </div>
+      </div>
+    </div>
+  </section>
+  {% include 'new_footer.html' %}
+{% endblock content %}

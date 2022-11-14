@@ -308,6 +308,12 @@ def account_page(request):
         return render(request, 'new_account.html', context)
 
 
+def records_rules_page(request):
+    context = get_context_base()
+    context['title'] = 'Как записываться?'
+    return render(request, 'record_rules.html', context)
+
+
 def error_404(request, exception):
     return render(request, 'error_404.html')
 

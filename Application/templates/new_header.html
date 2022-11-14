@@ -17,6 +17,11 @@
         <li class="nav-item">
           <a class="nav-link" href="/rules">Правила</a>
         </li>
+        {% if not request.user.is_teacher %}
+          <li class="nav-item">
+            <a href="/record_rules" class="nav-link">Как записаться?</a>
+          </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="/schedule/1">Запись</a>
         </li>
