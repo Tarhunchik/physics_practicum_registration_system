@@ -51,3 +51,11 @@ div .alert {
     font-size: 1em;
     padding: 0.5em;
 }
+
+.site-link {
+    color: #42673a;
+}
+
+.site-link:hover {
+    color: #668c5d;
+}

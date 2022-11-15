@@ -22,3 +22,10 @@
     background-color: #dde5de;
 }
 
+.site-link {
+    color: #42673a;
+}
+
+.site-link:hover {
+    color: #668c5d;
+}

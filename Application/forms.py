@@ -116,7 +116,7 @@ class SchSysForm3(forms.ModelForm):
         self.fields['additional_info'].label = 'Дополнительно:'
         self.fields['additional_info'].widget.attrs['class'] = 'textarea form-control mx-auto w-75'
         self.fields['additional_info'].widget.attrs['placeholder'] = 'Пример: мы выбрали время 14:50-18:00, ' \
-                                                                     'но придем к 16:00'
+                                                                     'придем к 16:00'
         self.fields['additional_info'].widget.attrs['rows'] = 3
 
     class Meta:
