@@ -138,6 +138,7 @@ def schedule_page1(request):
             records[rec].insert(1, records[rec][1][0])
             records[rec][2] = records[rec][2][1:]
             records[rec].append(len(records[rec][2]) + 1)
+        print(records)
         context['records'] = records
         return render(request, 'new_showoff.html', context)
     else:
