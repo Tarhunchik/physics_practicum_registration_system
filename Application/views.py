@@ -187,9 +187,16 @@ def schedule_page2(request):
     else:
         form = SchSysForm2()
 
-    prohibited_days.append(str(date(2022, 11, 24)))
-    prohibited_days.append(str(date(2022, 11, 25)))
-    prohibited_days.append(str(date(2022, 11, 26)))
+    prohibited_days.append(str(date(2022, 12, 24)))
+    prohibited_days.append(str(date(2023, 12, 31)))
+    prohibited_days.append(str(date(2023, 1, 1)))
+    prohibited_days.append(str(date(2023, 1, 2)))
+    prohibited_days.append(str(date(2023, 1, 3)))
+    prohibited_days.append(str(date(2023, 1, 4)))
+    prohibited_days.append(str(date(2023, 1, 5)))
+    prohibited_days.append(str(date(2023, 1, 6)))
+    prohibited_days.append(str(date(2023, 1, 7)))
+    prohibited_days.append(str(date(2023, 1, 8)))
 
     context['scheduling_form'] = form
     context['prohibited_days'] = prohibited_days
