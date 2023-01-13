@@ -73,3 +73,8 @@ class SchedulingSystem(models.Model):
     time = models.CharField(max_length=1, choices=[('0', u'16:45 — 19:00'), ('1', u'14:50 — 17:00'), ('2', u'8:30 — 10:15'), ('3', u'10:35 — 12:25'), ('4', u'14:50 — 18:00')])
     additional_info = models.TextField(blank=True)
     user = models.TextField(blank=True)
+
+
+class DateChanger(models.Model):
+    day = models.DateField(blank=True)
+    available_time = models.TextField(blank=True)

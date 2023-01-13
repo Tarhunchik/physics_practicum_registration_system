@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock %}
+{% block css_style %}
+  <link href="{% static 'new_schedule.css' %}" rel="stylesheet"/>
+{% endblock css_style %}
+{% block content %}
+  {% include 'new_header.html' %}
+  <section class="my-auto mt-5 mb-4">
+    <form class="my-auto" method="post" autocomplete="off">{% csrf_token %}
+      <div class="container">
+        <div class="row">
+          <div class="col-md-5 my-auto order-2 order-md-1">
+            <h1 class="text-center">Запись на практикум<br><small class="fs-4">(<a href="/record_rules" class="special-link">Инструкция</a>)</small></h1>
+            {% for field in scheduling_form %}
+              <div class="mt-5 mb-4 text-center">
+                <div class="container">
+                  <span class="fs-3 mb-4">{{ field.label_tag }}</span><br>
+                  <span class="">{{ field }}</span>
+                </div>
+
+                {% if field.help_text %}
+                  <small style="color: grey;">{{field.help_text}}</small>
+                {% endif %}
+
+                {% for error in field.errors %}
+                  <p style="color: red;">{{error}}</p>
+                {% endfor %}
+
+                {% if form.non_field_errors %}
+                  <div style="color:red;">
+                    <p>{{form.non_field_errors}}</p>
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+            <div class="mt-5 mb-4 text-center mx-auto">
+              <a role="button" class="btn btn-danger btn-lg me-4" href="{{ href }}">Назад</a>
+              <button class="btn btn-success btn-lg text-center mx-auto" type="submit">Дальше</button>
+            </div>
+          </div>
+          <div class="col-md-7 order-1 order-md-2 mb-5">
+            <img src="{% static 'images/new_clock.png' %}" alt="часы" class="d-block mx-auto img_with_alert">
+            <div class="alert mt-4 mx-auto">
+              <p class="error_p text-center my-auto">
+                ВНИМАНИЕ! Записываться нужно только на допуск или выполнение, на сдачу записываться не нужно!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/i18n/ru.js"></script>
+  <script type="text/javascript">
+
+        window.onload = preselectedOptionsLoad();
+
+        $.fn.select2.defaults.set('language', 'ru');
+        var disableDates = "{{prohibited_days}}";
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        function htmlDecode(str) {
+            console.log(str);
+            const doc = new DOMParser().parseFromString(str, "text/html");
+            return doc.documentElement.textContent;
+        };
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            startDate: date,
+            language: 'ru',
+            beforeShowDay: function(date){
+                dmy = date.getFullYear() + "-" + ('0'+(date.getMonth() + 1)).slice(-2) + "-" + ('0'+(date.getDate())).slice(-2);
+                cleanedDates = htmlDecode(disableDates);
+                if(cleanedDates.indexOf(dmy) != -1){
+                    return false;
+                }
+                else{
+                    return true;
+                }
+            }
+        });
+
+        $('#id_available_time').select2({
+            ajax: {
+                url: '{% url 'reschedule/2' %}',
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {id: item[0], text: item[1], selected: item[2]};
+                        })
+                    };
+                }
+            },
+            multiple: true,
+            minimumInputLength: 1,
+            language: "ru"
+        });
+
+        function preselectedOptionsLoad() {
+            $('#id_available_time').select2().val(eval(htmlDecode("{{active_time}}"))).trigger("change");
+        }
+  </script>
+
+  {% include 'new_footer.html' %}
+{% endblock content %}

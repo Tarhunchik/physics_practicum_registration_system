@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import User, SchedulingSystem
+from .models import User, SchedulingSystem, DateChanger
 
 
 class AccountAdmin(UserAdmin):
@@ -24,5 +24,15 @@ class SchedulingSystemAdmin(admin.ModelAdmin):
     fieldsets = ()
 
 
+class DateChangerAdmin(admin.ModelAdmin):
+    list_display = ('day', 'available_time')
+    search_fields = ('day',)
+
+    filter_horizontal = ()
+    list_filter = ('day',)
+    fieldsets = ()
+
+
 admin.site.register(User, AccountAdmin)
-admin.site.register(SchedulingSystem)
+admin.site.register(SchedulingSystem, SchedulingSystemAdmin)
+admin.site.register(DateChanger, DateChangerAdmin)

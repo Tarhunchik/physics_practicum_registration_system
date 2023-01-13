@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-39&65*-*9z*h9nior+=ir+@ukq$($*z)y2u+x5c2iq#c_*y*f5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['physprac1514.ru', '127.0.0.1']
 
@@ -79,25 +79,25 @@ WSGI_APPLICATION = 'Project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'dmioli24_django',
-        'USER': 'dmioli24_django',
-        'PASSWORD': 'Elaev241206',
-        'HOST': 'localhost',
-    }
-}
-#
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'aelaevyt_django',
-#         'USER': 'root',
+#         'NAME': 'dmioli24_django',
+#         'USER': 'dmioli24_django',
 #         'PASSWORD': 'Elaev241206',
 #         'HOST': 'localhost',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'aelaevyt_django',
+        'USER': 'root',
+        'PASSWORD': 'Elaev241206',
+        'HOST': 'localhost',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

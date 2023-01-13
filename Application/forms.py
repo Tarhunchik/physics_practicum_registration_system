@@ -1,8 +1,11 @@
 from django import forms
-from .models import User, SchedulingSystem
+from .models import User, SchedulingSystem, DateChanger
 from django.contrib.auth import authenticate
 from django.forms import ModelForm, DateInput, RadioSelect, TextInput, Select
 from datetime import date
+
+
+AVAILABLE_TIME = [('1', '1'), ('2', '2'), ('3', '3')]
 
 
 class DayInput(forms.DateInput):
@@ -124,3 +127,38 @@ class SchSysForm3(forms.ModelForm):
         fields = ('time', 'user', 'additional_info')
         # widgets = {'additional_info': TextInput(attrs={'class': 'textarea form-control
         # input-lg w-75 mh-200 mx-auto'})}
+
+
+class DateChangerForm1(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(DateChangerForm1, self).__init__(*args, **kwargs)
+        self.fields['day'].label = 'Выберите день записи'
+        self.fields['day'].widget.attrs['readonly'] = True
+
+    class Meta:
+        model = DateChanger
+        fields = ('day',)
+        widgets = {'day': DateInput(
+            attrs={'class': 'datepicker form-control w-50 mx-auto mt-2', 'style': 'background-color: white;'})}
+
+    def clean(self):
+        cleaned_data = super().clean()
+        day = cleaned_data.get('day')
+        if day is None:
+            self.add_error('day', forms.ValidationError('Введите дату'))
+            return
+        if day.weekday() not in [3, 4, 5]:
+            self.add_error('day', forms.ValidationError('Некорректная дата'))
+
+
+class DateChangerForm2(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(DateChangerForm2, self).__init__(*args, **kwargs)
+        available_time = [('', '')] + AVAILABLE_TIME
+        self.fields['available_time'] = forms.MultipleChoiceField(choices=available_time)
+        self.fields['available_time'].label = 'С кем вы придете? (никнеймы)'
+        self.fields['available_time'].widget.attrs['class'] = 'form-control mx-auto w-75'
+
+    class Meta:
+        model = DateChanger
+        fields = ('available_time',)
