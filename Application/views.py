@@ -8,7 +8,7 @@ from datetime import date
 from django.http import JsonResponse
 from django.db.models import Q
 
-AVAILABLE_TIME = ['19:30', '20:30', '21:30']
+AVAILABLE_TIME = [('0', u'16:45 — 19:00'), ('1', u'14:50 — 17:00'), ('2', u'8:30 — 10:15'), ('3', u'10:35 — 12:25'), ('4', u'14:50 — 18:00')]
 
 
 def get_context_base():
@@ -199,9 +199,8 @@ def schedule_page3(request):
     if date(*map(int, request.session.get('day').split('-'))).weekday() == 5:
         base_choices = [('2', u'8:30 — 10:15'), ('3', u'10:35 — 12:25'), ('4', u'14:50 — 18:00')]
     if DateChanger.objects.filter(day=request.session.get('day')):
-        base_choices = eval(
-            DateChanger.objects.filter(day=request.session.get('day')).values_list('available_time')[0][0])
-        base_choices = [(int(i) - 1, AVAILABLE_TIME[int(i) - 1]) for i in base_choices]
+        base_choices = eval(DateChanger.objects.filter(day=request.session.get('day')).values_list('available_time')[0][0])
+        base_choices = [(int(AVAILABLE_TIME[int(i)][0]), AVAILABLE_TIME[int(i)][1]) for i in base_choices]
     prohibited_time = []
     for time in set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=request.session.get('day')).values_list('time', flat=True)).union(set(SchedulingSystem.objects.filter(holder=request.user.username).values_list('time', flat=True))):
         prohibited_time.append(int(time))
@@ -219,6 +218,7 @@ def schedule_page3(request):
                     grade=request.user.grade[0] + '-7') | Q(grade=request.user.grade[0] + '-9') | Q(
                     grade=request.user.grade[0] + '0-6') | Q(grade=request.user.grade[0] + '0-7')).filter(
                 ~Q(username=request.user.username))
+            print(users.values())
             return JsonResponse(list(users.values()), safe=False)
     if request.method == 'POST':
         form = SchSysForm3(base_choices, request.POST)
@@ -266,15 +266,14 @@ def date_changer_page2(request):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         term = request.GET.get('term')
         if term:
-            available_time = [(i + 1, v) for i, v in enumerate(AVAILABLE_TIME) if term in v]
+            available_time = [i for i in AVAILABLE_TIME if term in i[1]]
             return JsonResponse(available_time, safe=False)
     if request.method == 'POST':
-        print(request.POST.get('day'))
-        print(DateChanger.objects.filter(day=request.session.get('day')))
         if len(DateChanger.objects.filter(day=request.session.get('day'))):
             form = DateChangerForm2(request.POST, instance=DateChanger.objects.filter(day=request.session.get('day'))[0])
         else:
             form = DateChangerForm2(request.POST)
+        print(form)
         if form.is_valid():
             inst = form.save(commit=False)
             inst.day = request.session.get('day')
@@ -285,8 +284,7 @@ def date_changer_page2(request):
     else:
         form = DateChangerForm2()
     context['scheduling_form'] = form
-    context['active_time'] = [str(i + 1) for i, v in enumerate(AVAILABLE_TIME) if str(i + 1) in eval(DateChanger.objects.filter(day=request.session.get('day')).values_list('available_time')[0][0])] if DateChanger.objects.filter(day=request.session.get('day')) else []
-    print(context['active_time'])
+    context['active_time'] = [i[0] for i in AVAILABLE_TIME if i[0] in eval(DateChanger.objects.filter(day=request.session.get('day')).values_list('available_time')[0][0])] if DateChanger.objects.filter(day=request.session.get('day')) else []
     context['href'] = '/schedule/2'
     return render(request, 'reschedule.html', context)
 

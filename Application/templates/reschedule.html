@@ -63,7 +63,6 @@
         var date = new Date();
         date.setDate(date.getDate() + 1);
         function htmlDecode(str) {
-            console.log(str);
             const doc = new DOMParser().parseFromString(str, "text/html");
             return doc.documentElement.textContent;
         };
@@ -88,9 +87,12 @@
                 url: '{% url 'reschedule/2' %}',
                 dataType: 'json',
                 processResults: function (data) {
+                    console.log($.map(data, function (item) {
+                            return {id: item[0], text: item[1]};
+                        }))
                     return {
                         results: $.map(data, function (item) {
-                            return {id: item[0], text: item[1], selected: item[2]};
+                            return {id: item[0], text: item[1]};
                         })
                     };
                 }

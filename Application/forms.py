@@ -5,7 +5,7 @@ from django.forms import ModelForm, DateInput, RadioSelect, TextInput, Select
 from datetime import date
 
 
-AVAILABLE_TIME = [('1', '1'), ('2', '2'), ('3', '3')]
+AVAILABLE_TIME = [('0', u'16:45 — 19:00'), ('1', u'14:50 — 17:00'), ('2', u'8:30 — 10:15'), ('3', u'10:35 — 12:25'), ('4', u'14:50 — 18:00')]
 
 
 class DayInput(forms.DateInput):
