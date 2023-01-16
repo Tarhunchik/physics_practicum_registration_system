@@ -10,8 +10,8 @@
     <form class="my-auto" method="post" autocomplete="off">{% csrf_token %}
       <div class="container">
         <div class="row">
-          <div class="col-md-5 my-auto order-2 order-md-1">
-            <h1 class="text-center">Запись на практикум<br><small class="fs-4">(<a href="/record_rules" class="special-link">Инструкция</a>)</small></h1>
+          <div class="col-md-6 my-auto order-2 order-md-1">
+            <h1 class="text-center">Создайте новое время,<br><small class="text-muted fs-4">в которое можно будет прийти сдать прак</small></h1>
             {% for field in scheduling_form %}
               <div class="mt-5 mb-4 text-center">
                 <div class="container" style="position: relative">
@@ -39,13 +39,8 @@
               <button class="btn btn-success btn-lg text-center mx-auto" type="submit">Дальше</button>
             </div>
           </div>
-          <div class="col-md-7 order-1 order-md-2 mb-5">
-            <img src="{% static 'images/new_clock.png' %}" alt="часы" class="d-block mx-auto img_with_alert">
-            <div class="alert mt-4 mx-auto">
-              <p class="error_p text-center my-auto">
-                ВНИМАНИЕ! Записываться нужно только на допуск или выполнение, на сдачу записываться не нужно!
-              </p>
-            </div>
+          <div class="col-md-6 order-1 order-md-2 mb-5">
+            <img src="{% static 'images/bad_clock.jpg' %}" alt="часы" class="d-block mx-auto w-100 my-auto rounded-5">
           </div>
         </div>
       </div>

@@ -11,7 +11,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-5 my-auto order-2 order-md-1">
-            <h1 class="text-center">Запись на практикум<br><small class="fs-4">(<a href="/record_rules" class="special-link">Инструкция</a>)</small></h1>
+            <h1 class="text-center">Измените<br><small class="text-muted fs-4">доступное время для записи на конкретные дни</small></h1>
             {% for field in scheduling_form %}
               <div class="mt-5 mb-4 text-center">
                 <div class="container">
@@ -40,12 +40,7 @@
             </div>
           </div>
           <div class="col-md-7 order-1 order-md-2 mb-5">
-            <img src="{% static 'images/new_clock.png' %}" alt="часы" class="d-block mx-auto img_with_alert">
-            <div class="alert mt-4 mx-auto">
-              <p class="error_p text-center my-auto">
-                ВНИМАНИЕ! Записываться нужно только на допуск или выполнение, на сдачу записываться не нужно!
-              </p>
-            </div>
+            <img src="{% static 'images/new_clock.png' %}" alt="часы" class="d-block mx-auto my-auto w-100">
           </div>
         </div>
       </div>
