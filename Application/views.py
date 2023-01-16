@@ -1,14 +1,13 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth import login, logout, authenticate
-from .forms import RegisterForm, LoginForm, SchSysForm1, SchSysForm2, SchSysForm3, DateChangerForm1, DateChangerForm2
-from .models import User, SchedulingSystem, DateChanger
+from .forms import RegisterForm, LoginForm, SchSysForm1, SchSysForm2, SchSysForm3, DateChangerForm1, DateChangerForm2, \
+    TimeIntervalForm
+from .models import User, SchedulingSystem, DateChanger, TimeInterval
 from django.contrib import messages
 from datetime import date
 from django.http import JsonResponse
 from django.db.models import Q
-
-AVAILABLE_TIME = [('0', u'16:45 — 19:00'), ('1', u'14:50 — 17:00'), ('2', u'8:30 — 10:15'), ('3', u'10:35 — 12:25'), ('4', u'14:50 — 18:00')]
 
 
 def get_context_base():
@@ -199,8 +198,8 @@ def schedule_page3(request):
     if date(*map(int, request.session.get('day').split('-'))).weekday() == 5:
         base_choices = [('2', u'8:30 — 10:15'), ('3', u'10:35 — 12:25'), ('4', u'14:50 — 18:00')]
     if DateChanger.objects.filter(day=request.session.get('day')):
-        base_choices = eval(DateChanger.objects.filter(day=request.session.get('day')).values_list('available_time')[0][0])
-        base_choices = [(int(AVAILABLE_TIME[int(i)][0]), AVAILABLE_TIME[int(i)][1]) for i in base_choices]
+        time_id = eval(DateChanger.objects.filter(day=request.session.get('day')).values_list('available_time')[0][0])
+        base_choices = [(i, TimeInterval.objects.get(pk=i).str_interval) for i in time_id]
     prohibited_time = []
     for time in set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=request.session.get('day')).values_list('time', flat=True)).union(set(SchedulingSystem.objects.filter(holder=request.user.username).values_list('time', flat=True))):
         prohibited_time.append(int(time))
@@ -266,7 +265,8 @@ def date_changer_page2(request):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         term = request.GET.get('term')
         if term:
-            available_time = [i for i in AVAILABLE_TIME if term in i[1]]
+            available_time = [(i.id, i.str_interval) for i in TimeInterval.objects.filter(str_interval__contains=term)]
+            print(available_time)
             return JsonResponse(available_time, safe=False)
     if request.method == 'POST':
         if len(DateChanger.objects.filter(day=request.session.get('day'))):
@@ -277,16 +277,32 @@ def date_changer_page2(request):
         if form.is_valid():
             inst = form.save(commit=False)
             inst.day = request.session.get('day')
-            inst.available_time = '[' + ', '.join(['"' + i + '"' for i in eval(inst.available_time or '[]')]) + ']'
+            inst.available_time = '[' + ', '.join([i for i in eval(inst.available_time or '[]')]) + ']'
             inst.save()
             context['href'] = '/schedule/2'
             return render(request, 'new_index.html', context)
     else:
         form = DateChangerForm2()
     context['scheduling_form'] = form
-    context['active_time'] = [i[0] for i in AVAILABLE_TIME if i[0] in eval(DateChanger.objects.filter(day=request.session.get('day')).values_list('available_time')[0][0])] if DateChanger.objects.filter(day=request.session.get('day')) else []
+    context['active_time'] = [i.id for i in TimeInterval.objects.all() if i.id in eval(DateChanger.objects.filter(day=request.session.get('day')).values_list('available_time')[0][0])] if DateChanger.objects.filter(day=request.session.get('day')) else []
     context['href'] = '/schedule/2'
     return render(request, 'reschedule.html', context)
+
+
+def new_time_interval(request):
+    context = get_context_base()
+    context['title'] = 'Добавление нового интервала'
+    if request.method == 'POST':
+        form = TimeIntervalForm(request.POST)
+        if form.is_valid():
+            inst = form.save(commit=False)
+            inst.str_interval = f'{str(inst.start_time)[:-3]} — {str(inst.end_time)[:-3]}'
+            inst.save()
+            return render(request, 'new_index.html', context)
+    else:
+        form = TimeIntervalForm()
+    context['scheduling_form'] = form
+    return render(request, 'time_interval.html', context)
 
 
 def tg_bot_page(request):

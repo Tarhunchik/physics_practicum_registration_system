@@ -1,16 +1,7 @@
 from django import forms
-from .models import User, SchedulingSystem, DateChanger
+from .models import User, SchedulingSystem, DateChanger, TimeInterval
 from django.contrib.auth import authenticate
-from django.forms import ModelForm, DateInput, RadioSelect, TextInput, Select
-from datetime import date
-
-
-AVAILABLE_TIME = [('0', u'16:45 — 19:00'), ('1', u'14:50 — 17:00'), ('2', u'8:30 — 10:15'), ('3', u'10:35 — 12:25'), ('4', u'14:50 — 18:00')]
-
-
-class DayInput(forms.DateInput):
-    input_type = 'date'
-
+from django.forms import DateInput, TimeInput
 
 class RegisterForm(forms.Form):
     username = forms.CharField(label='Придумайте username', max_length=20, required=True,
@@ -154,7 +145,8 @@ class DateChangerForm1(forms.ModelForm):
 class DateChangerForm2(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(DateChangerForm2, self).__init__(*args, **kwargs)
-        available_time = [('', '')] + AVAILABLE_TIME
+        available_time = [('', '')] + [(i.id, i.str_interval) for i in TimeInterval.objects.all()]
+        print(available_time)
         self.fields['available_time'] = forms.MultipleChoiceField(choices=available_time)
         self.fields['available_time'].label = 'С кем вы придете? (никнеймы)'
         self.fields['available_time'].widget.attrs['class'] = 'form-control mx-auto w-75'
@@ -162,3 +154,16 @@ class DateChangerForm2(forms.ModelForm):
     class Meta:
         model = DateChanger
         fields = ('available_time',)
+
+
+class TimeIntervalForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(TimeIntervalForm, self).__init__(*args, **kwargs)
+        self.fields['start_time'] = forms.TimeField()
+        self.fields['start_time'].label = 'Начало времени:'
+        self.fields['end_time'] = forms.TimeField()
+        self.fields['end_time'].label = 'Конец времени:'
+
+    class Meta:
+        model = TimeInterval
+        fields = ('start_time', 'end_time')

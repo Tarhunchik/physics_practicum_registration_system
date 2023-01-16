@@ -31,6 +31,7 @@ urlpatterns = [
     path('schedule/3/', views.schedule_page3, name='schedule/3'),
     path('reschedule/1/', views.date_changer_page1),
     path('reschedule/2/', views.date_changer_page2, name='reschedule/2'),
+    path('time_interval/', views.new_time_interval),
     path('telegram_bot/', views.tg_bot_page),
     path('contacts/', views.contacts_page),
     path('account/', views.account_page),

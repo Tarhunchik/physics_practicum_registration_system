@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{title}} {% endblock %}
+{% block css_style %}
+  <link href="{% static 'new_schedule.css' %}" rel="stylesheet"/>
+{% endblock css_style %}
+{% block content %}
+  {% include 'new_header.html' %}
+  <section class="my-auto mt-5 mb-4">
+    <form class="my-auto" method="post" autocomplete="off">{% csrf_token %}
+      <div class="container">
+        <div class="row">
+          <div class="col-md-5 my-auto order-2 order-md-1">
+            <h1 class="text-center">Запись на практикум<br><small class="fs-4">(<a href="/record_rules" class="special-link">Инструкция</a>)</small></h1>
+            {% for field in scheduling_form %}
+              <div class="mt-5 mb-4 text-center">
+                <div class="container" style="position: relative">
+                  <span class="fs-3 mb-4">{{ field.label_tag }}</span><br>
+                  <span class="">{{ field }}</span>
+                </div>
+
+                {% if field.help_text %}
+                  <small style="color: grey;">{{field.help_text}}</small>
+                {% endif %}
+
+                {% for error in field.errors %}
+                  <p style="color: red;">{{error}}</p>
+                {% endfor %}
+
+                {% if form.non_field_errors %}
+                  <div style="color:red;">
+                    <p>{{form.non_field_errors}}</p>
+                  </div>
+                {% endif %}
+              </div>
+            {% endfor %}
+            <div class="mt-5 mb-4 text-center mx-auto">
+              <a role="button" class="btn btn-danger btn-lg me-4" href="{{ href }}">Назад</a>
+              <button class="btn btn-success btn-lg text-center mx-auto" type="submit">Дальше</button>
+            </div>
+          </div>
+          <div class="col-md-7 order-1 order-md-2 mb-5">
+            <img src="{% static 'images/new_clock.png' %}" alt="часы" class="d-block mx-auto img_with_alert">
+            <div class="alert mt-4 mx-auto">
+              <p class="error_p text-center my-auto">
+                ВНИМАНИЕ! Записываться нужно только на допуск или выполнение, на сдачу записываться не нужно!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/js/all.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+  <script type="text/javascript">
+        $('#id_start_time').datetimepicker({
+                icons:{
+                    up: 'fa fa-angle-up',
+                    down: 'fa fa-angle-down'
+                },
+                locale: 'ru',
+                format: 'LT'
+            });
+        $('#id_end_time').datetimepicker({
+                icons:{
+                    up: 'fa fa-angle-up',
+                    down: 'fa fa-angle-down'
+                },
+                locale: 'ru',
+                format: 'LT'
+            });
+  </script>
+
+  {% include 'new_footer.html' %}
+{% endblock content %}

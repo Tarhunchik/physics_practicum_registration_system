@@ -77,3 +77,9 @@ class SchedulingSystem(models.Model):
 class DateChanger(models.Model):
     day = models.DateField(blank=True)
     available_time = models.TextField(blank=True)
+
+
+class TimeInterval(models.Model):
+    start_time = models.TimeField(blank=True)
+    end_time = models.TimeField(blank=True)
+    str_interval = models.CharField(max_length=255)
