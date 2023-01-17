@@ -146,7 +146,6 @@ class DateChangerForm2(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(DateChangerForm2, self).__init__(*args, **kwargs)
         available_time = [('', '')] + [(i.id, i.str_interval) for i in TimeInterval.objects.all()]
-        print(available_time)
         self.fields['available_time'] = forms.MultipleChoiceField(choices=available_time)
         self.fields['available_time'].label = 'Найдите время, которое Вы хотите добавить на дату, или удалите старое:'
         self.fields['available_time'].widget.attrs['class'] = 'form-control mx-auto w-75'

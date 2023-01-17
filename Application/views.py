@@ -135,7 +135,6 @@ def schedule_page1(request):
             records[rec].insert(1, records[rec][1][0])
             records[rec][2] = records[rec][2][1:]
             records[rec].append(len(records[rec][2]) + 1)
-        print(records)
         context['records'] = records
         return render(request, 'new_showoff.html', context)
     else:
@@ -217,7 +216,6 @@ def schedule_page3(request):
                     grade=request.user.grade[0] + '-7') | Q(grade=request.user.grade[0] + '-9') | Q(
                     grade=request.user.grade[0] + '0-6') | Q(grade=request.user.grade[0] + '0-7')).filter(
                 ~Q(username=request.user.username))
-            print(users.values())
             return JsonResponse(list(users.values()), safe=False)
     if request.method == 'POST':
         form = SchSysForm3(base_choices, request.POST)
@@ -266,14 +264,12 @@ def date_changer_page2(request):
         term = request.GET.get('term')
         if term:
             available_time = [(i.id, i.str_interval) for i in TimeInterval.objects.filter(str_interval__contains=term)]
-            print(available_time)
             return JsonResponse(available_time, safe=False)
     if request.method == 'POST':
         if len(DateChanger.objects.filter(day=request.session.get('day'))):
             form = DateChangerForm2(request.POST, instance=DateChanger.objects.filter(day=request.session.get('day'))[0])
         else:
             form = DateChangerForm2(request.POST)
-        print(form)
         if form.is_valid():
             inst = form.save(commit=False)
             inst.day = request.session.get('day')
