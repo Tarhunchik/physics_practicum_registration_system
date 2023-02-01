@@ -167,9 +167,13 @@ def schedule_page2(request):
     context = get_context_base()
     context['title'] = 'Запись'
     prohibited_days = []
-    for day in set(SchedulingSystem.objects.filter(task=request.session.get('task')).values_list('day', flat=True)):
-        if len(set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=day).values_list('time', flat=True)).union(set(SchedulingSystem.objects.filter(holder=request.user.username).values_list('time', flat=True)))) == (len(eval(DateChanger.objects.filter(day=day).values_list('available_time')[0][0])) if DateChanger.objects.filter(day=day) else [1, 1, 3][day.weekday() - 3]):
-            prohibited_days.append(str(day))
+    for day in set(SchedulingSystem.objects.values_list('day', flat=True)):
+        if len(DateChanger.objects.filter(day=day)):
+            if len(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=day)) + len(SchedulingSystem.objects.filter(holder=request.user.username).filter(day=request.session.get('day'))) >= len(eval(DateChanger.objects.filter(day=day).values_list('available_time')[0][0])):
+                prohibited_days.append(str(day))
+        else:
+            if len(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=day)) + len(SchedulingSystem.objects.filter(holder=request.user.username).filter(day=request.session.get('day'))) >= [1, 1, 3][day.weekday() - 3]:
+                prohibited_days.append(str(day))
     if request.method == 'POST':
         form = SchSysForm2(request.POST)
         if form.is_valid():
@@ -191,16 +195,16 @@ def schedule_page3(request):
     context['title'] = 'Запись'
     base_choices = []
     if date(*map(int, request.session.get('day').split('-'))).weekday() == 3:
-        base_choices = [('0', u'16:45 — 19:00')]
+        base_choices = [(1, TimeInterval.objects.get(pk=1).str_interval)]
     if date(*map(int, request.session.get('day').split('-'))).weekday() == 4:
-        base_choices = [('1', u'14:50 — 17:00')]
+        base_choices = [(2, TimeInterval.objects.get(pk=2).str_interval)]
     if date(*map(int, request.session.get('day').split('-'))).weekday() == 5:
-        base_choices = [('2', u'8:30 — 10:15'), ('3', u'10:35 — 12:25'), ('4', u'14:50 — 18:00')]
+        base_choices = [(3, TimeInterval.objects.get(pk=3).str_interval), (4, TimeInterval.objects.get(pk=4).str_interval), (5, TimeInterval.objects.get(pk=5).str_interval)]
     if DateChanger.objects.filter(day=request.session.get('day')):
         time_id = eval(DateChanger.objects.filter(day=request.session.get('day')).values_list('available_time')[0][0])
         base_choices = [(i, TimeInterval.objects.get(pk=i).str_interval) for i in time_id]
     prohibited_time = []
-    for time in set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=request.session.get('day')).values_list('time', flat=True)).union(set(SchedulingSystem.objects.filter(holder=request.user.username).values_list('time', flat=True))):
+    for time in set(SchedulingSystem.objects.filter(task=request.session.get('task')).filter(day=request.session.get('day')).values_list('time', flat=True)).union(set(SchedulingSystem.objects.filter(holder=request.user.username).filter(day=request.session.get('day')).values_list('time', flat=True))):
         prohibited_time.append(int(time))
     i = 0
     while i != len(base_choices):
