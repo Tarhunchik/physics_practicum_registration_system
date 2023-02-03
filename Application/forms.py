@@ -3,6 +3,7 @@ from .models import User, SchedulingSystem, DateChanger, TimeInterval
 from django.contrib.auth import authenticate
 from django.forms import DateInput, TimeInput
 
+
 class RegisterForm(forms.Form):
     username = forms.CharField(label='Придумайте username', max_length=20, required=True,
                                widget=forms.TextInput(attrs={'class': 'form-control'}))

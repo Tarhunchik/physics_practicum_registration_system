@@ -64,16 +64,6 @@ class User(AbstractBaseUser):
         return True
 
 
-class SchedulingSystem(models.Model):
-    holder = models.CharField(max_length=100, default='')
-    holder_name = models.CharField(max_length=100, default='')
-    task = models.CharField(max_length=1, choices=[('1', u'task 1'), ('2', u'task 2'), ('3', u'task 3'), ('4', u'task 4'), ('5', u'task 5'), ('6', u'task 6')])
-    day = models.DateField(blank=True)
-    time = models.CharField(max_length=1, choices=[('0', u'16:45 — 19:00'), ('1', u'14:50 — 17:00'), ('2', u'8:30 — 10:15'), ('3', u'10:35 — 12:25'), ('4', u'14:50 — 18:00')])
-    additional_info = models.TextField(blank=True)
-    user = models.TextField(blank=True)
-
-
 class DateChanger(models.Model):
     day = models.DateField(blank=True)
     available_time = models.TextField(blank=True)
@@ -83,3 +73,13 @@ class TimeInterval(models.Model):
     start_time = models.TimeField(blank=True)
     end_time = models.TimeField(blank=True)
     str_interval = models.CharField(max_length=255)
+
+
+class SchedulingSystem(models.Model):
+    holder = models.CharField(max_length=100, default='')
+    holder_name = models.CharField(max_length=100, default='')
+    task = models.CharField(max_length=1, choices=[('1', u'task 1'), ('2', u'task 2'), ('3', u'task 3'), ('4', u'task 4'), ('5', u'task 5'), ('6', u'task 6')])
+    day = models.DateField(blank=True)
+    time = models.CharField(max_length=1, choices=[(str(i + 1), v.str_interval) for i, v in enumerate(TimeInterval.objects.all())])
+    additional_info = models.TextField(blank=True)
+    user = models.TextField(blank=True)
