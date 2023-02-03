@@ -121,9 +121,8 @@ def schedule_page1(request):
             else:
                 tasks = ['', '', '', 'Реактивный двигатель', 'Машина Атвуда', 'ДТП']
             records.setdefault(day, [])
-            base_choices = ['16:45 — 19:00', '14:50 — 17:00', '8:30 — 10:15', '10:35 — 12:25', '14:50 — 18:00']
             records[day].append(
-                [days[obj.day.weekday()], people, tasks[task_index - 1], base_choices[time_index], info])
+                [days[obj.day.weekday()], people, tasks[task_index - 1], TimeInterval.objects.filter(pk=time_index)[0].str_interval, info])
 
         records = [list(i) for i in sorted(records.items(), key=lambda x: x[0])]
 
