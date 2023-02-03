@@ -195,11 +195,11 @@ def schedule_page3(request):
     context['title'] = 'Запись'
     base_choices = []
     if date(*map(int, request.session.get('day').split('-'))).weekday() == 3:
-        base_choices = [(1, TimeInterval.objects.get(pk=1).str_interval)]
+        base_choices = [(0, TimeInterval.objects.get(pk=1).str_interval)]
     if date(*map(int, request.session.get('day').split('-'))).weekday() == 4:
-        base_choices = [(2, TimeInterval.objects.get(pk=2).str_interval)]
+        base_choices = [(1, TimeInterval.objects.get(pk=2).str_interval)]
     if date(*map(int, request.session.get('day').split('-'))).weekday() == 5:
-        base_choices = [(3, TimeInterval.objects.get(pk=3).str_interval), (4, TimeInterval.objects.get(pk=4).str_interval), (5, TimeInterval.objects.get(pk=5).str_interval)]
+        base_choices = [(2, TimeInterval.objects.get(pk=3).str_interval), (3, TimeInterval.objects.get(pk=4).str_interval), (4, TimeInterval.objects.get(pk=5).str_interval)]
     if DateChanger.objects.filter(day=request.session.get('day')):
         time_id = eval(DateChanger.objects.filter(day=request.session.get('day')).values_list('available_time')[0][0])
         base_choices = [(i, TimeInterval.objects.get(pk=i).str_interval) for i in time_id]
