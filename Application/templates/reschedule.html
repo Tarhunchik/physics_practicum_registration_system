@@ -54,7 +54,6 @@
         window.onload = preselectedOptionsLoad();
 
         $.fn.select2.defaults.set('language', 'ru');
-        var disableDates = "{{prohibited_days}}";
         var date = new Date();
         date.setDate(date.getDate() + 1);
         function htmlDecode(str) {
@@ -67,13 +66,6 @@
             language: 'ru',
             beforeShowDay: function(date){
                 dmy = date.getFullYear() + "-" + ('0'+(date.getMonth() + 1)).slice(-2) + "-" + ('0'+(date.getDate())).slice(-2);
-                cleanedDates = htmlDecode(disableDates);
-                if(cleanedDates.indexOf(dmy) != -1){
-                    return false;
-                }
-                else{
-                    return true;
-                }
             }
         });
 
@@ -82,9 +74,6 @@
                 url: '{% url 'reschedule/2' %}',
                 dataType: 'json',
                 processResults: function (data) {
-                    console.log($.map(data, function (item) {
-                            return {id: item[0], text: item[1]};
-                        }))
                     return {
                         results: $.map(data, function (item) {
                             return {id: item[0], text: item[1]};

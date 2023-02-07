@@ -282,8 +282,18 @@ def date_changer_page2(request):
             return render(request, 'new_index.html', context)
     else:
         form = DateChangerForm2()
+    active_time = []
+    if date(*map(int, request.session.get('day').split('-'))).weekday() == 3:
+        active_time = [1]
+    if date(*map(int, request.session.get('day').split('-'))).weekday() == 4:
+        active_time = [2]
+    if date(*map(int, request.session.get('day').split('-'))).weekday() == 5:
+        active_time = [3, 4, 5]
+    if DateChanger.objects.filter(day=request.session.get('day')):
+        time_id = eval(DateChanger.objects.filter(day=request.session.get('day')).values_list('available_time')[0][0])
+        active_time = [i for i in time_id]
     context['scheduling_form'] = form
-    context['active_time'] = [i.id for i in TimeInterval.objects.all() if i.id in eval(DateChanger.objects.filter(day=request.session.get('day')).values_list('available_time')[0][0])] if DateChanger.objects.filter(day=request.session.get('day')) else []
+    context['active_time'] = active_time
     context['href'] = '/schedule/2'
     return render(request, 'reschedule.html', context)
 
