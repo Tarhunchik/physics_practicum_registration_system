@@ -79,26 +79,26 @@ WSGI_APPLICATION = 'Project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'dmioli24_django',
-#         'USER': 'dmioli24_django',
-#         'PASSWORD': 'Elaev241206',
-#         'HOST': 'localhost',
-#     }
-# }
-
-# Test db
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'aelaevyt_django',
-        'USER': 'root',
+        'NAME': 'dmioli24_django',
+        'USER': 'dmioli24_django',
         'PASSWORD': 'Elaev241206',
         'HOST': 'localhost',
     }
 }
+
+# Test db
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'aelaevyt_django',
+#         'USER': 'root',
+#         'PASSWORD': 'Elaev241206',
+#         'HOST': 'localhost',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
