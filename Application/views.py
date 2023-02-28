@@ -113,7 +113,6 @@ def schedule_page1(request):
                 user = User.objects.filter(username=i).first()
                 people.append(f'{user.first_name} {user.last_name} {user.grade}')
             task_index = int(obj.task)
-            time_index = int(obj.time)
             info = obj.additional_info
             day = obj.day
             if inst_grade.startswith('9'):
@@ -122,7 +121,7 @@ def schedule_page1(request):
                 tasks = ['', '', '', 'Реактивный двигатель', 'Машина Атвуда', 'ДТП']
             records.setdefault(day, [])
             records[day].append(
-                [days[obj.day.weekday()], people, tasks[task_index - 1], TimeInterval.objects.filter(pk=time_index)[0].str_interval, info])
+                [days[obj.day.weekday()], people, tasks[task_index - 1], TimeInterval.objects.filter(pk=obj.time)[0].str_interval, info])
 
         records = [list(i) for i in sorted(records.items(), key=lambda x: x[0])]
 
@@ -141,7 +140,7 @@ def schedule_page1(request):
             base_choices = [('1', u'Мистер Архимед'), ('2', u'Для чайников'), ('3', u'Сопротивление')]
         else:
             base_choices = [('4', u'Реактивный двигатель'), ('5', u'Машина Атвуда'), ('6', u'ДТП')]
-        for task in SchedulingSystem.objects.filter(holder=request.user.username).values_list('task', flat=True):
+        for task in SchedulingSystem.objects.filter(holder=request.user.username).filter(day__gte=date.today()).values_list('task', flat=True):
             i = 0
             while i != len(base_choices):
                 if base_choices[i][0] == task:
